@@ -20,6 +20,7 @@ Teachers will have access to a personalized dashboard that will allow them to cr
     - The developer has extensive experience in building dynamic and responsive web applications using React.js, with a strong focus on clean design and maintainable code. He is proficient in modern frontend technologies such as TypeScript           and TailwindCSS, and has a keen interest in optimizing user experiences across different devices and platforms. 
 - Mathieu Choueiry 40284714 Backend Developer
 - Viresh Patel 40271750 Backend Developer
+    - A full-stack developer with experience in building robust applications, both on the frontend and backend. I place strong emphasis on reusable and maintainable code, ensuring that my solutions are scalable and easy to maintain. My expertise spans frameworks like React and Spring Boot, where I structure code adhering to the best practices ensuring long-term success of projects.
 - Nguyen Le 40272922 Frontend developer
 - Pritthiraj Dey 40273416 Backend Developer
 - Mohammed Mahmmoud 40283160 Frontend developer
