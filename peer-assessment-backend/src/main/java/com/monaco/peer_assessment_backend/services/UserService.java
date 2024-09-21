@@ -1,4 +1,6 @@
-package com.monaco.peer_assessment_Services;
+package com.monaco.peer_assessment_backend.services;
+
+import com.monaco.peer_assessment_backend.entity.User;
 
 import java.util.List;
 
