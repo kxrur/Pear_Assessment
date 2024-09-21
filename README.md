@@ -29,9 +29,13 @@ Teachers will have access to a personalized dashboard that will allow them to cr
 - React
 - Tailwind CSS
 - Vue
+- Axios
 - Typescript
 - Figma
 ### Back-end:
 - Java
 - Spring boot
 - MySQL
+- Hibernate
+- JUnit
+- Postman
