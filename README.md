@@ -17,6 +17,7 @@ The system will also feature a text field that will allow for detailed feedback 
 Teachers will have access to a personalized dashboard that will allow them to create teams, add members and see the overall assessment for each member. They will be able to easily add students to the database with a csv file and can export the information for further use.
 ## Team members:
 - Daniel Caradjov 40271262 Frontend developer
+    - The developer has extensive experience in building dynamic and responsive web applications using React.js, with a strong focus on clean design and maintainable code. He is proficient in modern frontend technologies such as TypeScript           and TailwindCSS, and has a keen interest in optimizing user experiences across different devices and platforms. 
 - Mathieu Choueiry 40284714 Backend Developer
 - Viresh Patel 40271750 Backend Developer
 - Nguyen Le 40272922 Frontend developer
@@ -28,7 +29,7 @@ Teachers will have access to a personalized dashboard that will allow them to cr
 - Tailwind CSS
 - Vue
 - Typescript
-Figma
+- Figma
 ### Back-end:
 - Java
 - Spring boot
