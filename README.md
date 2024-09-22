@@ -23,6 +23,7 @@ Teachers will have access to a personalized dashboard that will allow them to cr
     - A full-stack developer with experience in building robust applications, both on the frontend and backend. I place strong emphasis on reusable and maintainable code, ensuring that my solutions are scalable and easy to maintain. My expertise spans frameworks like React and Spring Boot, where I structure code adhering to the best practices ensuring long-term success of projects.
 - Nguyen Le 40272922 Frontend developer
 - Pritthiraj Dey 40273416 Backend Developer
+   - A full-stack developer with expertise in Java-based applications and a strong focus on creating intuitive GUIs. He excels in building scalable solutions with clean, maintainable code, seamlessly bridging frontend and backend development for reliable and efficient applications.
 - Mohammed Mahmmoud 40283160 Frontend developer
 ## Tehnologies Used
 ### Front-end:
