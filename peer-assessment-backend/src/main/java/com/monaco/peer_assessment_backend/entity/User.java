@@ -25,6 +25,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String username;
+    private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     // Creates a table that joins both the userId and the roleId
