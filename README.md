@@ -19,6 +19,7 @@ Teachers will have access to a personalized dashboard that will allow them to cr
 - Daniel Caradjov (kxrur) 40271262 Frontend developer
     - The developer has extensive experience in building dynamic and responsive web applications using React.js, with a strong focus on clean design and maintainable code. He is proficient in modern frontend technologies such as TypeScript           and TailwindCSS, and has a keen interest in optimizing user experiences across different devices and platforms. 
 - Mathieu Choueiry (Mach2-1) 40284714 Backend Developer
+    - A backend developer with experience in building interactive systems and simulations. I will work on the controller layer of the application that connects the frontend and the backend using mainly spring boot and Java. The controller layer handles the http requests and returns the desired outputs. Finally, it also shows the appropriate view to display the data or results for the user.
 - Viresh Patel (vireshpatel43) 40271750 Backend Developer
     - A full-stack developer with experience in building robust applications, both on the frontend and backend. I place strong emphasis on reusable and maintainable code, ensuring that my solutions are scalable and easy to maintain. My expertise spans frameworks like React and Spring Boot, where I structure code adhering to the best practices ensuring long-term success of projects.
 - Nguyen Le (KneewYen) 40272922 Frontend developer
