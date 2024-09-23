@@ -11,15 +11,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Custom query to find a User by their username
+     *
      * @param username The username of the desired User
      * @return the desired User
      */
     Optional<User> findByUsername(String username);
-
-    /**
-     * Custom query to find a Student by their studentID
-     * @param studentID The studentID of the desired Student
-     * @return the desired Student
-     */
-    //Optional<User> (long studentID);
 }
