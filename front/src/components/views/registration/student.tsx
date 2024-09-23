@@ -5,6 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 interface FormData {
   firstName: string;
   lastName: string;
+  id: number;
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface FormDataError {
+  firstName: string;
+  lastName: string;
   id: string;
   username: string;
   password: string;
@@ -15,26 +24,29 @@ const RegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
-    id: "",
+    id: NaN,
     username: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [errors, setErrors] = useState<Partial<FormDataError>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    //validate id
+    const newValue = name === "id" ? (value === "" ? NaN : Number(value)) : value;
+    setFormData({ ...formData, [name]: newValue });
     setErrors({ ...errors, [name]: "" }); // Clear error on input change
   };
 
   const validateForm = () => {
-    const newErrors: Partial<FormData> = {};
+    const newErrors: Partial<FormDataError> = {};
 
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
-    if (!formData.id.trim()) newErrors.id = "ID is required";
+    if (!formData.id) newErrors.id = "ID is required";
+    if (isNaN(formData.id) || formData.id < 0) newErrors.id = "ID must be a positive number";
     if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.password.trim()) newErrors.password = "Password is required";
     if (!formData.confirmPassword.trim()) newErrors.confirmPassword = "Confirm password is required";
@@ -106,8 +118,17 @@ const RegistrationForm: React.FC = () => {
             <input
               type="text"
               name="id"
-              value={formData.id}
+              value={isNaN(formData.id) ? "" : formData.id} // Display empty string if id is NaN
               onChange={handleInputChange}
+              onInput={(e) => {
+                const value = e.currentTarget.value;
+                // Allow only numeric input by filtering out non-numeric characters
+                const numericValue = value.replace(/[^0-9]/g, "");
+                if (value !== numericValue) {
+                  e.currentTarget.value = numericValue; // Update the input field to show only valid numbers
+                }
+              }}
+              maxLength={15}
               className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="ID"
             />
