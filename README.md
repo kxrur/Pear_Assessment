@@ -26,7 +26,7 @@ Teachers will have access to a personalized dashboard that will allow them to cr
 - Pritthiraj Dey (rajdey03) 40273416 Backend Developer
    - A full-stack developer with expertise in Java-based applications and a strong focus on creating intuitive GUIs. He excels in building scalable solutions with clean, maintainable code, seamlessly bridging frontend and backend development for reliable and efficient applications.
 - Mohammed Mahmmoud (memoud0) 40283160 Frontend developer
-   - A front-end developer with a knack for turning complex UI designs into interactive, responsive web pages, effortlessly balancing aesthetics with functionality using React, Vue, and Tailwind.Passionate about optimizing user experiences, they continuously stay ahead of trends, ensuring their code is both performant and maintainable.
+   - A front-end developer with a knack for turning complex UI designs into interactive, responsive web pages, effortlessly balancing aesthetics with functionality using React, Vue, and Tailwind. Passionate about optimizing user experiences, they continuously stay ahead of trends, ensuring their code is both performant and maintainable.
 ## Tehnologies Used
 ### Front-end:
 - React
