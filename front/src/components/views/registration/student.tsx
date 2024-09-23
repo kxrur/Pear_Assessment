@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormData {
   firstName: string;
@@ -19,14 +21,41 @@ const RegistrationForm: React.FC = () => {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState<Partial<FormData>>({});
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" }); // Clear error on input change
+  };
+
+  const validateForm = () => {
+    const newErrors: Partial<FormData> = {};
+
+    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!formData.id.trim()) newErrors.id = "ID is required";
+    if (!formData.username.trim()) newErrors.username = "Username is required";
+    if (!formData.password.trim()) newErrors.password = "Password is required";
+    if (!formData.confirmPassword.trim()) newErrors.confirmPassword = "Confirm password is required";
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+
+    return newErrors;
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data: ", formData);
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      toast.error("Please fill all required fields correctly!");
+    } else {
+      console.log("Form Data: ", formData);
+      toast.success("Form submitted successfully!");
+      // Proceed with form submission (e.g., API call)
+    }
   };
 
   return (
@@ -35,7 +64,6 @@ const RegistrationForm: React.FC = () => {
       <div className="w-1/3 bg-background flex flex-col justify-center items-center">
         <h1 className="text-accent text-5xl font-bold mb-10">Monaco</h1>
         <div className="bg-accent p-8 rounded-full">
-          {/* Replace with your actual image path */}
           <img src="/path-to-image.svg" alt="Logo" className="h-40 w-40" />
         </div>
       </div>
@@ -44,7 +72,7 @@ const RegistrationForm: React.FC = () => {
       <div className="w-2/3 bg-accent flex flex-col justify-center items-center">
         <h2 className="text-background text-3xl font-semibold mb-6">User Registration</h2>
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
-          {/* Input Fields */}
+          {/* First Name */}
           <div className="mb-4">
             <label className="block text-sm text-highlight mb-2">First Name</label>
             <input
@@ -52,11 +80,13 @@ const RegistrationForm: React.FC = () => {
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
-              className="w-full p-2 border-2 border-highlight rounded"
+              className={`w-full p-2 border-2 ${errors.firstName ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="First Name"
             />
+            {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
           </div>
 
+          {/* Last Name */}
           <div className="mb-4">
             <label className="block text-sm text-highlight mb-2">Last Name</label>
             <input
@@ -64,11 +94,13 @@ const RegistrationForm: React.FC = () => {
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
-              className="w-full p-2 border-2 border-highlight rounded"
+              className={`w-full p-2 border-2 ${errors.lastName ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="Last Name"
             />
+            {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
           </div>
 
+          {/* ID */}
           <div className="mb-4">
             <label className="block text-sm text-highlight mb-2">ID</label>
             <input
@@ -76,11 +108,13 @@ const RegistrationForm: React.FC = () => {
               name="id"
               value={formData.id}
               onChange={handleInputChange}
-              className="w-full p-2 border-2 border-highlight rounded"
+              className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="ID"
             />
+            {errors.id && <p className="text-red-500 text-xs">{errors.id}</p>}
           </div>
 
+          {/* Username */}
           <div className="mb-4">
             <label className="block text-sm text-highlight mb-2">Username</label>
             <input
@@ -88,11 +122,13 @@ const RegistrationForm: React.FC = () => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className="w-full p-2 border-2 border-highlight rounded"
+              className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="Username"
             />
+            {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
+          {/* Password */}
           <div className="mb-4">
             <label className="block text-sm text-highlight mb-2">Password</label>
             <input
@@ -100,11 +136,13 @@ const RegistrationForm: React.FC = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full p-2 border-2 border-highlight rounded"
+              className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="Password"
             />
+            {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
+          {/* Confirm Password */}
           <div className="mb-4">
             <label className="block text-sm text-highlight mb-2">Confirm Password</label>
             <input
@@ -112,9 +150,10 @@ const RegistrationForm: React.FC = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className="w-full p-2 border-2 border-highlight rounded"
+              className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="Confirm Password"
             />
+            {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
           </div>
 
           {/* Buttons */}
@@ -144,6 +183,7 @@ const RegistrationForm: React.FC = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
