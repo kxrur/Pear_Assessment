@@ -13,6 +13,6 @@ import lombok.*;
 @Entity
 @Table(name = "students", uniqueConstraints = @UniqueConstraint(columnNames = "studentID"))
 public class Student extends User {
-    @Column(nullable = false) //Ensure that a student enters and ID
+    @Column(name = "student_id", nullable = false) //Ensure that a student enters and ID
     private long studentID;
 }
