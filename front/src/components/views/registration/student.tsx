@@ -48,10 +48,26 @@ const RegistrationForm: React.FC = () => {
     if (!formData.id) newErrors.id = "ID is required";
     if (isNaN(formData.id) || formData.id < 0) newErrors.id = "ID must be a positive number";
     if (!formData.username.trim()) newErrors.username = "Username is required";
-    if (!formData.password.trim()) newErrors.password = "Password is required";
-    if (!formData.confirmPassword.trim()) newErrors.confirmPassword = "Confirm password is required";
-    if (formData.password !== formData.confirmPassword)
+
+    // Validate password
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 7) {
+      newErrors.password = "Password must be at least 7 characters long";
+    } else if (!/\d/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one digit";
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one special character";
+    } else if (!/w/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one word character";
+    }
+
+    // Validate confirm password
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Confirm password is required";
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
+    }
 
     return newErrors;
   };
