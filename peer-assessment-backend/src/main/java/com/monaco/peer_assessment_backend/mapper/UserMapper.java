@@ -8,6 +8,7 @@ import com.monaco.peer_assessment_backend.entity.Role;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.repository.RoleRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * Class with static methods that map user objects from DTO (Data Transfer Object) to entity for storage in MySQL database.
  * Available for each user type.
  */
+@Component
 public class UserMapper {
 
     // Get the current roles available
