@@ -1,11 +1,15 @@
 import './App.css'
+import LoginTeacher from './components/views/login-teacher'
+
+
 
 function App() {
 
   return (
-    <h1 className="text-3xl font-bold underline text-background">
-      Hello world!
-    </h1>
+    <div className='bg-background h-screen w-dvw'>
+      <LoginTeacher></LoginTeacher>
+     
+    </div>
   )
 }
 
