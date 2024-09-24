@@ -26,7 +26,7 @@ Teachers will have access to a personalized dashboard that will allow them to cr
    - I am a full-stack developer with a strong foundation in Java and JavaScript, complemented by a keen sense of design and an eye for detail. My focus is primarily on front-end development, where I specialize in designing web pages and integrating dynamic, user-friendly interfaces. I aim to further expand my expertise in Figma and React to create seamless and high-quality user experiences. As a developer, I excel in teamwork and communication, and I take pride in bringing innovative ideas to life through thoughtful design and development.
 - Pritthiraj Dey (rajdey03) 40273416 Backend Developer
    - A full-stack developer with expertise in Java-based applications and a strong focus on creating intuitive GUIs. He excels in building scalable solutions with clean, maintainable code, seamlessly bridging frontend and backend development for reliable and efficient applications.
-- Mohammed Mahmmoud (memoud0) 40283160 Frontend developer
+- Mohamed Mahmoud (memoud0) 40283160 Frontend developer
    - A front-end developer with a knack for turning complex UI designs into interactive, responsive web pages, effortlessly balancing aesthetics with functionality using React with TypeScript, Vue, and Tailwind. Passionate about optimizing user experiences, they continuously stay ahead of trends, ensuring their code is both performant and maintainable.
 ## Tehnologies Used
 ### Front-end:
