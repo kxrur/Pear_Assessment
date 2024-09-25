@@ -58,7 +58,7 @@ const RegistrationForm: React.FC = () => {
       newErrors.password = "Password must contain at least one digit";
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
       newErrors.password = "Password must contain at least one special character";
-    } else if (!/w/.test(formData.password)) {
+    } else if (!/\w/.test(formData.password)) {
       newErrors.password = "Password must contain at least one word character";
     }
 
@@ -72,10 +72,9 @@ const RegistrationForm: React.FC = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validateForm();
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       toast.error("Please fill all required fields correctly!");
@@ -83,6 +82,19 @@ const RegistrationForm: React.FC = () => {
       console.log("Form Data: ", formData);
       toast.success("Form submitted successfully!");
       // Proceed with form submission (e.g., API call)
+        try {
+          const response = await fetch('http://localhost:5173/signIn/student-signUp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+          const data = await response.json();
+          console.log('Response:', data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
     }
   };
 
