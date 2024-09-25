@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.controller;
 
+import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 import com.monaco.peer_assessment_backend.service.UserService;
 import com.monaco.peer_assessment_backend.service.impl.UserServiceImpl;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
@@ -19,7 +20,7 @@ public class AuthController {
 
 
     @PostMapping
-    public ResponseEntity<StudentDTO> registerStudent(@RequestBody StudentDTO newStudent) {
+    public ResponseEntity<StudentDTO> registerStudent(@RequestBody StudentDTO newStudent) throws DuplicateUserException {
         StudentDTO savedStudent = userService.registerStudent(newStudent);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }

@@ -5,6 +5,7 @@ import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.entity.Student;
+import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
@@ -39,8 +40,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public StudentDTO registerStudent(StudentDTO studentDTO) {
+    public StudentDTO registerStudent(StudentDTO studentDTO) throws DuplicateUserException {
         Student student = userMapper.mapToStudentEntity(studentDTO);
+
+        if (userRepository.existsByUsername(studentDTO.getUsername())) {
+            throw new DuplicateUserException("Username already exists");
+        }
 
         Student savedStudent = studentRepository.save(student);
 
