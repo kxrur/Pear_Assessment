@@ -1,4 +1,6 @@
-package Service;
+package com.monaco.peer_assessment_backend.Service;
+
+//bash.monaco.peer_assessment_backend.service;
 
 import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.entity.User;
@@ -7,7 +9,6 @@ import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.RoleRepository;
-import com.monaco.peer_assessment_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-public class UserService{
+@Service
+public class UserService {
+
 	@Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private StudentRepository studentRepository;
 
