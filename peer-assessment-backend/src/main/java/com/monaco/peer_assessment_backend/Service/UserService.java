@@ -29,4 +29,6 @@ public class UserService {
 
 
     StudentDTO registerStudent(StudentDTO studentDTO) throws DuplicateUserException;
+
+    ProfessorDTO registorProfessor(ProfessorDTO professorDTO) throws DuplicateUserException;
 }
