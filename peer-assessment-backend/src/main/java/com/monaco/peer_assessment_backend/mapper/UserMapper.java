@@ -8,6 +8,7 @@ import com.monaco.peer_assessment_backend.entity.Role;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.repository.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -20,8 +21,9 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    // Get the current roles available
+    @Autowired
     private RoleRepository roleRepository;
+
 
     /**
      * Maps a userDTO to an entity
@@ -64,6 +66,24 @@ public class UserMapper {
         student.setStudentID(studentDTO.getStudentId());
 
         return student;
+    }
+
+    public StudentDTO mapToStudentDTO(Student student) {
+        StudentDTO studentDTO = new StudentDTO();
+
+        studentDTO.setId(student.getId());
+        studentDTO.setStudentId(student.getStudentID());
+        studentDTO.setPassword(student.getPassword());
+        studentDTO.setUsername(student.getUsername());
+        studentDTO.setFirstName(student.getFirstName());
+        studentDTO.setLastName(student.getLastName());
+        Set<String> roles = student.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+
+        studentDTO.setRoles(roles);
+
+        return studentDTO;
     }
 
     public Professor toProfessorEntity(ProfessorDTO professorDTO) {
