@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToProfessorDTO(savedProfessor);
     }
 
+    @Override
+    public StudentDTO authenticateStudent(String identifier, String password) {
+
+    }
+
     public Optional<User> login(String usernameOrStudentId, String password) {
         Optional<User> userOptional = userRepository.findByUsername(usernameOrStudentId);
         

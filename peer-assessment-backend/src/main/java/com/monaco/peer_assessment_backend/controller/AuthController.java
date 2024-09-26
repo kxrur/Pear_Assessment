@@ -54,6 +54,11 @@ public class AuthController {
         return new ResponseEntity<>(savedProfessor, HttpStatus.CREATED);
     }
 
+    @PostMapping("/login/student")
+    public ResponseEntity<StudentDTO> loginStudent(@RequestParam String identifier, @RequestParam String password) {
+
+    }
+
 
 
 }
