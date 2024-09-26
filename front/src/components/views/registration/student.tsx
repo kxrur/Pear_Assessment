@@ -83,6 +83,7 @@ const RegistrationForm: React.FC = () => {
       console.log("Form Data: ", formData);
       toast.success("Form submitted successfully!");
       // Proceed with form submission (e.g., API call)
+
         try {
           const response = await fetch('http://localhost:8080/api/register/student', {
             method: 'POST',
@@ -104,14 +105,12 @@ const RegistrationForm: React.FC = () => {
       {/* Left side (Monaco Logo and Image) */}
       <div className="w-1/3 bg-background flex flex-col justify-center items-center">
         <h1 className="text-accent text-5xl font-bold mb-10">Monaco</h1>
-        <div className="bg-accent p-8 rounded-full">
-          <img src="/path-to-image.svg" alt="Logo" className="h-40 w-40" />
-        </div>
+        <img src="src/assets/logo.png" alt="Logo" className="h-300 w-80" />
       </div>
 
       {/* Right side (Form) */}
       <div className="w-2/3 bg-accent flex flex-col justify-center items-center">
-        <h2 className="text-background text-3xl font-semibold mb-6">User Registration</h2>
+        <h2 className="text-background text-3xl font-semibold mb-6">Student Registration</h2>
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
           {/* First Name */}
           <div className="mb-4">

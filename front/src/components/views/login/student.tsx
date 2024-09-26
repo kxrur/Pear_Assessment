@@ -1,20 +1,20 @@
-// ./components/views/login-teacher.tsx
+// ./components/views/login-student.tsx
 
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-export const LoginTeacher: React.FC = () => {
-  const [username, setUsername] = useState("");
+export const LoginStudent: React.FC = () => {
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ id?: string; password?: string }>({});
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let validationErrors: { username?: string; password?: string } = {};
+    const validationErrors: { id?: string; password?: string } = {};
 
-    if (!username.trim()) {
-      validationErrors.username = "Username is required";
+    if (!id.trim()) {
+      validationErrors.id = "ID is required";
     }
 
     if (!password.trim()) {
@@ -25,7 +25,7 @@ export const LoginTeacher: React.FC = () => {
       setErrors(validationErrors);
       toast.error("Please fill all required fields correctly!");
     } else {
-      console.log("Login Data: ", { username, password });
+      console.log("Login Data: ", { id, password });
       toast.success("Login successful!");
     }
   };
@@ -35,30 +35,30 @@ export const LoginTeacher: React.FC = () => {
       {/* Left side (Monaco Logo and Image) */}
       <div className="w-1/3 bg-background flex flex-col justify-center items-center">
         <h1 className="text-accent text-5xl font-bold mb-10">Monaco</h1>
-       
-          <img src="src/assets/figma/logo.png" alt="Logo" className="h-300 w-80" />
-        
+
+        <img src="src/assets/logo.png" alt="Logo" className="h-300 w-80" />
+
       </div>
 
       {/* Right side (Form) */}
       <div className="w-2/3 bg-accent flex flex-col justify-center items-center">
-        <h2 className="text-background text-3xl font-semibold mb-6">Teacher Login</h2>
+        <h2 className="text-background text-3xl font-semibold mb-6">Student Login</h2>
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
-          {/* Username */}
+          {/* ID */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Username</label>
+            <label className="block text-sm text-highlight mb-2">ID</label>
             <input
               type="text"
-              value={username}
+              value={id}
               onChange={(e) => {
                 const value = e.target.value;
-               
-                setUsername(value);
+                const numericValue = value.replace(/[^0-9]/g, ""); // Allow only numeric input
+                setId(numericValue);
               }}
-              className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your Username"
+              className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
+              placeholder="Enter your ID"
             />
-            {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
+            {errors.id && <p className="text-red-500 text-xs">{errors.id}</p>}
           </div>
 
           {/* Password */}
@@ -81,7 +81,8 @@ export const LoginTeacher: React.FC = () => {
               className="bg-background text-accent px-4 py-2 rounded w-1/2 mr-2"
               onClick={() => {
                 // Handle Teacher button logic
-                toast.info("Already on Teacher Login.");
+                toast.info("Redirecting to Teacher Login...");
+                console.log("Teacher button clicked");
               }}
             >
               Teacher
@@ -91,8 +92,7 @@ export const LoginTeacher: React.FC = () => {
               className="bg-background text-accent px-4 py-2 rounded w-1/2"
               onClick={() => {
                 // Handle Student button logic
-                toast.info("Redirecting to Student Login...");
-                console.log("Student button clicked");
+                toast.info("Already on Student Login.");
               }}
             >
               Student
@@ -115,4 +115,4 @@ export const LoginTeacher: React.FC = () => {
   );
 };
 
-export default LoginTeacher;
+export default LoginStudent;
