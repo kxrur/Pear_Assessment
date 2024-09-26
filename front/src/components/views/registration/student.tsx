@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 interface FormData {
   firstName: string;
   lastName: string;
-  id: number;
+  studentId: number;
   username: string;
   password: string;
   confirmPassword: string;
@@ -14,7 +14,7 @@ interface FormData {
 interface FormDataError {
   firstName: string;
   lastName: string;
-  id: string;
+  studentId: string;
   username: string;
   password: string;
   confirmPassword: string;
@@ -24,10 +24,11 @@ const RegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
-    id: NaN,
+    studentId: NaN,
     username: "",
     password: "",
     confirmPassword: "",
+    roles: ["STUDENT"],
   });
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
@@ -35,7 +36,7 @@ const RegistrationForm: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     //validate id
-    const newValue = name === "id" ? (value === "" ? NaN : Number(value)) : value;
+    const newValue = name === "studentId" ? (value === "" ? NaN : Number(value)) : value;
     setFormData({ ...formData, [name]: newValue });
     setErrors({ ...errors, [name]: "" }); // Clear error on input change
   };
@@ -45,8 +46,8 @@ const RegistrationForm: React.FC = () => {
 
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
-    if (!formData.id) newErrors.id = "ID is required";
-    if (isNaN(formData.id) || formData.id < 0) newErrors.id = "ID must be a positive number";
+    if (!formData.studentId) newErrors.studentId = "ID is required";
+    if (isNaN(formData.studentId) || formData.studentId < 0) newErrors.studentId = "ID must be a positive number";
     if (!formData.username.trim()) newErrors.username = "Username is required";
 
     // Validate password
@@ -82,19 +83,20 @@ const RegistrationForm: React.FC = () => {
       console.log("Form Data: ", formData);
       toast.success("Form submitted successfully!");
       // Proceed with form submission (e.g., API call)
-      try {
-        const response = await fetch('http://localhost:5173/signIn/student-signUp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        console.log('Response:', data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
+
+        try {
+          const response = await fetch('http://localhost:8080/api/register/student', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+          const data = await response.json();
+          console.log('Response:', data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
     }
   };
 
@@ -143,8 +145,8 @@ const RegistrationForm: React.FC = () => {
             <label className="block text-sm text-highlight mb-2">ID</label>
             <input
               type="text"
-              name="id"
-              value={isNaN(formData.id) ? "" : formData.id} // Display empty string if id is NaN
+              name="studentId"
+              value={isNaN(formData.studentId) ? "" : formData.studentId} // Display empty string if id is NaN
               onChange={handleInputChange}
               onInput={(e) => {
                 const value = e.currentTarget.value;
@@ -155,10 +157,10 @@ const RegistrationForm: React.FC = () => {
                 }
               }}
               maxLength={15}
-              className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
+              className={`w-full p-2 border-2 ${errors.studentId ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="ID"
             />
-            {errors.id && <p className="text-red-500 text-xs">{errors.id}</p>}
+            {errors.studentId && <p className="text-red-500 text-xs">{errors.studentId}</p>}
           </div>
 
           {/* Username */}

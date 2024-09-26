@@ -1,8 +1,9 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
 
+import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
-import com.monaco.peer_assessment_backend.dto.UserDTO;
+import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
@@ -43,6 +44,9 @@ public class UserServiceImpl implements UserService {
     public StudentDTO registerStudent(StudentDTO studentDTO) throws DuplicateUserException {
         Student student = userMapper.mapToStudentEntity(studentDTO);
 
+	// Encrypt the password before saving the user
+        student.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
+
         if (userRepository.existsByUsername(studentDTO.getUsername())) {
             throw new DuplicateUserException("Username already exists");
         }
@@ -52,13 +56,19 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToStudentDTO(savedStudent);
     }
 
-    public User signup(UserDTO userDTO) {
-        // Encrypt the password before saving the user
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        
-        // Map DTO to User entity and save
-        User user = userMapper.mapToUserEntity(userDTO);
-        return userRepository.save(user);
+    @Override
+    public ProfessorDTO registerProfessor(ProfessorDTO professorDTO) throws DuplicateUserException {
+        Professor professor = userMapper.mapToProfessorEntity(professorDTO);
+
+	    professor.setPassword(passwordEncoder.encode(professorDTO.getPassword()));
+
+        if (userRepository.existsByUsername(professorDTO.getUsername())) {
+            throw new DuplicateUserException("Username already exists");
+        }
+
+        Professor savedProfessor = userRepository.save(professor);
+
+        return userMapper.mapToProfessorDTO(savedProfessor);
     }
 
     public Optional<User> login(String usernameOrStudentId, String password) {
