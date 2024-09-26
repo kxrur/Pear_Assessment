@@ -35,9 +35,9 @@ export const LoginStudent: React.FC = () => {
       {/* Left side (Monaco Logo and Image) */}
       <div className="w-1/3 bg-background flex flex-col justify-center items-center">
         <h1 className="text-accent text-5xl font-bold mb-10">Monaco</h1>
-        <div className="bg-accent p-8 rounded-full">
-          <img src="/path-to-image.svg" alt="Logo" className="h-40 w-40" />
-        </div>
+        
+          <img src="src/assets/figma/logo.png" alt="Logo" className="h-300 w-80" />
+        
       </div>
 
       {/* Right side (Form) */}
