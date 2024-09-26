@@ -3,7 +3,6 @@ import LoginTeacher from './components/views/login/teacher'
 import LoginStudent from './components/views/login/student'
 import RegisterStudent from './components/views/registration/student'
 import RegisterTeacher from './components/views/registration/teacher'
-import LoginStudent from "./components/views/login-student.tsx";
 
 function App() {
 
