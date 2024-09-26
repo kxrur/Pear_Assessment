@@ -43,6 +43,9 @@ public class UserServiceImpl implements UserService {
     public StudentDTO registerStudent(StudentDTO studentDTO) throws DuplicateUserException {
         Student student = userMapper.mapToStudentEntity(studentDTO);
 
+	// Encrypt the password before saving the user
+        studentDTO.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
+
         if (userRepository.existsByUsername(studentDTO.getUsername())) {
             throw new DuplicateUserException("Username already exists");
         }
@@ -52,13 +55,19 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToStudentDTO(savedStudent);
     }
 
-    public User signup(UserDTO userDTO) {
-        // Encrypt the password before saving the user
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        
-        // Map DTO to User entity and save
-        User user = userMapper.mapToUserEntity(userDTO);
-        return userRepository.save(user);
+    @Override
+    public professorDTO registerProfessor(ProfessorDTO professprDTO) throws DuplicateUserException {
+        Professor professor = userMapper.mapToProfessorEntity(professorDTO);
+
+	professorDTO.setPassword(passwordEncoder.encode(pofessorDTO.getPassword()));
+
+        if (userRepository.existsByUsername(professorDTO.getUsername())) {
+            throw new DuplicateUserException("Username already exists");
+        }
+
+        Professor savedProfessor = userRepository.save(professor);
+
+        return userMapper.mapToProfessorDTO(savedProfessor);
     }
 
     public Optional<User> login(String usernameOrStudentId, String password) {
