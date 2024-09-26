@@ -1,4 +1,4 @@
-package com.monaco.peer_assessment_backend.service;
+package com.monaco.peer_assessment_backend.Service;
 
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.entity.User;

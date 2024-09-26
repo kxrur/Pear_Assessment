@@ -1,4 +1,4 @@
-package com.monaco.peer_assessment_backend.service.impl;
+package com.monaco.peer_assessment_backend.Service.impl;
 
 
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
@@ -10,7 +10,7 @@ import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.RoleRepository;
-import com.monaco.peer_assessment_backend.service.UserService;
+import com.monaco.peer_assessment_backend.Service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

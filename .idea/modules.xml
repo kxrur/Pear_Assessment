@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Monaco_SOEN341_Project_F24.iml" filepath="$PROJECT_DIR$/.idea/Monaco_SOEN341_Project_F24.iml" />
+      <module fileurl="file://$PROJECT_DIR$/peer-assessment-backend/peer-assessment-backend.iml" filepath="$PROJECT_DIR$/peer-assessment-backend/peer-assessment-backend.iml" />
     </modules>
   </component>
 </project>
