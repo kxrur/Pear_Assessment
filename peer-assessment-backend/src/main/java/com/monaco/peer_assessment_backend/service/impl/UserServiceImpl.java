@@ -1,8 +1,9 @@
-package com.monaco.peer_assessment_backend.Service.impl;
+package com.monaco.peer_assessment_backend.service.impl;
 
 
+import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
-import com.monaco.peer_assessment_backend.dto.UserDTO;
+import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
@@ -10,7 +11,7 @@ import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.RoleRepository;
-import com.monaco.peer_assessment_backend.Service.UserService;
+import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
         Student student = userMapper.mapToStudentEntity(studentDTO);
 
 	// Encrypt the password before saving the user
-        studentDTO.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
+        student.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
 
         if (userRepository.existsByUsername(studentDTO.getUsername())) {
             throw new DuplicateUserException("Username already exists");
@@ -56,10 +57,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public professorDTO registerProfessor(ProfessorDTO professprDTO) throws DuplicateUserException {
+    public ProfessorDTO registerProfessor(ProfessorDTO professorDTO) throws DuplicateUserException {
         Professor professor = userMapper.mapToProfessorEntity(professorDTO);
 
-	professorDTO.setPassword(passwordEncoder.encode(pofessorDTO.getPassword()));
+	    professor.setPassword(passwordEncoder.encode(professorDTO.getPassword()));
 
         if (userRepository.existsByUsername(professorDTO.getUsername())) {
             throw new DuplicateUserException("Username already exists");

@@ -86,7 +86,29 @@ public class UserMapper {
         return studentDTO;
     }
 
-    public Professor toProfessorEntity(ProfessorDTO professorDTO) {
+
+    public ProfessorDTO mapToProfessorDTO(Professor professor) {
+        ProfessorDTO professorDTO = new ProfessorDTO();
+
+        // Set common fields from the Professor entity to ProfessorDTO
+        professorDTO.setId(professor.getId());
+        professorDTO.setPassword(professor.getPassword());
+        professorDTO.setUsername(professor.getUsername());
+        professorDTO.setFirstName(professor.getFirstName());
+        professorDTO.setLastName(professor.getLastName());
+
+        // Map roles from the Professor entity to a Set of Strings in ProfessorDTO
+        Set<String> roles = professor.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+
+        professorDTO.setRoles(roles);
+
+        return professorDTO;
+    }
+
+
+    public Professor mapToProfessorEntity(ProfessorDTO professorDTO) {
         Professor professor = new Professor();
         User user = mapToUserEntity(professorDTO);
         professor.setId(user.getId());
