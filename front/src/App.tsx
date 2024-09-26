@@ -2,6 +2,7 @@ import './App.css'
 import LoginTeacher from './components/views/login-teacher'
 import RegisterStudent from './components/views/registration/student'
 import RegisterTeacher from './components/views/registration/teacher'
+import LoginStudent from "./components/views/login-student.tsx";
 
 function App() {
 
@@ -10,7 +11,6 @@ function App() {
       <RegisterStudent></RegisterStudent>
       <LoginTeacher></LoginTeacher>
       <h1 className="text-3xl font-bold underline text-background">
-        Hello world!
       </h1>
     </div>
   )

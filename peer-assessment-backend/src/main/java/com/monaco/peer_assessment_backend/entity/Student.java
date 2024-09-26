@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "students", uniqueConstraints = @UniqueConstraint(columnNames = "studentID"))
+@Table(name = "students", uniqueConstraints = @UniqueConstraint(columnNames = "student_id"))
 public class Student extends User {
     @Column(name = "student_id", nullable = false) //Ensure that a student enters and ID
     private long studentID;
