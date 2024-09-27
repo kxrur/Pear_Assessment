@@ -14,6 +14,7 @@ import com.monaco.peer_assessment_backend.repository.RoleRepository;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public StudentDTO authenticateStudent(String identifier, String password) {
+        return new StudentDTO();
+    }
 
+    @Override
+    public ProfessorDTO authenticateProfessor(String username, String password) throws UsernameNotFoundException {
+        return null;
     }
 
     public Optional<User> login(String usernameOrStudentId, String password) {

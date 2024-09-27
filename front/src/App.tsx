@@ -8,8 +8,8 @@ function App() {
 
   return (
     <div className='bg-background h-screen w-dvw'>
-      <RegisterStudent></RegisterStudent>
-      <LoginTeacher></LoginTeacher>
+      <RegisterTeacher></RegisterTeacher>
+      <LoginStudent></LoginStudent>
       <h1 className="text-3xl font-bold underline text-background">
       </h1>
     </div>

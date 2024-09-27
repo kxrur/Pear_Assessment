@@ -5,16 +5,17 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export const LoginStudent: React.FC = () => {
-  const [id, setId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ id?: string; password?: string }>({});
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let validationErrors: { id?: string; password?: string } = {};
+    let validationErrors: { username?: string; password?: string } = {};
 
-    if (!id.trim()) {
-      validationErrors.id = "ID is required";
+    if (!username.trim()) {
+      validationErrors.username = "ID is required";
     }
 
     if (!password.trim()) {
@@ -25,8 +26,30 @@ export const LoginStudent: React.FC = () => {
       setErrors(validationErrors);
       toast.error("Please fill all required fields correctly!");
     } else {
-      console.log("Login Data: ", { id, password });
       toast.success("Login successful!");
+    }
+    const url = new URLSearchParams();
+    url.append('username', username);
+    url.append('password', password);
+    console.log(url);
+    try{
+      const response = await fetch( 'http://localhost:8080/api/login/student',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body:url.toString(),
+      });
+      if (response.ok) {
+        const responseData = await response.text();
+        setMessage(responseData); // Message from the backend
+      } else if (response.status === 401) {
+        setMessage('Invalid credentials');
+      } else {
+        setMessage('An error occurred. Please try again.');
+      }
+    } catch (error) {
+      setMessage('Failed to connect to the server.');
     }
   };
 
@@ -49,11 +72,11 @@ export const LoginStudent: React.FC = () => {
             <label className="block text-sm text-highlight mb-2">ID</label>
             <input
               type="text"
-              value={id}
+              value={username}
               onChange={(e) => {
                 const value = e.target.value;
                 const numericValue = value.replace(/[^0-9]/g, ""); // Allow only numeric input
-                setId(numericValue);
+                setUsername(numericValue);
               }}
               className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
               placeholder="Enter your ID"

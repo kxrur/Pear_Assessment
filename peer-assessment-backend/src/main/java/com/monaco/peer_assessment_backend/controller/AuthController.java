@@ -1,6 +1,7 @@
 package com.monaco.peer_assessment_backend.controller;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
+import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.service.UserService;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -55,10 +55,15 @@ public class AuthController {
     }
 
     @PostMapping("/login/student")
-    public ResponseEntity<StudentDTO> loginStudent(@RequestParam String identifier, @RequestParam String password) {
-
+    public ResponseEntity<StudentDTO> loginStudent(@RequestParam String username, @RequestParam String password) throws UserNotFoundException {
+        StudentDTO loggedStudent = userService.authenticateStudent(username,password);
+        return new ResponseEntity<>(loggedStudent,HttpStatus.ACCEPTED);
     }
-
+    @PostMapping("/login/professor")
+    public ResponseEntity<ProfessorDTO> loginProfessor(@RequestParam String username, @RequestParam String password) {
+        ProfessorDTO loggedProf =  userService.authenticateProfessor(username,password);
+        return new ResponseEntity<>(loggedProf,HttpStatus.ACCEPTED);
+    }
 
 
 }
