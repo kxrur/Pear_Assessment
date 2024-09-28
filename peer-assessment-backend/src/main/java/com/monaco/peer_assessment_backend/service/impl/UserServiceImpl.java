@@ -23,7 +23,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-
+    
+    // Injecting required repositories and dependencies for user operations
 	@Autowired
     private UserRepository userRepository;
 
@@ -39,23 +40,39 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-
+    /**
+     * Registers a new student, ensuring the username is unique and password is encrypted.
+     * @param studentDTO the student data transfer object containing student details
+     * @return the saved student DTO
+     * @throws DuplicateUserException if the username already exists in the system
+     */
     @Override
     public StudentDTO registerStudent(StudentDTO studentDTO) throws DuplicateUserException {
         Student student = userMapper.mapToStudentEntity(studentDTO);
 
-	// Encrypt the password before saving the user
+	    // Encrypt the password before saving the user
         student.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
 
         if (userRepository.existsByUsername(studentDTO.getUsername())) {
             throw new DuplicateUserException("Username already exists");
         }
 
+        if (userRepository.existsById(studentDTO.getStudentId())) {
+            throw new DuplicateUserException("Student ID already in use");
+        }
+
+        // Save the student in the database
         Student savedStudent = studentRepository.save(student);
 
         return userMapper.mapToStudentDTO(savedStudent);
     }
 
+    /**
+     * Registers a new professor, ensuring the username is unique and password is encrypted.
+     * @param professorDTO the professor data transfer object containing professor details
+     * @return the saved professor DTO
+     * @throws DuplicateUserException if the username already exists in the system
+     */
     @Override
     public ProfessorDTO registerProfessor(ProfessorDTO professorDTO) throws DuplicateUserException {
         Professor professor = userMapper.mapToProfessorEntity(professorDTO);
@@ -66,12 +83,21 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserException("Username already exists");
         }
 
+        // Save the professor in the database
         Professor savedProfessor = userRepository.save(professor);
 
         return userMapper.mapToProfessorDTO(savedProfessor);
     }
 
+    /**
+     * Handles the login process by checking both the username or student ID.
+     * It verifies if the provided password matches the stored one.
+     * @param usernameOrStudentId the username or student ID
+     * @param password the raw password entered by the user
+     * @return an optional user if the login is successful, empty otherwise
+     */
     public Optional<User> login(String usernameOrStudentId, String password) {
+        // User is verified through their username
         Optional<User> userOptional = userRepository.findByUsername(usernameOrStudentId);
         
         // If not found by username, search by student ID
@@ -81,10 +107,11 @@ public class UserServiceImpl implements UserService {
                 Optional<Student> studentOptional = studentRepository.findByStudentID(studentId);
                 userOptional = studentOptional.map(Student.class::cast);
             } catch (NumberFormatException e) {
-                // If input is not a valid number, ignore
+                // If input is not a valid number, ignore the exception
             }
         }
         
+        // Return the user if user exists and password matches
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             // Check if the password matches
@@ -93,17 +120,31 @@ public class UserServiceImpl implements UserService {
             }
         }
         
-        return Optional.empty(); // Return empty if login fails
+        // Return empty if login fails
+        return Optional.empty();
     }
 
+    /**
+     * Retrieves a user by their unique ID.
+     * @param id the user ID
+     * @return an optional user if found, empty otherwise
+     */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Fetches all users from the database.
+     * @return a list of all users
+     */
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
+    /**
+     * Deletes a user by their unique ID.
+     * @param id the user ID to be deleted
+     */
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
