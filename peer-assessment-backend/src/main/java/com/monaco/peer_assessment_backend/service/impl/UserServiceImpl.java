@@ -25,7 +25,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     
     // Injecting required repositories and dependencies for user operations
-	@Autowired
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
