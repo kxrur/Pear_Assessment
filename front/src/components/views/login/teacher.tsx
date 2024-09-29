@@ -1,15 +1,16 @@
 // ./components/views/login-teacher.tsx
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export const LoginTeacher: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors: { username?: string; password?: string } = {};
 
@@ -25,9 +26,31 @@ export const LoginTeacher: React.FC = () => {
       setErrors(validationErrors);
       toast.error("Please fill all required fields correctly!");
     } else {
-      console.log("Login Data: ", { username, password });
       toast.success("Login successful!");
     }
+    const url = new URLSearchParams();
+    url.append('username', username);
+        url.append('password', password);
+        console.log(url);
+      try{
+        const response = await fetch( 'http://localhost:8080/api/login/professor',{
+          method: 'POST',
+               headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+               },
+          body:url.toString(),
+        });
+        if (response.ok) {
+          const responseData = await response.text();
+          setMessage(responseData); // Message from the backend
+        } else if (response.status === 401) {
+          setMessage('Invalid credentials');
+        } else {
+          setMessage('An error occurred. Please try again.');
+        }
+      } catch (error) {
+        setMessage('Failed to connect to the server.');
+      }
   };
 
   return (

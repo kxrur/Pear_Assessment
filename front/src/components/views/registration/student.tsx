@@ -93,10 +93,12 @@ const RegistrationForm: React.FC = () => {
             body: JSON.stringify(formData),
           });
           const data = await response.json();
+          if (data.status)
           console.log('Response:', data);
         } catch (error) {
           console.error('Error:', error);
         }
+
     }
   };
 

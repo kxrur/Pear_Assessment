@@ -14,6 +14,7 @@ import com.monaco.peer_assessment_backend.repository.RoleRepository;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,11 +58,18 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserException("Username already exists");
         }
 
+<<<<<<< HEAD
+        if (userRepository.existsById(studentDTO.getId())) {
+            throw new DuplicateUserException("Id already exists");
+        }
+
+=======
         if (userRepository.existsById(studentDTO.getStudentId())) {
             throw new DuplicateUserException("Student ID already in use");
         }
 
         // Save the student in the database
+>>>>>>> main
         Student savedStudent = studentRepository.save(student);
 
         return userMapper.mapToStudentDTO(savedStudent);
@@ -89,6 +97,18 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToProfessorDTO(savedProfessor);
     }
 
+<<<<<<< HEAD
+    @Override
+    public StudentDTO authenticateStudent(String identifier, String password) {
+        return new StudentDTO();
+    }
+
+    @Override
+    public ProfessorDTO authenticateProfessor(String username, String password) throws UsernameNotFoundException {
+        return null;
+    }
+
+=======
     /**
      * Handles the login process by checking both the username or student ID.
      * It verifies if the provided password matches the stored one.
@@ -96,6 +116,7 @@ public class UserServiceImpl implements UserService {
      * @param password the raw password entered by the user
      * @return an optional user if the login is successful, empty otherwise
      */
+>>>>>>> main
     public Optional<User> login(String usernameOrStudentId, String password) {
         // User is verified through their username
         Optional<User> userOptional = userRepository.findByUsername(usernameOrStudentId);

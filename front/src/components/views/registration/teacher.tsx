@@ -25,6 +25,7 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
+    roles: ["PROFESSOR"],
   });
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
@@ -65,7 +66,7 @@ const RegistrationForm: React.FC = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validateForm();
 
@@ -76,6 +77,32 @@ const RegistrationForm: React.FC = () => {
       console.log("Form Data: ", formData);
       toast.success("Form submitted successfully!");
       // Proceed with form submission (e.g., API call)
+      try {
+        const response = await fetch('http://localhost:8080/api/register/checkUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        console.log('Response:', data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      try {
+        const response = await fetch('http://localhost:8080/api/register/professor', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        console.log('Response:', data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 

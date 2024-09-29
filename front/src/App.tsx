@@ -9,7 +9,10 @@ function App() {
   return (
     <div className='bg-background h-screen w-dvw'>
       <RegisterTeacher></RegisterTeacher>
+<<<<<<< HEAD
+=======
       <RegisterStudent></RegisterStudent>
+>>>>>>> main
       <LoginTeacher></LoginTeacher>
       <LoginStudent></LoginStudent>
     </div>
