@@ -52,6 +52,10 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserException("Username already exists");
         }
 
+        if (userRepository.existsById(studentDTO.getId())) {
+            throw new DuplicateUserException("Id already exists");
+        }
+
         Student savedStudent = studentRepository.save(student);
 
         return userMapper.mapToStudentDTO(savedStudent);
