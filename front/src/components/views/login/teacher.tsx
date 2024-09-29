@@ -1,21 +1,21 @@
-// ./components/views/login-student.tsx
+// ./components/views/login-teacher.tsx
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-export const LoginStudent: React.FC = () => {
+export const LoginTeacher: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState<{ id?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let validationErrors: { username?: string; password?: string } = {};
+    const validationErrors: { username?: string; password?: string } = {};
 
     if (!username.trim()) {
-      validationErrors.username = "ID is required";
+      validationErrors.username = "Username is required";
     }
 
     if (!password.trim()) {
@@ -30,27 +30,27 @@ export const LoginStudent: React.FC = () => {
     }
     const url = new URLSearchParams();
     url.append('username', username);
-    url.append('password', password);
-    console.log(url);
-    try{
-      const response = await fetch( 'http://localhost:8080/api/login/student',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body:url.toString(),
-      });
-      if (response.ok) {
-        const responseData = await response.text();
-        setMessage(responseData); // Message from the backend
-      } else if (response.status === 401) {
-        setMessage('Invalid credentials');
-      } else {
-        setMessage('An error occurred. Please try again.');
+        url.append('password', password);
+        console.log(url);
+      try{
+        const response = await fetch( 'http://localhost:8080/api/login/professor',{
+          method: 'POST',
+               headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+               },
+          body:url.toString(),
+        });
+        if (response.ok) {
+          const responseData = await response.text();
+          setMessage(responseData); // Message from the backend
+        } else if (response.status === 401) {
+          setMessage('Invalid credentials');
+        } else {
+          setMessage('An error occurred. Please try again.');
+        }
+      } catch (error) {
+        setMessage('Failed to connect to the server.');
       }
-    } catch (error) {
-      setMessage('Failed to connect to the server.');
-    }
   };
 
   return (
@@ -58,30 +58,30 @@ export const LoginStudent: React.FC = () => {
       {/* Left side (Monaco Logo and Image) */}
       <div className="w-1/3 bg-background flex flex-col justify-center items-center">
         <h1 className="text-accent text-5xl font-bold mb-10">Monaco</h1>
-        <div className="bg-accent p-8 rounded-full">
-          <img src="/path-to-image.svg" alt="Logo" className="h-40 w-40" />
-        </div>
+
+        <img src="src/assets/logo.png" alt="Logo" className="h-300 w-80" />
+
       </div>
 
       {/* Right side (Form) */}
       <div className="w-2/3 bg-accent flex flex-col justify-center items-center">
-        <h2 className="text-background text-3xl font-semibold mb-6">Student Login</h2>
+        <h2 className="text-background text-3xl font-semibold mb-6">Teacher Login</h2>
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
-          {/* ID */}
+          {/* Username */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">ID</label>
+            <label className="block text-sm text-highlight mb-2">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => {
                 const value = e.target.value;
-                const numericValue = value.replace(/[^0-9]/g, ""); // Allow only numeric input
-                setUsername(numericValue);
+
+                setUsername(value);
               }}
-              className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your ID"
+              className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
+              placeholder="Enter your Username"
             />
-            {errors.id && <p className="text-red-500 text-xs">{errors.id}</p>}
+            {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
           {/* Password */}
@@ -104,8 +104,7 @@ export const LoginStudent: React.FC = () => {
               className="bg-background text-accent px-4 py-2 rounded w-1/2 mr-2"
               onClick={() => {
                 // Handle Teacher button logic
-                toast.info("Redirecting to Teacher Login...");
-                console.log("Teacher button clicked");
+                toast.info("Already on Teacher Login.");
               }}
             >
               Teacher
@@ -115,7 +114,8 @@ export const LoginStudent: React.FC = () => {
               className="bg-background text-accent px-4 py-2 rounded w-1/2"
               onClick={() => {
                 // Handle Student button logic
-                toast.info("Already on Student Login.");
+                toast.info("Redirecting to Student Login...");
+                console.log("Student button clicked");
               }}
             >
               Student
@@ -138,4 +138,4 @@ export const LoginStudent: React.FC = () => {
   );
 };
 
-export default LoginStudent;
+export default LoginTeacher;
