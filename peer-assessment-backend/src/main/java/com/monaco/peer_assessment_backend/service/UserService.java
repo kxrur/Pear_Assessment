@@ -17,7 +17,4 @@ public interface UserService {
 
     ProfessorDTO registerProfessor(ProfessorDTO professorDTO) throws DuplicateUserException;
 
-    StudentDTO authenticateStudent(String identifier, String password) throws UserNotFoundException;
-
-    ProfessorDTO authenticateProfessor(String username, String password) throws UsernameNotFoundException;
-}
+    }

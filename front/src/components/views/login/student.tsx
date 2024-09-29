@@ -12,12 +12,7 @@ export const LoginStudent: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-<<<<<<< HEAD:front/src/components/views/login-student.tsx
     let validationErrors: { username?: string; password?: string } = {};
-=======
-    const validationErrors: { id?: string; password?: string } = {};
->>>>>>> main:front/src/components/views/login/student.tsx
-
     if (!username.trim()) {
       validationErrors.username = "ID is required";
     }
