@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,8 +26,9 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    roles: ["PROFESSOR"],
   });
+
+  const navigate = useNavigate(); // Added navigate
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
 
@@ -52,8 +54,6 @@ const RegistrationForm: React.FC = () => {
       newErrors.password = "Password must contain at least one digit";
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
       newErrors.password = "Password must contain at least one special character";
-    } else if (!/\w/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one word character";
     }
 
     // Validate confirm password
@@ -76,6 +76,7 @@ const RegistrationForm: React.FC = () => {
     } else {
       console.log("Form Data: ", formData);
       toast.success("Form submitted successfully!");
+
       // Proceed with form submission (e.g., API call)
       try {
         const response = await fetch('http://localhost:8080/api/register/checkUser', {
@@ -90,6 +91,7 @@ const RegistrationForm: React.FC = () => {
       } catch (error) {
         console.error('Error:', error);
       }
+
       try {
         const response = await fetch('http://localhost:8080/api/register/professor', {
           method: 'POST',
@@ -100,6 +102,7 @@ const RegistrationForm: React.FC = () => {
         });
         const data = await response.json();
         console.log('Response:', data);
+        navigate('/teacher');
       } catch (error) {
         console.error('Error:', error);
       }
@@ -145,7 +148,6 @@ const RegistrationForm: React.FC = () => {
             />
             {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
           </div>
-
 
           {/* Username */}
           <div className="mb-4">
@@ -194,12 +196,14 @@ const RegistrationForm: React.FC = () => {
             <button
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2 mr-2"
+              onClick={() => navigate('/teacher')} // Added navigate for Teacher button
             >
               Teacher
             </button>
             <button
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2"
+              onClick={() => navigate('/student')} // Added navigate for Student button
             >
               Student
             </button>

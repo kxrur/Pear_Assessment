@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const LoginStudent: React.FC = () => {
@@ -9,6 +10,8 @@ export const LoginStudent: React.FC = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ id?: string; password?: string }>({});
+
+  const navigate = useNavigate(); // Added from the 2nd one
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,6 +45,7 @@ export const LoginStudent: React.FC = () => {
       if (response.ok) {
         const responseData = await response.text();
         setMessage(responseData); // Message from the backend
+        navigate('/success');
       } else if (response.status === 401) {
         setMessage('Invalid credentials');
       } else {
@@ -102,9 +106,9 @@ export const LoginStudent: React.FC = () => {
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2 mr-2"
               onClick={() => {
-                // Handle Teacher button logic
                 toast.info("Redirecting to Teacher Login...");
                 console.log("Teacher button clicked");
+                navigate('/teacher'); // Added navigation from the 2nd one
               }}
             >
               Teacher
@@ -113,7 +117,6 @@ export const LoginStudent: React.FC = () => {
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2"
               onClick={() => {
-                // Handle Student button logic
                 toast.info("Already on Student Login.");
               }}
             >
