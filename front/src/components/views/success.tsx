@@ -22,7 +22,7 @@ const Success: React.FC = () => {
       {/* Right side (Success Message) */}
       <div className="w-2/3 bg-accent flex flex-col justify-center items-center">
         <h2 className="text-background text-3xl font-semibold mb-6">Login Successful!</h2>
-        <p className="text-background text-lg mb-6">Welcome back! You have successfully logged in.</p>
+        <p className="text-background text-lg mb-6">Welcome! You have successfully logged in.</p>
 
         <button
           onClick={() => navigate('/student')}
