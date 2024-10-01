@@ -8,7 +8,7 @@ const Success: React.FC = () => {
 
   const handleGoBack = () => {
     toast.info("Redirecting to the home page...");
-    navigate('/');  // Redirect to home or another page as needed
+    navigate('/student');  // Redirect to home or another page as needed
   };
 
   return (

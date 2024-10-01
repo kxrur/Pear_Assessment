@@ -48,12 +48,11 @@ public class AuthController {
     @PostMapping("/register/professor")
     public ResponseEntity<ProfessorDTO> registerProfessor(@RequestBody ProfessorDTO newProfessor) {
         ProfessorDTO savedProfessor = null;
-
         try {
             savedProfessor = userService.registerProfessor(newProfessor);
         } catch (DuplicateUserException duplicateUserException) {
             logger.info("Duplicate Professor");
-            return new ResponseEntity<>(savedProfessor, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(newProfessor, HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(savedProfessor, HttpStatus.CREATED);
@@ -76,7 +75,7 @@ public class AuthController {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else{
-            return new ResponseEntity<>(loggedProf, HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(loggedProf,HttpStatus.ACCEPTED);
         }
     }
 

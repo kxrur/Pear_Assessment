@@ -10,6 +10,7 @@ interface FormData {
   username: string;
   password: string;
   confirmPassword: string;
+  roles:[string];
 }
 
 interface FormDataError {
@@ -29,6 +30,7 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
+    roles: ["STUDENT"]
   });
 
   const navigate = useNavigate(); // Added navigate
@@ -60,6 +62,8 @@ const RegistrationForm: React.FC = () => {
       newErrors.password = "Password must contain at least one digit";
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
       newErrors.password = "Password must contain at least one special character";
+    } else if (!/\w/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one word character";
     }
 
     // Validate confirm password

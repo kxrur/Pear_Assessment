@@ -9,6 +9,7 @@ interface FormData {
   username: string;
   password: string;
   confirmPassword: string;
+  roles: [string];
 }
 
 interface FormDataError {
@@ -26,6 +27,7 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
+    roles: ["PROFESSOR"]
   });
 
   const navigate = useNavigate(); // Added navigate
@@ -54,6 +56,8 @@ const RegistrationForm: React.FC = () => {
       newErrors.password = "Password must contain at least one digit";
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
       newErrors.password = "Password must contain at least one special character";
+    } else if (!/\w/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one word character";
     }
 
     // Validate confirm password
@@ -65,7 +69,6 @@ const RegistrationForm: React.FC = () => {
 
     return newErrors;
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -75,22 +78,21 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-      toast.success("Form submitted successfully!");
 
       // Proceed with form submission (e.g., API call)
-      try {
-        const response = await fetch('http://localhost:8080/api/register/checkUser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        console.log('Response:', data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      // try {
+      //   const response = await fetch('http://localhost:8080/api/register/checkUser', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(formData),
+      //   });
+      //   const data = await response.json();
+      //   console.log('Response:', data);
+      // } catch (error) {
+      //   console.error('Error:', error);
+      // }
 
       try {
         const response = await fetch('http://localhost:8080/api/register/professor', {
@@ -102,7 +104,9 @@ const RegistrationForm: React.FC = () => {
         });
         const data = await response.json();
         console.log('Response:', data);
-        navigate('/teacher');
+        console.log(response.status);
+        toast.success("Form submitted successfully!");
+        navigate('/success');
       } catch (error) {
         console.error('Error:', error);
       }
