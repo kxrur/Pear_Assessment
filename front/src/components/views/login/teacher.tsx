@@ -1,6 +1,7 @@
+// ./components/views/login-teacher.tsx
+
 import React, { useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom'; // Added navigate
 import 'react-toastify/dist/ReactToastify.css';
 
 export const LoginTeacher: React.FC = () => {
@@ -8,8 +9,6 @@ export const LoginTeacher: React.FC = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
-
-  const navigate = useNavigate(); // Added navigate
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,33 +28,29 @@ export const LoginTeacher: React.FC = () => {
     } else {
       toast.success("Login successful!");
     }
-
     const url = new URLSearchParams();
     url.append('username', username);
-    url.append('password', password);
-    console.log(url);
-
-    try {
-      const response = await fetch('http://localhost:8080/api/login/professor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: url.toString(),
-      });
-
-      if (response.ok) {
-        const responseData = await response.text();
-        setMessage(responseData); // Message from the backend
-        navigate('/success');
-      } else if (response.status === 401) {
-        setMessage('Invalid credentials');
-      } else {
-        setMessage('An error occurred. Please try again.');
+        url.append('password', password);
+        console.log(url);
+      try{
+        const response = await fetch( 'http://localhost:8080/api/login/professor',{
+          method: 'POST',
+               headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+               },
+          body:url.toString(),
+        });
+        if (response.ok) {
+          const responseData = await response.text();
+          setMessage(responseData); // Message from the backend
+        } else if (response.status === 401) {
+          setMessage('Invalid credentials');
+        } else {
+          setMessage('An error occurred. Please try again.');
+        }
+      } catch (error) {
+        setMessage('Failed to connect to the server.');
       }
-    } catch (error) {
-      setMessage('Failed to connect to the server.');
-    }
   };
 
   return (
@@ -65,6 +60,7 @@ export const LoginTeacher: React.FC = () => {
         <h1 className="text-accent text-5xl font-bold mb-10">Monaco</h1>
 
         <img src="src/assets/logo.png" alt="Logo" className="h-300 w-80" />
+
       </div>
 
       {/* Right side (Form) */}
@@ -79,6 +75,7 @@ export const LoginTeacher: React.FC = () => {
               value={username}
               onChange={(e) => {
                 const value = e.target.value;
+
                 setUsername(value);
               }}
               className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
@@ -112,7 +109,6 @@ export const LoginTeacher: React.FC = () => {
             >
               Teacher
             </button>
-
             <button
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2"
@@ -120,7 +116,6 @@ export const LoginTeacher: React.FC = () => {
                 // Handle Student button logic
                 toast.info("Redirecting to Student Login...");
                 console.log("Student button clicked");
-                navigate('/student'); // Added navigation for Student button
               }}
             >
               Student
