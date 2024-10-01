@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,14 +29,14 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    roles: ["STUDENT"],
   });
+
+  const navigate = useNavigate(); // Added navigate
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    //validate id
     const newValue = name === "studentId" ? (value === "" ? NaN : Number(value)) : value;
     setFormData({ ...formData, [name]: newValue });
     setErrors({ ...errors, [name]: "" }); // Clear error on input change
@@ -59,8 +60,6 @@ const RegistrationForm: React.FC = () => {
       newErrors.password = "Password must contain at least one digit";
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
       newErrors.password = "Password must contain at least one special character";
-    } else if (!/\w/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one word character";
     }
 
     // Validate confirm password
@@ -83,22 +82,20 @@ const RegistrationForm: React.FC = () => {
       console.log("Form Data: ", formData);
       toast.success("Form submitted successfully!");
       // Proceed with form submission (e.g., API call)
-
-        try {
-          const response = await fetch('http://localhost:8080/api/register/student', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-          const data = await response.json();
-          if (data.status)
-          console.log('Response:', data);
-        } catch (error) {
-          console.error('Error:', error);
-        }
-
+      try {
+        const response = await fetch('http://localhost:8080/api/register/student', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        console.log('Response:', data);
+        navigate('/success');
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
@@ -148,14 +145,13 @@ const RegistrationForm: React.FC = () => {
             <input
               type="text"
               name="studentId"
-              value={isNaN(formData.studentId) ? "" : formData.studentId} // Display empty string if id is NaN
+              value={isNaN(formData.studentId) ? "" : formData.studentId}
               onChange={handleInputChange}
               onInput={(e) => {
                 const value = e.currentTarget.value;
-                // Allow only numeric input by filtering out non-numeric characters
-                const numericValue = value.replace(/[^0-9]/g, "");
+                const numericValue = value.replace(/[^0-9]/g, ""); // Allow only numeric input
                 if (value !== numericValue) {
-                  e.currentTarget.value = numericValue; // Update the input field to show only valid numbers
+                  e.currentTarget.value = numericValue;
                 }
               }}
               maxLength={15}
@@ -212,12 +208,14 @@ const RegistrationForm: React.FC = () => {
             <button
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2 mr-2"
+              onClick={() => navigate('/teacher')} // Added navigate for teacher button
             >
               Teacher
             </button>
             <button
               type="button"
               className="bg-background text-accent px-4 py-2 rounded w-1/2"
+              onClick={() => navigate('/student')} // Added navigate for student button
             >
               Student
             </button>
