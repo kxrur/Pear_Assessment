@@ -46,7 +46,7 @@ export const LoginStudent: React.FC = () => {
         const responseData = await response.text();
         setMessage(responseData); // Message from the backend
         navigate('/success');
-      } else if (response.status === 401) {
+      } else if (response.status > 399 && response.status < 500) {
         setMessage('Invalid credentials');
       } else {
         setMessage('An error occurred. Please try again.');

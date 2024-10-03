@@ -84,7 +84,6 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-      toast.success("Form submitted successfully!");
       // Proceed with form submission (e.g., API call)
       try {
         const response = await fetch('http://localhost:8080/api/register/student', {
@@ -95,8 +94,14 @@ const RegistrationForm: React.FC = () => {
           body: JSON.stringify(formData),
         });
         const data = await response.json();
-        console.log('Response:', data);
-        navigate('/success');
+        if (response.ok) {
+          console.log('Response:', data);
+          console.log(response.status);
+          toast.success("Form submitted successfully!");
+          navigate('/success');
+        } else{
+          toast.error("User issue");
+        }
       } catch (error) {
         console.error('Error:', error);
       }

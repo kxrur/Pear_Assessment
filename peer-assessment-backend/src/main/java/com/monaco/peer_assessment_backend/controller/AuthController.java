@@ -40,6 +40,7 @@ public class AuthController {
             savedStudent = userService.registerStudent(newStudent);
         } catch (DuplicateUserException duplicateUserException) {
             logger.info("Duplicate Student");
+            return new ResponseEntity<>(newStudent, HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);

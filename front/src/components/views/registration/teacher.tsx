@@ -102,11 +102,16 @@ const RegistrationForm: React.FC = () => {
           },
           body: JSON.stringify(formData),
         });
-        const data = await response.json();
-        console.log('Response:', data);
-        console.log(response.status);
-        toast.success("Form submitted successfully!");
-        navigate('/success');
+        if (response.ok) {
+          toast.success("Form submitted successfully!");
+          const data = await response.json();
+          console.log('Response:', data);
+          console.log(response.status);
+          navigate('/success');
+        }
+        else{
+          toast.error("Already created account");
+        }
       } catch (error) {
         console.error('Error:', error);
       }
