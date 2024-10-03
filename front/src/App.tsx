@@ -45,6 +45,8 @@ function App() {
       <div className='bg-background h-screen w-dvw'>
 
         <Routes>
+          {/* Default Route - When user accesses the root URL, show this component */}
+          <Route path="/" element={<LoginStudent />} />
           <Route path="/teacher"
             element={
               <>
@@ -69,7 +71,7 @@ function App() {
               </>
             }
           />
-          <Route path="/"
+          <Route path="/team-preview"
             element={
               <>
                 <TeamView teams={teams} />
