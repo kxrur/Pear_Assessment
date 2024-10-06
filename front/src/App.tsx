@@ -5,11 +5,8 @@ import LoginStudent from './components/views/login/student'
 import RegisterStudent from './components/views/registration/student'
 import RegisterTeacher from './components/views/registration/teacher'
 import Success from './components/views/success'
-<<<<<<< HEAD
 import Begin from './components/views/Begin';
-=======
 import { TeamView } from './components/views/team/TeamView';
->>>>>>> 06d1849541691fdcbd97333cca6e7feb0a035bc6
 function App() {
   const teams = [
     {
@@ -48,22 +45,9 @@ function App() {
     <Router>
       <div className='bg-background h-screen w-dvw'>
 
-<<<<<<< HEAD
-            <Routes>
-                {/* Default Route - When user accesses the root URL, show this component */}
-                <Route path="/" element={<Begin />} />
-              <Route path="/teacher"
-                element={
-                  <>
-                  <RegisterTeacher />
-                  <LoginTeacher />
-                  </>
-                }
-                />
-=======
         <Routes>
           {/* Default Route - When user accesses the root URL, show this component */}
-          <Route path="/" element={<LoginStudent />} />
+          <Route path="/" element={<Begin />} />
           <Route path="/teacher"
             element={
               <>
@@ -72,7 +56,6 @@ function App() {
               </>
             }
           />
->>>>>>> 06d1849541691fdcbd97333cca6e7feb0a035bc6
 
           <Route path="/student"
             element={
