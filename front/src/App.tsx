@@ -5,6 +5,7 @@ import LoginStudent from './components/views/login/student'
 import RegisterStudent from './components/views/registration/student'
 import RegisterTeacher from './components/views/registration/teacher'
 import Success from './components/views/success'
+import Begin from './components/views/Begin';
 function App() {
 
   return (
@@ -13,7 +14,7 @@ function App() {
 
             <Routes>
                 {/* Default Route - When user accesses the root URL, show this component */}
-                <Route path="/" element={<LoginStudent />} />
+                <Route path="/" element={<Begin />} />
               <Route path="/teacher"
                 element={
                   <>
