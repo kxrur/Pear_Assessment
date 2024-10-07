@@ -5,7 +5,13 @@ import LoginStudent from './components/views/login/student'
 import RegisterStudent from './components/views/registration/student'
 import RegisterTeacher from './components/views/registration/teacher'
 import Success from './components/views/success'
+import Begin from './components/views/Begin';
 import { TeamView } from './components/views/team/TeamView';
+import StudentTable from './components/StudentTable';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+
+import StudentManagement from './pages/studentmanagement';
 function App() {
   const teams = [
     {
@@ -46,7 +52,8 @@ function App() {
 
         <Routes>
           {/* Default Route - When user accesses the root URL, show this component */}
-          <Route path="/" element={<LoginStudent />} />
+          <Route path="/" element={<StudentManagement />} />
+          <Route path='/' element = { <Begin/>}/>
           <Route path="/teacher"
             element={
               <>
@@ -78,6 +85,7 @@ function App() {
               </>
             }
           />
+
 
         </Routes>
 
