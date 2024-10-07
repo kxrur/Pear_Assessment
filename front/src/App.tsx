@@ -10,6 +10,7 @@ import { TeamView } from './components/views/team/TeamView';
 import StudentTable from './components/StudentTable';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+import ButtonOpenFile from './components/input/buttonOpenFile';
 
 import StudentManagement from './pages/studentmanagement';
 function App() {
@@ -52,8 +53,9 @@ function App() {
 
         <Routes>
           {/* Default Route - When user accesses the root URL, show this component */}
+          <Route path="/" element={<ButtonOpenFile />} />
           <Route path="/" element={<StudentManagement />} />
-          <Route path='/' element = { <Begin/>}/>
+          <Route path='/home' element = { <Begin/>}/>
           <Route path="/teacher"
             element={
               <>
