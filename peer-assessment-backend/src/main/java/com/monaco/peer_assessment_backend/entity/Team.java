@@ -1,0 +1,42 @@
+package com.monaco.peer_assessment_backend.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;;
+import java.util.List;
+
+
+/**
+ * A class representing a Team entity for the database
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Team {
+    // Generate a unique id identifying the team
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // Associate a professor to a team
+    // A professor can have many teams but a team can only have one professor
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+
+    // A student can have many teams and a team can have many students
+    // Creates a table that links a student ID to a team ID
+    @ManyToMany
+    @JoinTable (
+            name = "team_students",
+            joinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id")
+    )
+    private List<Student> students;
+
+    private String teamName;
+}
