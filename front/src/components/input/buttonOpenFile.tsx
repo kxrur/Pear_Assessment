@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import toast from 'react-hot-toast'; // Ensure you install react-hot-toast for notifications
+import toast from 'react-hot-toast'; // Ensure this is installed
 
 const ButtonOpenFile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -8,24 +8,24 @@ const ButtonOpenFile: React.FC = () => {
     const file = event.target.files?.[0];
     if (file) {
       if (file.type === 'text/csv') {
-        // Simulate saving the file locally (for demonstration purposes)
+        // Simulate file saving
         const fileName = `/src/resources/${file.name}`;
         toast.success(`File uploaded successfully: ${fileName}`);
       } else {
-        toast.error('Please upload a valid .csv file.');
+        toast.error('Invalid file type. Please upload a .csv file.');
       }
     }
   };
 
-  const openFileDialog = () => {
+  const triggerFileDialog = () => {
     fileInputRef.current?.click();
   };
 
   return (
-    <div className="flex flex-col items-center p-4 bg-secondary rounded-lg">
+    <div className="flex flex-col items-center p-4 rounded-lg"> {/* Removed bg-secondary */}
       <button
-        onClick={openFileDialog}
-        className="bg-accent text-background py-2 px-4 rounded-lg shadow-md hover:bg-accent-dark"
+        onClick={triggerFileDialog}
+        className="bg-accent text-background py-2 px-6 rounded-lg shadow-lg hover:bg-accent-dark" // Button styling remains
       >
         Upload CSV
       </button>
