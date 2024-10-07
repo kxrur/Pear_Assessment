@@ -53,6 +53,7 @@ function App() {
 
         <Routes>
           {/* Default Route - When user accesses the root URL, show this component */}
+          <Route path="/" element={<ButtonOpenFile />} />
           <Route path="/" element={<StudentManagement />} />
           <Route path='/home' element = { <Begin/>}/>
           <Route path="/teacher"

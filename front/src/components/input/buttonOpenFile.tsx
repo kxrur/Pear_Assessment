@@ -1,18 +1,28 @@
 import React, { useRef } from 'react';
-import toast from 'react-hot-toast'; // Ensure this is installed
+import toast from 'react-hot-toast'; 
 
 const ButtonOpenFile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.type === 'text/csv') {
-        // Simulate file saving
-        const fileName = `/src/resources/${file.name}`;
-        toast.success(`File uploaded successfully: ${fileName}`);
+      // Construct the file path (Note: This will not work directly as browsers do not allow access to full paths for security reasons)
+      const filePath = file.name; // Only getting the file name
+
+      // Send file path to the backend
+      const response = await fetch('/api/upload-path', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filePath }),
+      });
+
+      if (response.ok) {
+        toast.success('File path sent successfully!');
       } else {
-        toast.error('Invalid file type. Please upload a .csv file.');
+        toast.error('Failed to send file path.');
       }
     }
   };
@@ -22,10 +32,10 @@ const ButtonOpenFile: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 rounded-lg"> {/* Removed bg-secondary */}
+    <div className="flex flex-col items-center p-4 rounded-lg">
       <button
         onClick={triggerFileDialog}
-        className="bg-accent text-background py-2 px-6 rounded-lg shadow-lg hover:bg-accent-dark" // Button styling remains
+        className="bg-accent text-background py-2 px-6 rounded-lg shadow-lg hover:bg-accent-dark"
       >
         Upload CSV
       </button>
