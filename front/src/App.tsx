@@ -11,6 +11,7 @@ import StudentTable from './components/StudentTable';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import ButtonOpenFile from './components/input/buttonOpenFile';
+import TeamDropdown from './components/input/dropdown';
 
 import StudentManagement from './pages/studentmanagement';
 function App() {
@@ -53,7 +54,7 @@ function App() {
 
         <Routes>
           {/* Default Route - When user accesses the root URL, show this component */}
-          <Route path="/" element={<ButtonOpenFile />} />
+          <Route path="/" element={<TeamDropdown />} />
           <Route path="/" element={<StudentManagement />} />
           <Route path='/home' element = { <Begin/>}/>
           <Route path="/teacher"
