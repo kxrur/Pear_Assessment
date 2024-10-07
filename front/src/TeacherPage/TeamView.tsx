@@ -1,5 +1,5 @@
 import React from 'react';
-import { TeamPreview } from '../../ui/TeamPreview'; // Adjust the import path as needed
+import { TeamPreview } from '../components/ui/TeamPreview'; // Adjust the import path as needed
 
 interface Team {
   teamName: string;

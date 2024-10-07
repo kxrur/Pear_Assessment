@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import StudentTable from '../components/StudentTable';
+import ButtonOpenFile from '../components/input/buttonOpenFile';
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
@@ -15,26 +16,39 @@ const StudentManagement: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const addStudent = (newStudent: { name: string; studentId: string; teamName: string; averageGrade: number }) => {
+  const addStudent = (newStudent: { name: string; studentId: string; teamName?: string; averageGrade: number }) => {
     const newStudentEntry = {
-      id: students.length + 1, // Simple ID increment; consider more robust logic for production
+      id: students.length + 1, // Simple ID increment, consider using a unique ID generator
       ...newStudent,
     };
     setStudents([...students, newStudentEntry]);
   };
 
+  // Function to delete a student based on ID
+  const deleteStudent = (id: number) => {
+    setStudents(students.filter(student => student.id !== id));
+  };
+
   return (
     <div className="flex">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className="flex-1">
         <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
-        <StudentTable students={students} searchTerm={searchTerm} addStudent={addStudent} />
+        <div className="p-4">
+          <StudentTable 
+            students={students} 
+            searchTerm={searchTerm} 
+            addStudent={addStudent} // Pass the addStudent function correctly
+            deleteStudent={deleteStudent} // Pass the delete function
+          />
+          <div className="mt-4">
+            <ButtonOpenFile />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default StudentManagement;
+// Compare this snippet from main/Monaco_SOEN341_Project_F24/front/src/components/TeamTable.tsx:

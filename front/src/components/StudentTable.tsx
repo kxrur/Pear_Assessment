@@ -1,36 +1,38 @@
 import React from 'react';
 import StarRating from './StarRating';
+import ButtonOpenFile from './input/buttonOpenFile';
 
 interface Student {
   id: number;
   name: string;
   studentId: string;
-  teamName: string;
+  teamName?: string; // Make teamName optional
   averageGrade: number;
 }
 
 interface StudentTableProps {
   students: Student[];
   searchTerm: string;
-  addStudent: (student: { name: string; studentId: string; teamName: string; averageGrade: number }) => void;
+  addStudent: (student: { name: string; studentId: string; teamName?: string; averageGrade: number }) => void;
+  deleteStudent: (id: number) => void; // Accept the delete function as a prop
 }
 
-const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addStudent }) => {
+const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addStudent, deleteStudent }) => {
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.studentId.includes(searchTerm) ||
-    student.teamName.toLowerCase().includes(searchTerm.toLowerCase())
+    (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase())) // Check if teamName is present
   );
 
   const [newStudent, setNewStudent] = React.useState({
     name: '',
     studentId: '',
-    teamName: '',
+    teamName: '', // Keep teamName in state but it's optional
     averageGrade: 0,
   });
 
   const handleAddStudent = () => {
-    if (newStudent.name && newStudent.studentId && newStudent.teamName) {
+    if (newStudent.name && newStudent.studentId) { // Only check for name and studentId
       addStudent(newStudent);
       setNewStudent({ name: '', studentId: '', teamName: '', averageGrade: 0 }); // Reset input fields
     }
@@ -46,36 +48,38 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
           + Add Student
         </button>
       </div>
+  
       <div className="mb-4">
         <input 
           type="text" 
           placeholder="Student Name" 
           value={newStudent.name}
           onChange={e => setNewStudent({ ...newStudent, name: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black" // Change background and text color
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black" 
         />
         <input 
           type="text" 
           placeholder="Student ID" 
           value={newStudent.studentId}
           onChange={e => setNewStudent({ ...newStudent, studentId: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" // Change background and text color
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" 
         />
         <input 
           type="text" 
-          placeholder="Team Name" 
+          placeholder="Team Name (optional)" 
           value={newStudent.teamName}
           onChange={e => setNewStudent({ ...newStudent, teamName: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" // Change background and text color
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" 
         />
         <input 
           type="number" 
           placeholder="Average Grade" 
           value={newStudent.averageGrade}
           onChange={e => setNewStudent({ ...newStudent, averageGrade: Number(e.target.value) })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" // Change background and text color
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" 
         />
       </div>
+  
       <table className="min-w-full bg-gray-100 border">
         <thead>
           <tr>
@@ -93,12 +97,16 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.teamName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.teamName || 'N/A'}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <StarRating rating={student.averageGrade} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <button className="text-red-600 hover:text-red-800">Delete</button>
+                <button 
+                  onClick={() => deleteStudent(student.id)} // Call the delete function
+                  className="text-red-600 hover:text-red-800">
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
