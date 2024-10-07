@@ -18,7 +18,7 @@ const TeamDropdown: React.FC = () => {
     // Fetch existing teams from the backend
     const fetchTeams = async () => {
       try {
-        const response = await fetch('/api/teams'); // Adjust your API endpoint
+        const response = await fetch('/api/teams'); 
         if (!response.ok) throw new Error('Failed to fetch teams');
         const data = await response.json();
         setTeams(data);
