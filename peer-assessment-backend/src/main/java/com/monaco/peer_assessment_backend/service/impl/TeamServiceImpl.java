@@ -45,19 +45,25 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<Student> fetchTeammates(long professorId) {
+    public List<Student> fetchTeammates(long studentID) {
         List<Team> teams = teamRepository.findAll();
 
         List<Student> teammates = new ArrayList<>();
 
         for (Team team : teams){
-            if(team.getProfessor().getId() == professorId){
-                teammates.addAll(team.getStudents());
+            for (Student student : team.getStudents()){
+                if (student.getStudentID() == studentID){
+                    for (Student teammate : team.getStudents()){
+                        // Exclude the student requesting the list
+                        if (teammate.getStudentID() != studentID){
+                            teammates.add(teammate);
+                        }
+                    }
+                    return teammate
+                }
             }
         }
-
+        // Return an empty list if no teammates are found
         return teammates;
-    }
-
-    
+    }  
 }
