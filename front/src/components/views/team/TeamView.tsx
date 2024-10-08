@@ -1,5 +1,6 @@
 import React from 'react';
-import { TeamPreview } from '../../ui/TeamPreview'; // Adjust the import path as needed
+import { TeamPreview } from '../../ui/TeamPreview';
+import { TeamPreviewDelete } from '../../ui/TeamPreviewDelete';
 
 interface Team {
   teamName: string;
@@ -15,7 +16,7 @@ export const TeamView: React.FC<TeamViewProps> = ({ teams }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-6">
       {teams.map((team, index) => (
-        <TeamPreview
+        <TeamPreviewDelete
           key={index}
           teamName={team.teamName}
           teamMembers={team.teamMembers}
