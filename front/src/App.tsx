@@ -7,6 +7,7 @@ import RegisterTeacher from './components/views/registration/teacher'
 import Success from './components/views/success'
 import Begin from './components/views/Begin';
 import { TeamView } from './components/views/team/TeamView';
+import { TeamViewDelete } from './components/views/team/TeamViewDelete';
 import StudentTable from './components/StudentTable';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -85,6 +86,13 @@ function App() {
             element={
               <>
                 <TeamView teams={teams} />
+              </>
+            }
+          />
+          <Route path="/team-delete-preview"
+            element={
+              <>
+                <TeamViewDelete teams={teams} />
               </>
             }
           />
