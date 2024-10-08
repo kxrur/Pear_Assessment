@@ -11,8 +11,6 @@ import java.util.List;
 /**
  * A class representing a Team entity for the database
  */
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
