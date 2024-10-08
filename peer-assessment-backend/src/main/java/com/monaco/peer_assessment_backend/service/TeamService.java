@@ -8,5 +8,5 @@ public interface TeamService {
 
     void createTeam(Long professorID, List<Long> studentIds, String teamName);
 
-    List<Student> fetchTeammates(long professorId);
+    List<Student> fetchTeammates(long studentID);
 }
