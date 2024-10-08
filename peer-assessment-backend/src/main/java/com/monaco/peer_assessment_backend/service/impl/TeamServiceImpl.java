@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 @AllArgsConstructor
@@ -42,4 +43,21 @@ public class TeamServiceImpl implements TeamService {
 
         teamRepository.save(team);
     }
+
+    @Override
+    public List<Student> fetchTeammates(long professorId) {
+        List<Team> teams = teamRepository.findAll();
+
+        List<Student> teammates = new ArrayList<>();
+
+        for (Team team : teams){
+            if(team.getProfessor().getId() == professorId){
+                teammates.addAll(team.getStudents());
+            }
+        }
+
+        return teammates;
+    }
+
+    
 }
