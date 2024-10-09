@@ -6,13 +6,20 @@ import RegisterStudent from './components/views/registration/student'
 import RegisterTeacher from './components/views/registration/teacher'
 import Success from './components/views/success'
 import Begin from './components/views/Begin';
-import { TeamView } from './TeacherPage/TeamView';
+import { TeamView, Team } from './TeacherPage/TeamView';
 import { TeamPreview } from './components/ui/TeamPreview';
 
 
 
 
 import StudentManagement from './TeacherPage/studentmanagement';
+//import { TeamView } from './components/views/team/TeamView';
+import { TeamViewDelete } from './components/views/team/TeamViewDelete';
+import StudentTable from './components/StudentTable';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import ButtonOpenFile from './components/input/buttonOpenFile';
+import TeamDropdown from './components/input/dropdown';
 
 function App() {
   const teams = [
@@ -59,13 +66,15 @@ function App() {
           <Route path="/team-preview"
             element={
               <>
-                <TeamView teams={teams} />
+                <TeamView teams={teams} addTeam={function (team: Team): void {
+                  console.log("attemp to create team: ", team)
+                }} />
               </>
             }
           />
-          
-          
-         
+          <Route path="/" element={<TeamDropdown />} />
+          <Route path="/" element={<StudentManagement />} />
+          <Route path='/home' element={<Begin />} />
           <Route path="/teacher"
             element={
               <>
@@ -75,11 +84,17 @@ function App() {
             }
           />
           {/* Sidebar */}
-            
-            
-            <Route path="/teamview" element={<TeamView teams={teams} />} />
-            <Route path="/studentmanagement" element={<StudentManagement />} />
-            
+
+
+          <Route path="/teamview" element=
+            <>
+              <TeamView teams={teams} addTeam={function (team: Team): void {
+                console.log("attemp to create team: ", team)
+              }} />
+            </>
+          />
+          <Route path="/studentmanagement" element={<StudentManagement />} />
+
 
           <Route path="/student"
             element={
@@ -96,13 +111,19 @@ function App() {
               </>
             }
           />
-         
+          <Route path="/team-delete-preview"
+            element={
+              <>
+                <TeamViewDelete teams={teams} />
+              </>
+            }
+          />
 
 
-        </Routes>
+        </Routes >
 
-      </div>
-    </Router>
+      </div >
+    </Router >
   )
 }
 

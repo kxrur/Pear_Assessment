@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TeamPreview } from '../components/ui/TeamPreview'; // Adjust the import path as needed
 
-interface Team {
+export interface Team {
   teamName: string;
   teamMembers: string[];
   teamDescription: string;
