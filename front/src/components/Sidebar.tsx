@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li className="mb-4">
           <Link 
-            to="/student-management" 
+            to="/" 
             className="block px-4 py-2 text-white hover:bg-gray-300 hover:text-black rounded transition duration-200 cursor-pointer"
           >
             Student Management
