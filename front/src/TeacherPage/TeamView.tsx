@@ -4,9 +4,10 @@ import { TeamPreview } from '../components/ui/TeamPreview'; // Adjust the import
 import { useNavigate } from 'react-router-dom';
 
 export interface Team {
+  professorId: string;
   teamName: string;
   teamMembers: string[];
-  teamDescription: string;
+  teamDescription: string; 
 }
 
 interface TeamViewProps {

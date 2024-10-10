@@ -4,9 +4,33 @@ import { Team } from './TeamView';
 
 interface CreateTeamFormProps {}
 
-function addTeam(team: Team) {
-  console.log('Team was created ', team);
+async function addTeam(team: Team) {
+  try {
+
+    // Make the POST request to your Spring Boot backend
+    const response = await fetch('http://localhost:8080/api/teams/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        professorID: team.professorId,   // Match backend DTO field
+        teamName: team.teamName,
+        studentIDs: team.teamMembers    // Match backend DTO field
+      })
+    });
+
+    if (response.ok) {
+      console.log('Team was created successfully:');
+    } else {
+      // If the request fails, handle the error case
+      console.error('Failed to create team:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error occurred while creating team:', error);
+  }
 }
+
 
 export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
   const navigate = useNavigate();
@@ -36,7 +60,15 @@ export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addTeam(newTeam); // Call the function to add the new team
+  
+    const teamDTO: Team = {
+      professorId:newTeam.teacherId,               // Convert to number
+      teamName: newTeam.teamName,
+      teamMembers: newTeam.studentIds.map(id => id), // Convert each to number
+      teamDescription: newTeam.teamDescription
+    };
+  
+    addTeam(teamDTO); // Call the function to add the new team
     navigate('/team-preview'); // Redirect to the team preview page after submission
   };
 
