@@ -8,7 +8,7 @@ import Success from './components/views/success'
 import Begin from './components/views/Begin';
 import { TeamView, Team } from './TeacherPage/TeamView';
 import { TeamPreview } from './components/ui/TeamPreview';
-
+import CreateTeamForm from './TeacherPage/CreateTeamForm';
 
 
 
@@ -63,14 +63,15 @@ function App() {
           {/* Default Route - When user accesses the root URL, show this component */}
           <Route path="/" element={<StudentManagement />} />
           <Route path="/begin" element={<Begin />} />
+          <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
+          />
           <Route path="/team-preview"
             element={
               <>
-                <TeamView teams={teams} addTeam={function (team: Team): void {
-                  console.log("attemp to create team: ", team)
-                }} />
+                <TeamView teams={teams} />
               </>
             }
+          
           />
           <Route path="/" element={<TeamDropdown />} />
           <Route path="/" element={<StudentManagement />} />
@@ -88,9 +89,7 @@ function App() {
 
           <Route path="/teamview" element=
             <>
-              <TeamView teams={teams} addTeam={function (team: Team): void {
-                console.log("attemp to create team: ", team)
-              }} />
+              <TeamView teams={teams}></TeamView>
             </>
           />
           <Route path="/studentmanagement" element={<StudentManagement />} />
