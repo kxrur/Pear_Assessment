@@ -2,16 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  studentId: number;
-  username: string;
-  password: string;
-  confirmPassword: string;
-  roles:[string];
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/store';
+import { registerUser, resetRegistrationState } from '../../../store/registrationSlice';
+import { FormData } from '../../../types';
 
 interface FormDataError {
   firstName: string;
@@ -34,6 +28,7 @@ const RegistrationForm: React.FC = () => {
   });
 
   const navigate = useNavigate(); // Added navigate
+  const dispatch = useDispatch<AppDispatch>();
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
 
@@ -85,6 +80,7 @@ const RegistrationForm: React.FC = () => {
     } else {
       console.log("Form Data: ", formData);
       // Proceed with form submission (e.g., API call)
+      /*
       try {
         const response = await fetch('http://localhost:8080/api/register/student', {
           method: 'POST',
@@ -99,12 +95,14 @@ const RegistrationForm: React.FC = () => {
           console.log(response.status);
           toast.success("Form submitted successfully!");
           navigate('/success');
-        } else{
+        } else {
           toast.error("User issue");
         }
       } catch (error) {
         console.error('Error:', error);
       }
+      */
+      dispatch(registerUser(formData));
     }
   };
 
