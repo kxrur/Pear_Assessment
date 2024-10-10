@@ -24,14 +24,16 @@ jobs:
           node-version: '16' # Specify the Node.js version
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd front
+          npm install
 
       - name: Run tests
-        run: npm test # Adjust this if you have a specific test command
+        run: |
+          cd front
+          npm test # Adjust this if you have a specific test command
 
       - name: Build
-        run: npm run build
-
-      - name: Deploy (optional)
         run: |
-          echo "Deploy steps here, if any"
+          cd front
+          npm run build
