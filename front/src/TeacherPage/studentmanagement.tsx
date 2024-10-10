@@ -21,7 +21,16 @@ const StudentManagement: React.FC = () => {
       id: students.length + 1, // Simple ID increment, consider using a unique ID generator
       ...newStudent,
     };
-    setStudents([...students, newStudentEntry]);
+    const addStudent = (newStudent: { name: string; studentId: string; teamName?: string; averageGrade: number }) => {
+      const newStudentEntry = {
+        id: students.length + 1,
+        name: newStudent.name,
+        studentId: newStudent.studentId,
+        teamName: newStudent.teamName || '', // Provide a default value for teamName
+        averageGrade: newStudent.averageGrade,
+      };
+      setStudents([...students, newStudentEntry]);
+    };
   };
 
   // Function to delete a student based on ID

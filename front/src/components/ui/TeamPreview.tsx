@@ -42,3 +42,4 @@ export const TeamPreview: React.FC<TeamProps> = ({
     </div>
   );
 };
+export default TeamPreview;
