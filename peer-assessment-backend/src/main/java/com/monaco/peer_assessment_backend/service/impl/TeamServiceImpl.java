@@ -59,7 +59,7 @@ public class TeamServiceImpl implements TeamService {
                             teammates.add(teammate);
                         }
                     }
-                    return teammate
+                    return teammates;
                 }
             }
         }
