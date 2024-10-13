@@ -7,23 +7,22 @@ interface CreateTeamFormProps {}
 async function addTeam(team: Team) {
   try {
 
-    // Make the POST request to your Spring Boot backend
+    // Make a POST request to the correct API endpoint
     const response = await fetch('http://localhost:8080/api/teams/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        professorID: team.professorId,   // Match backend DTO field
+        professorID: team.professorId,
         teamName: team.teamName,
-        studentIDs: team.teamMembers    // Match backend DTO field
+        studentIDs: team.teamMembers
       })
     });
 
     if (response.ok) {
       console.log('Team was created successfully:');
     } else {
-      // If the request fails, handle the error case
       console.error('Failed to create team:', response.statusText);
     }
   } catch (error) {
@@ -35,9 +34,9 @@ async function addTeam(team: Team) {
 export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
   const navigate = useNavigate();
   const [newTeam, setNewTeam] = useState({
-    teacherId: '', // Add teacherId as a number field
+    teacherId: '',
     teamName: '',
-    studentIds: [''], // Storing student IDs instead of names
+    studentIds: [''], 
     teamDescription: '',
   });
 
@@ -62,13 +61,13 @@ export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
     e.preventDefault();
   
     const teamDTO: Team = {
-      professorId:newTeam.teacherId,               // Convert to number
+      professorId: newTeam.teacherId,
       teamName: newTeam.teamName,
-      teamMembers: newTeam.studentIds.map(id => id), // Convert each to number
+      teamMembers: newTeam.studentIds.map(id => id),
       teamDescription: newTeam.teamDescription
     };
   
-    addTeam(teamDTO); // Call the function to add the new team
+    addTeam(teamDTO);
     navigate('/team-preview'); // Redirect to the team preview page after submission
   };
 
