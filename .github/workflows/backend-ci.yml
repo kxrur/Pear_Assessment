@@ -10,43 +10,42 @@ on:
     branches:
       - main
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-
     # The type of machine to run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # setup the MySQL database in the local environment to pass tests
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: users
+        ports: 
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping" --health-interval=10s --health-timeout=5s
+        
+    # Now we execute the steps to run the project
     steps:
     - name: Checkout code
-      # Checks out your repository under $GITHUB_WORKSPACE, so the workflow can access it
       uses: actions/checkout@v3
 
     - name: Set up JDK 17
-      # Sets up the environment with JDK 17 (modify this if you're using another version)
       uses: actions/setup-java@v3
       with:
         java-version: '17'
-        distribution: 'temurin' # Use Temurin for JDK builds
-
+        distribution: 'temurin'
+        
     - name: Cache Maven dependencies
       uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+        restore-keys: ${{ runner.os }}-maven-
 
-    - name: Install Dependencies & Run Tests
-      run: mvn install -DskipTests=false
+    - name: Build with Maven
+      run: mvn clean install
 
-    - name: Package Application
-      run: mvn package
-
-    - name: Archive Build Artifacts
-      # Stores build artifacts to make them available as workflow outputs (optional)
-      uses: actions/upload-artifact@v3
-      with:
-        name: application-jar
-        path: target/*.jar
+    - name: Run Tests
+      run: mvn test
