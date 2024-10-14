@@ -27,6 +27,7 @@ public class User {
     private String username;
     private String password;
 
+    // Students can have multiple roles and roles can have multiple students
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     // Creates a table that joins both the userId and the roleId
     @JoinTable(name = "user_roles",
