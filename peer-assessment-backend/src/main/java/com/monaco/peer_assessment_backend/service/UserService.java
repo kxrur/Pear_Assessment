@@ -3,8 +3,6 @@ package com.monaco.peer_assessment_backend.service;
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
-import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserService {
 //    public User createUser(User  newUser);
