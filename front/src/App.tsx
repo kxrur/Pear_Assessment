@@ -6,74 +6,37 @@ import RegisterStudent from '@v/registration/StudentRegView'
 import RegisterTeacher from '@v/registration/TeacherRegView'
 import Success from '@v/login/SuccessLoginView'
 import Welcome from '@v/Welcome';
-import { TeamView, Team } from './views/AllTeamsView';
-import { TeamPreview } from './components/ui/TeamPreview';
-import CreateTeamForm from './TeacherPage/CreateTeamForm';
+import AllTeamsView from './views/team/AllTeamsView';
+import CreateTeamForm from './views/team/CreateTeamFormView';
 
 
 
-import StudentManagement from './TeacherPage/studentmanagement';
-//import { TeamView } from './components/views/team/TeamView';
+import StudentManagement from '@v/StudentManagement';
 import { TeamViewDelete } from '@v/team/TeamDeleteView';
-import StudentTable from './components/StudentTable';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import ButtonOpenFile from './components/input/buttonOpenFile';
 import TeamDropdown from './components/input/dropdown';
 
+import { teams } from '@t/SampleData';
+
+
 function App() {
-  const teams = [
-    {
-      teamName: 'Team Alpha',
-      teamMembers: ['Alice', 'Bob', 'Charlie'],
-      teamDescription: 'A team of talented individuals working on innovative projects.',
-    },
-    {
-      teamName: "Dev Team",
-      teamMembers: ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank'],
-      teamDescription: "We are a team of developers working on cutting-edge technology projects. Our focus is on creating efficient, scalable, and innovative solutions. team description Lorem Ipsum is simply dummy text of the printing and  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of  type and scrambled it to make a type specimen book. "
-    },
-    {
-      teamName: 'Team Gamma',
-      teamMembers: ['Grace', 'Heidi', 'Ivan'],
-      teamDescription: 'Specializing in design and user experience.',
-    },
-    {
-      teamName: 'Team Alpha',
-      teamMembers: ['Alice', 'Bob', 'Charlie'],
-      teamDescription: 'A team of talented individuals working on innovative projects.',
-    },
-    {
-      teamName: 'Team Beta',
-      teamMembers: ['David', 'Eve', 'Frank'],
-      teamDescription: 'Focused on developing cutting-edge technology solutions.',
-    },
-    {
-      teamName: 'Team Gamma',
-      teamMembers: ['Grace', 'Heidi', 'Ivan'],
-      teamDescription: 'Specializing in design and user experience.',
-    },
-  ];
+
   return (
 
     <Router>
       <div className='bg-background h-screen w-dvw'>
 
         <Routes>
-          {/* Default Route - When user accesses the root URL, show this component */}
           <Route path="/" element={<StudentManagement />} />
           <Route path="/welcome" element={<Welcome />} />
           <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
           />
           <Route path="/team-preview"
             element={
-              <>
-                <TeamView teams={teams} />
-              </>
+              <AllTeamsView teams={teams} />
             }
 
           />
-          <Route path="/" element={<TeamDropdown />} />
+          <Route path="/dropdown" element={<TeamDropdown />} />
           <Route path="/" element={<StudentManagement />} />
           <Route path='/home' element={<Welcome />} />
           <Route path="/teacher"
@@ -84,13 +47,10 @@ function App() {
               </>
             }
           />
-          {/* Sidebar */}
 
 
           <Route path="/teamview" element=
-            <>
-              <TeamView teams={teams}></TeamView>
-            </>
+            <AllTeamsView teams={teams}></AllTeamsView>
           />
           <Route path="/studentmanagement" element={<StudentManagement />} />
 
@@ -105,16 +65,12 @@ function App() {
           />
           <Route path="/success"
             element={
-              <>
-                <Success />
-              </>
+              <Success />
             }
           />
           <Route path="/team-delete-preview"
             element={
-              <>
-                <TeamViewDelete teams={teams} />
-              </>
+              <TeamViewDelete teams={teams} />
             }
           />
 

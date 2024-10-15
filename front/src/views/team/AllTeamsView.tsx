@@ -9,7 +9,7 @@ interface TeamViewProps {
   teams: Team[];
 }
 
-export const TeamView: React.FC<TeamViewProps> = ({ teams }) => {
+export default function TeamView({ teams }: TeamViewProps) {
   return (
     <div className="p-6">
       <NavigateButton text={'Create New Team'} path={'/create-team'}></NavigateButton>
@@ -28,4 +28,3 @@ export const TeamView: React.FC<TeamViewProps> = ({ teams }) => {
   );
 };
 
-export default TeamView;
