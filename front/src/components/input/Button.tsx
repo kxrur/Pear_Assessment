@@ -1,12 +1,11 @@
 import React from 'react';
 
 type ButtonProps = {
-  role: 'teacher' | 'student';
-  handleClick: (role: 'teacher' | 'student') => void;
+  text: string;
+  handleClick: () => void;
 };
 
-const Button: React.FC<ButtonProps> = ({ role, handleClick }) => {
-  const buttonLabel = role === 'teacher' ? 'Teacher' : 'Student';
+export default function Button({ text, handleClick }: ButtonProps) {
 
   const buttonStyle: React.CSSProperties = {
     backgroundColor: '#A52A2A',  // Brown background
@@ -14,7 +13,6 @@ const Button: React.FC<ButtonProps> = ({ role, handleClick }) => {
     padding: '10px 20px',
     border: 'none',
     cursor: 'pointer',
-    margin: '5px',
     borderRadius: '4px',         // Rounded corners
     fontSize: '16px',
     fontWeight: 'bold',
@@ -34,15 +32,14 @@ const Button: React.FC<ButtonProps> = ({ role, handleClick }) => {
   return (
     <button
       style={buttonStyle}
-      onClick={() => handleClick(role)}
+      onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {buttonLabel}
+      {text}
     </button>
   );
 };
 
 
-export default Button;
 

@@ -1,12 +1,12 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginTeacher from './components/views/login/teacher'
-import LoginStudent from './components/views/login/student'
-import RegisterStudent from './components/views/registration/student'
-import RegisterTeacher from './components/views/registration/teacher'
-import Success from './components/views/success'
-import Begin from './components/views/Begin';
-import { TeamView, Team } from './TeacherPage/TeamView';
+import LoginTeacher from '@v/login/TeacherLoginView'
+import LoginStudent from '@v/login/StudentLoginView'
+import RegisterStudent from '@v/registration/StudentRegView'
+import RegisterTeacher from '@v/registration/TeacherRegView'
+import Success from '@v/login/SuccessLoginView'
+import Welcome from '@v/Welcome';
+import { TeamView, Team } from './views/AllTeamsView';
 import { TeamPreview } from './components/ui/TeamPreview';
 import CreateTeamForm from './TeacherPage/CreateTeamForm';
 
@@ -14,7 +14,7 @@ import CreateTeamForm from './TeacherPage/CreateTeamForm';
 
 import StudentManagement from './TeacherPage/studentmanagement';
 //import { TeamView } from './components/views/team/TeamView';
-import { TeamViewDelete } from './components/views/team/TeamViewDelete';
+import { TeamViewDelete } from '@v/team/TeamDeleteView';
 import StudentTable from './components/StudentTable';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -62,7 +62,7 @@ function App() {
         <Routes>
           {/* Default Route - When user accesses the root URL, show this component */}
           <Route path="/" element={<StudentManagement />} />
-          <Route path="/begin" element={<Begin />} />
+          <Route path="/welcome" element={<Welcome />} />
           <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
           />
           <Route path="/team-preview"
@@ -71,11 +71,11 @@ function App() {
                 <TeamView teams={teams} />
               </>
             }
-          
+
           />
           <Route path="/" element={<TeamDropdown />} />
           <Route path="/" element={<StudentManagement />} />
-          <Route path='/home' element={<Begin />} />
+          <Route path='/home' element={<Welcome />} />
           <Route path="/teacher"
             element={
               <>
