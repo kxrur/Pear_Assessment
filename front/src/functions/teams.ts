@@ -1,5 +1,8 @@
 import { teams } from "@t/SampleData";
 import { Team } from "@t/types";
+
+
+//TODO:-BE fetch teams of a user (student or prof) logic
 export function fetchTeams(memberId: number): Team[] {
   return teams
 }
@@ -28,4 +31,8 @@ export async function addTeam(team: Team) {
   } catch (error) {
     console.error('Error occurred while creating team:', error);
   }
+}
+
+//TODO:-BE delete team logic
+export async function deleteTeam(team: Team) {
 }

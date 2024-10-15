@@ -1,5 +1,3 @@
-// TeamView.tsx
-import React from 'react';
 import { TeamPreview } from '@c/ui/TeamPreview'; // Adjust the import path as needed
 import { NavigateButton } from '@c/input/NavigateButton';
 import { Team } from '@t/types';

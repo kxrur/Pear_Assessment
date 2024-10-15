@@ -1,24 +1,23 @@
-import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginTeacher from '@v/login/TeacherLoginView'
 import LoginStudent from '@v/login/StudentLoginView'
 import RegisterStudent from '@v/registration/StudentRegView'
 import RegisterTeacher from '@v/registration/TeacherRegView'
-import Success from '@v/login/SuccessLoginView'
+import SuccessLogin from '@v/login/SuccessLoginView'
 import Welcome from '@v/Welcome';
-import AllTeamsView from './views/team/AllTeamsView';
-import CreateTeamForm from './views/team/CreateTeamFormView';
+import AllTeamsView from '@v/team/AllTeamsView';
+import CreateTeamForm from '@v/team/CreateTeamFormView';
 
 
 
 import StudentManagement from '@v/StudentManagement';
-import { TeamViewDelete } from '@v/team/TeamDeleteView';
-import TeamDropdown from './components/input/dropdown';
+import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
+import TeamDropdown from '@c/input/Dropdown';
 
 import { teams } from '@t/SampleData';
 
 
-function App() {
+export default function App() {
 
   return (
 
@@ -30,14 +29,8 @@ function App() {
           <Route path="/welcome" element={<Welcome />} />
           <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
           />
-          <Route path="/team-preview"
-            element={
-              <AllTeamsView teams={teams} />
-            }
-
-          />
+          <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
           <Route path="/dropdown" element={<TeamDropdown />} />
-          <Route path="/" element={<StudentManagement />} />
           <Route path='/home' element={<Welcome />} />
           <Route path="/teacher"
             element={
@@ -47,14 +40,7 @@ function App() {
               </>
             }
           />
-
-
-          <Route path="/teamview" element=
-            <AllTeamsView teams={teams}></AllTeamsView>
-          />
           <Route path="/studentmanagement" element={<StudentManagement />} />
-
-
           <Route path="/student"
             element={
               <>
@@ -63,9 +49,9 @@ function App() {
               </>
             }
           />
-          <Route path="/success"
+          <Route path="/success-login"
             element={
-              <Success />
+              <SuccessLogin />
             }
           />
           <Route path="/team-delete-preview"
@@ -73,13 +59,9 @@ function App() {
               <TeamViewDelete teams={teams} />
             }
           />
-
-
         </Routes >
-
       </div >
     </Router >
   )
 }
 
-export default App
