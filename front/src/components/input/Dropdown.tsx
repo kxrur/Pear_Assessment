@@ -1,24 +1,23 @@
+import { fetchTeams } from '@f/teams';
+import { Team } from '@t/types';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-interface Team {
-  id: number;
-  name: string;
-}
 
-const TeamDropdown: React.FC = () => {
+export default function TeamDropdown() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Constant variable for an example team, that is shown when no teams are returned from backend
-  const EXAMPLE_TEAM: Team = { id: 0, name: 'Monaco' }; // Placeholder team
 
+  const teamso: Team[] = fetchTeams(1111);
+
+  //TODO:: move to fetchTeams method (fetch for a single member)
   useEffect(() => {
     // Fetch existing teams from the backend
     const fetchTeams = async () => {
       try {
-        const response = await fetch('/api/teams'); 
+        const response = await fetch('/api/teams');
         if (!response.ok) throw new Error('Failed to fetch teams');
         const data = await response.json();
         setTeams(data);
@@ -50,13 +49,13 @@ const TeamDropdown: React.FC = () => {
         >
           <option value="" disabled>Select a team</option>
           {teams.length === 0 ? (
-            <option value={EXAMPLE_TEAM.id} className="text-highlight">
-              {EXAMPLE_TEAM.name} (No teams available)
+            <option value={teamso[0].professorId} className="text-highlight">
+              {teamso[0].teamName} (No teams available)
             </option>
           ) : (
             teams.map((team) => (
-              <option key={team.id} value={team.id} className="text-highlight">
-                {team.name}
+              <option key={team.professorId} value={team.professorId} className="text-highlight">
+                {team.teamName}
               </option>
             ))
           )}
@@ -66,4 +65,3 @@ const TeamDropdown: React.FC = () => {
   );
 };
 
-export default TeamDropdown;

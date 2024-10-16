@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
-import StudentTable from '../components/StudentTable';
-import ButtonOpenFile from '../components/input/buttonOpenFile';
+import Sidebar from '@c/navBar/Sidebar';
+import Header from '@c/ui/table/Header';
+import StudentTable from '@c/ui/table/StudentTable';
+import ButtonOpenFile from '@c/input/buttonOpenFile';
+import { sidebarItems } from '@t/SampleData';
+
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
@@ -31,13 +33,13 @@ const StudentManagement: React.FC = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
+      <Sidebar items={sidebarItems} />
       <div className="flex-1">
         <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="p-4">
-          <StudentTable 
-            students={students} 
-            searchTerm={searchTerm} 
+          <StudentTable
+            students={students}
+            searchTerm={searchTerm}
             addStudent={addStudent} // Pass the addStudent function correctly
             deleteStudent={deleteStudent} // Pass the delete function
           />

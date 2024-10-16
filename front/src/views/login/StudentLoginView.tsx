@@ -15,7 +15,7 @@ export const LoginStudent: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let validationErrors: { username?: string; password?: string } = {};
+    const validationErrors: { username?: string; password?: string } = {};
     if (!username.trim()) {
       validationErrors.username = "ID is required";
     }
@@ -34,13 +34,13 @@ export const LoginStudent: React.FC = () => {
     url.append('username', username);
     url.append('password', password);
     console.log(url);
-    try{
-      const response = await fetch( 'http://localhost:8080/api/login/student',{
+    try {
+      const response = await fetch('http://localhost:8080/api/login/student', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body:url.toString(),
+        body: url.toString(),
       });
       if (response.ok) {
         const responseData = await response.text();
