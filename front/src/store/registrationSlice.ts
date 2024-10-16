@@ -1,6 +1,6 @@
 // src/store/registrationSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { FormData } from '../types'; // We'll define this type shortly
+import { FormData } from '@t/types'; // We'll define this type shortly
 
 // Define the state interface
 interface RegistrationState {

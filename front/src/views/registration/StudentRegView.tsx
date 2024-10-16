@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../store/store';
-import { registerUser, resetRegistrationState } from '../../../store/registrationSlice';
-import { FormData } from '../../../types';
+import { AppDispatch, RootState } from '@s/store';
+import { registerUser, resetRegistrationState } from '@s/registrationSlice';
+import { FormData } from "@t/types";
 
 interface FormDataError {
   firstName: string;
