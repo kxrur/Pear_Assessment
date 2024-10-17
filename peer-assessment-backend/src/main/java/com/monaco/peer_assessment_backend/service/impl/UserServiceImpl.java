@@ -3,10 +3,12 @@ package com.monaco.peer_assessment_backend.service.impl;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
+import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
+import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
@@ -137,8 +139,26 @@ public class UserServiceImpl implements UserService {
      * Fetches all users from the database.
      * @return a list of all users
      */
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    @Override
+    public UserDTO getUserById(Long id) throws UserNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+        UserDTO userDTO = userMapper.mapToUserDTO(user);
+
+        if (user instanceof Student) {
+            Student student = (Student) user;
+            StudentDTO studentDTO = userMapper.mapToStudentDTO(student);
+            studentDTO.setStudentId(student.getStudentID());
+            return studentDTO;
+        } else if (user instanceof Professor) {
+            Professor professor = (Professor) user;
+            ProfessorDTO professorDTO = userMapper.mapToProfessorDTO(professor);
+            return professorDTO;
+        }
+
+        // Return the general user if it was not a Student or Professor
+        return userDTO;
     }
 
     /**
