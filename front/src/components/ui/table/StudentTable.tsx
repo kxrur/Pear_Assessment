@@ -1,14 +1,7 @@
 import React from 'react';
 import StarRating from './StarRating';
-import ButtonOpenFile from './input/buttonOpenFile';
+import { Student } from '@t/types';
 
-interface Student {
-  id: number;
-  name: string;
-  studentId: string;
-  teamName?: string; // Make teamName optional
-  averageGrade: number;
-}
 
 interface StudentTableProps {
   students: Student[];
@@ -42,44 +35,44 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
     <div className="p-4 bg-white">
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-semibold">Student Management</h2>
-        <button 
+        <button
           onClick={handleAddStudent}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
           + Add Student
         </button>
       </div>
-  
+
       <div className="mb-4">
-        <input 
-          type="text" 
-          placeholder="Student Name" 
+        <input
+          type="text"
+          placeholder="Student Name"
           value={newStudent.name}
           onChange={e => setNewStudent({ ...newStudent, name: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black" 
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black"
         />
-        <input 
-          type="text" 
-          placeholder="Student ID" 
+        <input
+          type="text"
+          placeholder="Student ID"
           value={newStudent.studentId}
           onChange={e => setNewStudent({ ...newStudent, studentId: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" 
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
         />
-        <input 
-          type="text" 
-          placeholder="Team Name (optional)" 
+        <input
+          type="text"
+          placeholder="Team Name (optional)"
           value={newStudent.teamName}
           onChange={e => setNewStudent({ ...newStudent, teamName: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" 
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
         />
-        <input 
-          type="number" 
-          placeholder="Average Grade" 
+        <input
+          type="number"
+          placeholder="Average Grade"
           value={newStudent.averageGrade}
           onChange={e => setNewStudent({ ...newStudent, averageGrade: Number(e.target.value) })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" 
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
         />
       </div>
-  
+
       <table className="min-w-full bg-gray-100 border">
         <thead>
           <tr>
@@ -102,7 +95,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
                 <StarRating rating={student.averageGrade} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <button 
+                <button
                   onClick={() => deleteStudent(student.id)} // Call the delete function
                   className="text-red-600 hover:text-red-800">
                   Delete
