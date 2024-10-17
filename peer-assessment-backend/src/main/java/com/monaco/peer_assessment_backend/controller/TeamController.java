@@ -5,10 +5,13 @@ import com.monaco.peer_assessment_backend.dto.TeammateSelectionDTO;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.service.TeamService;
 import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -24,16 +27,20 @@ public class TeamController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    
-    @PostMapping("/submit")
-    public ResponseEntity<String> submitTeammatesForEvaluation(@RequestBody TeammateSelectionDTO selection) {
+    @PostMapping("/teams/evaluate")
+    public ResponseEntity<String> evaluateTeammates(
+            @RequestParam Long evaluatorId,
+            @RequestBody List<Long> selectedTeammateIds) {
+        
+        if (selectedTeammateIds == null || selectedTeammateIds.isEmpty()) {
+            return ResponseEntity.badRequest().body("No teammates selected for evaluation.");
+        }
+
         try {
-            teamService.saveSelectedTeammatesForEvaluation(selection.getEvaluatorId(), selection.getTeammateIds());
-            return ResponseEntity.ok("Teammates successfully selected for evaluation.");
+            teamService.saveSelectedTeammatesForEvaluation(evaluatorId, selectedTeammateIds);
+            return ResponseEntity.ok("Selected teammates for evaluation successfully.");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
-
 }
