@@ -1,42 +1,19 @@
+import { Team } from '@t/types';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Team } from './TeamView';
-
-interface CreateTeamFormProps {}
-
-async function addTeam(team: Team) {
-  try {
-
-    // Make a POST request to the correct API endpoint
-    const response = await fetch('http://localhost:8080/api/teams/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        professorID: team.professorId,
-        teamName: team.teamName,
-        studentIDs: team.teamMembers
-      })
-    });
-
-    if (response.ok) {
-      console.log('Team was created successfully:');
-    } else {
-      console.error('Failed to create team:', response.statusText);
-    }
-  } catch (error) {
-    console.error('Error occurred while creating team:', error);
-  }
-}
+import UserInput from '@c/input/UserInput';
+import Button from '@c/input/Button';
+import { addTeam } from '@f/teams';
 
 
-export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
+
+
+export default function CreateTeamForm() {
   const navigate = useNavigate();
   const [newTeam, setNewTeam] = useState({
     teacherId: '',
     teamName: '',
-    studentIds: [''], 
+    studentIds: [''],
     teamDescription: '',
   });
 
@@ -59,66 +36,68 @@ export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const teamDTO: Team = {
       professorId: newTeam.teacherId,
       teamName: newTeam.teamName,
       teamMembers: newTeam.studentIds.map(id => id),
       teamDescription: newTeam.teamDescription
     };
-  
+
     addTeam(teamDTO);
     navigate('/team-preview'); // Redirect to the team preview page after submission
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-accent h-full">
       <form onSubmit={handleSubmit} className="mb-4">
-        <input
+        {/* Use UserInput for all inputs */}
+        <UserInput
           type="number"
-          placeholder="Teacher ID"
+          min={0}
           value={newTeam.teacherId}
           onChange={(e) => handleInputChange(e, 'teacherId')}
-          className="p-2 border border-gray-300 rounded mb-2 w-full"
-          required
+          required={true}
+          placeholder="Teacher ID"
+          label="Teacher ID"
         />
-        <input
+
+        <UserInput
           type="text"
-          placeholder="Team Name"
           value={newTeam.teamName}
           onChange={(e) => handleInputChange(e, 'teamName')}
-          className="p-2 border border-gray-300 rounded mb-2 w-full"
-          required
+          required={true}
+          placeholder="Team Name"
+          label="Team Name"
         />
-        <textarea
-          placeholder="Team Description"
+
+        <UserInput
+          type="textarea"
           value={newTeam.teamDescription}
           onChange={(e) => handleInputChange(e, 'teamDescription')}
-          className="p-2 border border-gray-300 rounded mb-2 w-full"
-          required
+          required={true}
+          label='Team Description'
+          placeholder="Team Description"
         />
+
         <div className="mb-2">
-          <h3 className="font-semibold">Student IDs:</h3>
+          <h3 className="font-semibold text-highlight">Student IDs:</h3>
           {newTeam.studentIds.map((studentId, index) => (
-            <div key={index} className="flex items-center mb-2">
-              <input
+            <div key={index} className="flex items-center ">
+              <UserInput
                 type="number"
-                placeholder={`Student ID ${index + 1}`}
+                min={0}
                 value={studentId}
                 onChange={(e) => handleStudentIdChange(index, e.target.value)}
-                className="p-2 border border-gray-300 rounded w-full"
-                required
+                required={true}
+                placeholder={`Student ID ${index + 1}`}
+              //label={`Student ID ${index + 1}`}
               />
             </div>
           ))}
-          <button
-            type="button"
-            onClick={handleAddStudent}
-            className="text-blue-600 hover:underline"
-          >
-            + Add Another Student
-          </button>
+          <Button text={'Add Another Student'} handleClick={handleAddStudent}></Button>
         </div>
+
         <button
           type="submit"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
@@ -126,8 +105,7 @@ export const CreateTeamForm: React.FC<CreateTeamFormProps> = () => {
           Create Team
         </button>
       </form>
-    </div>
+    </div >
   );
 };
 
-export default CreateTeamForm;

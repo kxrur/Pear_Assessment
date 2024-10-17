@@ -1,10 +1,12 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
+import com.monaco.peer_assessment_backend.entity.Evaluation;
 import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
+import com.monaco.peer_assessment_backend.repository.EvaluationRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.TeamRepository;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
@@ -12,10 +14,9 @@ import com.monaco.peer_assessment_backend.service.TeamService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -29,6 +30,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     @Override
     public void createTeam(Long professorID, List<Long> studentIds, String teamName) {
@@ -48,30 +52,50 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<Student> fetchTeammates(long studentID) {
-        List<Team> teams = teamRepository.findAll();
+    public void saveSelectedTeammatesForEvaluation(Long evaluatorId, List<Long> selectedTeammateIds) {
+        // Fetch the student who is evaluating
+        Student evaluator = studentRepository.findById(evaluatorId)
+                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
 
-        List<Student> teammates = new ArrayList<>();
+        // Fetch the team of the evaluator
+        List<Team> evaluatorTeams = teamRepository.findAll();
+        Team evaluatorTeam = null;
 
-        for (Team team : teams){
-            for (Student student : team.getStudents()){
-                if (student.getStudentID() == studentID){
-                    for (Student teammate : team.getStudents()){
-                        // Exclude the student requesting the list
-                        if (teammate.getStudentID() != studentID){
-                            teammates.add(teammate);
-                        }
-                    }
-                    return teammates;
-                }
+        // Find the team the evaluator belongs to
+        for (Team team : evaluatorTeams) {
+            if (team.getStudents().contains(evaluator)) {
+                evaluatorTeam = team;
+                break;
             }
         }
-        // Return an empty list if no teammates are found
-        return teammates;
+
+        if (evaluatorTeam == null) {
+            throw new RuntimeException("Evaluator is not part of any team");
+        }
+
+        // Fetch all selected teammates
+        List<Student> selectedTeammates = studentRepository.findAllById(selectedTeammateIds);
+
+        // Validate that all selected teammates are part of the same team
+        for (Student selectedTeammate : selectedTeammates) {
+            if (!evaluatorTeam.getStudents().contains(selectedTeammate)) {
+                throw new RuntimeException("Selected teammate " + selectedTeammate.getUsername() + " is not in the same team.");
+            }
+        }
+
+        // Save the evaluations
+        for (Student selectedTeammate : selectedTeammates) {
+            Evaluation evaluation = new Evaluation();
+            evaluation.setEvaluator(evaluator);
+            evaluation.setTeammate(selectedTeammate);
+            // Optionally add feedback or other details
+            evaluationRepository.save(evaluation);
+        }
     }
 
     /**
      * Returns a list of Teams for which the user is part of
+     *
      * @param userId The user for which we are finding teams
      * @return a list of teams
      */

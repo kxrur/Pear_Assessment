@@ -29,34 +29,34 @@ export const LoginTeacher: React.FC = () => {
     } else {
 
 
-    const url = new URLSearchParams();
-    url.append('username', username);
-    url.append('password', password);
-    console.log(url);
+      const url = new URLSearchParams();
+      url.append('username', username);
+      url.append('password', password);
+      console.log(url);
 
-    try {
-      const response = await fetch('http://localhost:8080/api/login/professor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: url.toString(),
-      });
-      console.log(response.status);
-      if (response.ok) {
-        const responseData = await response.text();
-        setMessage(responseData); // Message from the backend
-        toast.success("Login successful!");
-        navigate('/success');
-      } else if (response.status > 399 && response.status < 500) {
-        setMessage('Invalid credentials');
-        toast.error("Client issue");
-      } else {
-        setMessage('An error occurred. Please try again.');
+      try {
+        const response = await fetch('http://localhost:8080/api/login/professor', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: url.toString(),
+        });
+        console.log(response.status);
+        if (response.ok) {
+          const responseData = await response.text();
+          setMessage(responseData); // Message from the backend
+          toast.success("Login successful!");
+          navigate('/success');
+        } else if (response.status > 399 && response.status < 500) {
+          setMessage('Invalid credentials');
+          toast.error("Client issue");
+        } else {
+          setMessage('An error occurred. Please try again.');
+        }
+      } catch (error) {
+        setMessage('Failed to connect to the server.');
       }
-    } catch (error) {
-      setMessage('Failed to connect to the server.');
-    }
     }
   };
 
