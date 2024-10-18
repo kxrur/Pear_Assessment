@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAppDispatch, RootState, useAppSelector } from '@s/store';
+import { useAppDispatch } from '@s/store';
 import { registerStudent } from '@s/userSlice';
-import { FormData } from "@t/types";
+import { StudentFormData } from "@t/types";
 import { GetCurrentUser } from "@f/student";
 
 interface FormDataError {
@@ -18,8 +17,13 @@ interface FormDataError {
 }
 
 export default function RegistrationForm() {
+  const currentUser = GetCurrentUser();
+  useEffect(() => {
+    toast.success("Welcome " + currentUser.firstName + " " + currentUser.lastName);
+  }, [currentUser]);
+  const dispatch = useAppDispatch();
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<StudentFormData>({
     firstName: "",
     lastName: "",
     studentId: NaN,
@@ -29,8 +33,7 @@ export default function RegistrationForm() {
     roles: ["STUDENT"]
   });
 
-  const navigate = useNavigate(); // Added navigate
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
 

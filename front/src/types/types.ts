@@ -1,5 +1,14 @@
 
-export interface FormData {
+
+export interface TeacherFormData {
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  roles: [string];
+}
+export interface StudentFormData {
   firstName: string;
   lastName: string;
   studentId: number;

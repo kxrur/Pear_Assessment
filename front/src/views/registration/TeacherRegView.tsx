@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { TeacherFormData } from "@t/types";
+import { registerTeacher } from "@s/userSlice";
+import { useAppDispatch } from "@s/store";
+import { GetCurrentUser } from "@f/student";
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-  roles: [string];
-}
 
 interface FormDataError {
   firstName: string;
@@ -21,7 +17,14 @@ interface FormDataError {
 }
 
 const RegistrationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const currentUser = GetCurrentUser();
+  useEffect(() => {
+    toast.success("Welcome " + currentUser.firstName + " " + currentUser.lastName);
+  }, [currentUser]);
+
+  const dispatch = useAppDispatch();
+
+  const [formData, setFormData] = useState<TeacherFormData>({
     firstName: "",
     lastName: "",
     username: "",
@@ -78,6 +81,7 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
+      await dispatch(registerTeacher(formData));
 
       // Proceed with form submission (e.g., API call)
       // try {
@@ -94,27 +98,28 @@ const RegistrationForm: React.FC = () => {
       //   console.error('Error:', error);
       // }
 
-      try {
-        const response = await fetch('http://localhost:8080/api/register/professor', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) {
-          toast.success("Form submitted successfully!");
-          const data = await response.json();
-          console.log('Response:', data);
-          console.log(response.status);
-          navigate('/success');
-        }
-        else{
-          toast.error("Already created account");
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      // try {
+      //   const response = await fetch('http://localhost:8080/api/register/professor', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(formData),
+      //   });
+      //   if (response.ok) {
+      //     toast.success("Form submitted successfully!");
+      //     const data = await response.json();
+      //     console.log('Response:', data);
+      //     console.log(response.status);
+      //     navigate('/success');
+      //   }
+      //   else {
+      //     toast.error("Already created account");
+      //   }
+      // } catch (error) {
+      //   console.error('Error:', error);
+      // }
+
     }
   };
 
