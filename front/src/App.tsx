@@ -7,8 +7,8 @@ import SuccessLogin from '@v/login/SuccessLoginView'
 import Welcome from '@v/Welcome';
 import AllTeamsView from '@v/team/AllTeamsView';
 import CreateTeamForm from '@v/team/CreateTeamFormView';
-
-
+import RateTeammate from '@v/team/RateTeammate';
+import { students } from '@t/SampleData';
 
 import StudentManagement from '@v/StudentManagement';
 import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
@@ -27,8 +27,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<StudentManagement />} />
           <Route path="/welcome" element={<Welcome />} />
-          <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
-          />
+          <Route path="/select-teammate" element={<RateTeammate />} />
+          <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}/>
           <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
           <Route path="/dropdown" element={<TeamDropdown />} />
           <Route path='/home' element={<Welcome />} />
