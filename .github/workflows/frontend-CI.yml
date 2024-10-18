@@ -22,17 +22,21 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
-        working-directory: front
+        run: |
+          cd front
+          npm install
 
       - name: Run tests
-        run: npm run test -- --watchAll=false
-        working-directory: front
+        run: |
+          cd front
+          npm run test -- --watchAll=false
 
       - name: Verify App.tsx loads
-        run: npm run test -- --testPathPattern=src/App.test.tsx
-        working-directory: front
+        run: |
+          cd front
+          npm run test -- --testPathPattern=src/App.test.tsx
 
       - name: Run the build
-        run: npm run build
-        working-directory: front
+        run: |
+          cd front
+          npm run build
