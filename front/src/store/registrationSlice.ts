@@ -1,22 +1,19 @@
-// src/store/registrationSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { FormData } from '@t/types'; // We'll define this type shortly
+import { FormData, Student } from '@t/types';
 
-// Define the state interface
 interface RegistrationState {
   loading: boolean;
-  success: boolean;
   error: string | null;
+  studentId: number | null;
 }
 
-// Initial state
 const initialState: RegistrationState = {
   loading: false,
-  success: false,
   error: null,
+  studentId: null,  // No default student object, will be populated on successful registration
 };
 
-// Async thunk for registration
+// Async thunk for registering a user
 export const registerUser = createAsyncThunk(
   'registration/registerUser',
   async (formData: FormData, { rejectWithValue }) => {
@@ -32,46 +29,44 @@ export const registerUser = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        // Assuming the API sends back an error message
-        return rejectWithValue(data.message || 'Registration failed');
+        throw new Error(data.message || 'Registration failed');
       }
 
-      return data;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Network Error');
+      return data.studentId;
+    } catch (error) {
+      return rejectWithValue(error || 'Network Error');
     }
   }
 );
 
-// Create the slice
+// Registration slice
 const registrationSlice = createSlice({
   name: 'registration',
   initialState,
   reducers: {
     resetRegistrationState: (state) => {
       state.loading = false;
-      state.success = false;
       state.error = null;
+      state.studentId = null;  // Reset student information
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
-        state.success = false;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state) => {
+      .addCase(registerUser.fulfilled, (state, action: PayloadAction<number>) => {
         state.loading = false;
-        state.success = true;
+        state.studentId = action.payload;
       })
-      .addCase(registerUser.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(registerUser.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.loading = false;
         state.error = action.payload || 'Registration failed';
       });
   },
 });
 
-// Export actions and reducer
+// Export the reset action and reducer
 export const { resetRegistrationState } = registrationSlice.actions;
 export default registrationSlice.reducer;

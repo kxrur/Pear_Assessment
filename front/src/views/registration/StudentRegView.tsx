@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@s/store';
+import { AppDispatch, RootState, useAppSelector } from '@s/store';
 import { registerUser, resetRegistrationState } from '@s/registrationSlice';
 import { FormData } from "@t/types";
 
@@ -71,6 +71,7 @@ const RegistrationForm: React.FC = () => {
     return newErrors;
   };
 
+  const userId = useAppSelector((state) => state.registration.studentId);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -79,30 +80,11 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-      // Proceed with form submission (e.g., API call)
-      /*
-      try {
-        const response = await fetch('http://localhost:8080/api/register/student', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          console.log('Response:', data);
-          console.log(response.status);
-          toast.success("Form submitted successfully!");
-          navigate('/success');
-        } else {
-          toast.error("User issue");
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-      */
-      dispatch(registerUser(formData));
+      await dispatch(registerUser(formData));
+      console.log("updated user: ", userId);
+      await dispatch(resetRegistrationState());
+      console.log("reset state: ", userId);
+
     }
   };
 

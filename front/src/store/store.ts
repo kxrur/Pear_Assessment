@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './counterSlice'; // Example reducer
-import registrationReducer from './registrationSlice'; // We'll create this next
+import registrationReducer from './registrationSlice';
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    registration: registrationReducer, // Add registration reducer
+    registration: registrationReducer,
   },
 });
 
 // Define types for TypeScript support
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => typeof store.dispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;
