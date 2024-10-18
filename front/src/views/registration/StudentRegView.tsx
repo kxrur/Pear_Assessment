@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, useAppSelector } from '@s/store';
-import { registerUser, resetRegistrationState } from '@s/registrationSlice';
+import { useAppDispatch, RootState, useAppSelector } from '@s/store';
+import { registerStudent } from '@s/userSlice';
 import { FormData } from "@t/types";
+import { GetCurrentUser } from "@f/student";
 
 interface FormDataError {
   firstName: string;
@@ -16,7 +17,8 @@ interface FormDataError {
   confirmPassword: string;
 }
 
-const RegistrationForm: React.FC = () => {
+export default function RegistrationForm() {
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -28,7 +30,7 @@ const RegistrationForm: React.FC = () => {
   });
 
   const navigate = useNavigate(); // Added navigate
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
 
@@ -71,7 +73,6 @@ const RegistrationForm: React.FC = () => {
     return newErrors;
   };
 
-  const userId = useAppSelector((state) => state.registration.studentId);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -80,11 +81,7 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-      await dispatch(registerUser(formData));
-      console.log("updated user: ", userId);
-      await dispatch(resetRegistrationState());
-      console.log("reset state: ", userId);
-
+      await dispatch(registerStudent(formData));
     }
   };
 
@@ -109,8 +106,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.firstName}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.firstName ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="First Name"
-            />
+              placeholder="First Name" />
             {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
           </div>
 
@@ -123,8 +119,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.lastName}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.lastName ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Last Name"
-            />
+              placeholder="Last Name" />
             {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
           </div>
 
@@ -145,8 +140,7 @@ const RegistrationForm: React.FC = () => {
               }}
               maxLength={15}
               className={`w-full p-2 border-2 ${errors.studentId ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="ID"
-            />
+              placeholder="ID" />
             {errors.studentId && <p className="text-red-500 text-xs">{errors.studentId}</p>}
           </div>
 
@@ -159,8 +153,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.username}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Username"
-            />
+              placeholder="Username" />
             {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
@@ -173,8 +166,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.password}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Password"
-            />
+              placeholder="Password" />
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
@@ -187,8 +179,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Confirm Password"
-            />
+              placeholder="Confirm Password" />
             {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
           </div>
 
@@ -224,6 +215,5 @@ const RegistrationForm: React.FC = () => {
       <ToastContainer />
     </div>
   );
-};
+}
 
-export default RegistrationForm;

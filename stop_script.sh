@@ -5,13 +5,13 @@ echo "Stopping MariaDB service..."
 sudo systemctl stop mariadb.service
 
 # Stop Spring Boot backend
-echo "Stopping Spring Boot backend..."
-SPRING_PID=$(ps aux | grep 'org.springframework.boot.loader.JarLauncher' | grep -v grep | awk '{print $2}')
-if [ -n "$SPRING_PID" ]; then
-  kill -9 $SPRING_PID
-  echo "Spring Boot backend stopped."
+echo "Stopping Spring Boot backend... (port 8080)"
+PORT_PID=$(lsof -t -i:8080)
+if [ -n "$PORT_PID" ]; then
+  kill -9 $PORT_PID
+  echo "Killed process using port 8080."
 else
-  echo "Spring Boot backend not running."
+  echo "No process using port 8080."
 fi
 
 # Stop Vite frontend

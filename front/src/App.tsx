@@ -7,17 +7,22 @@ import SuccessLogin from '@v/login/SuccessLoginView'
 import Welcome from '@v/Welcome';
 import AllTeamsView from '@v/team/AllTeamsView';
 import CreateTeamForm from '@v/team/CreateTeamFormView';
-
-
-
 import StudentManagement from '@v/StudentManagement';
 import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
 import TeamDropdown from '@c/input/Dropdown';
 
+import { useEffect } from 'react';
+import { GetCurrentUser } from '@f/student';
+
 import { teams } from '@t/SampleData';
 
 
+
 export default function App() {
+  const currentUser = GetCurrentUser();
+  useEffect(() => {
+    console.log("Current user updated: ", currentUser);
+  }, [currentUser]);
 
   return (
 
