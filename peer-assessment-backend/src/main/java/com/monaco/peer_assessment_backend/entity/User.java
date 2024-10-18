@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Set;
@@ -21,10 +22,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    private boolean isTemp;
     private String firstName;
     private String lastName;
+
+    @Nullable
     private String username;
+
     private String password;
 
     // Students can have multiple roles and roles can have multiple students

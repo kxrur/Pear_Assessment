@@ -30,7 +30,8 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    roles: ["STUDENT"]
+    roles: ["STUDENT"],
+    isTemp: false
   });
 
   const navigate = useNavigate(); // Added navigate

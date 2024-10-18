@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	    // Encrypt the password before saving the user
         student.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
 
-        if (userRepository.existsByUsername(studentDTO.getUsername())) {
+        if (userRepository.existsByUsername(studentDTO.getUsername())&& !studentDTO.isTemp()) {
             throw new DuplicateUserException("Username already exists");
         }
 

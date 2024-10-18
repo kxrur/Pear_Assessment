@@ -78,22 +78,6 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-
-      // Proceed with form submission (e.g., API call)
-      // try {
-      //   const response = await fetch('http://localhost:8080/api/register/checkUser', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(formData),
-      //   });
-      //   const data = await response.json();
-      //   console.log('Response:', data);
-      // } catch (error) {
-      //   console.error('Error:', error);
-      // }
-
       try {
         const response = await fetch('http://localhost:8080/api/register/professor', {
           method: 'POST',
@@ -107,7 +91,7 @@ const RegistrationForm: React.FC = () => {
           const data = await response.json();
           console.log('Response:', data);
           console.log(response.status);
-          navigate('/success');
+          navigate('/Mana');
         }
         else{
           toast.error("Already created account");
