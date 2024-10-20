@@ -126,10 +126,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating) {
-        if (rating < 1 || rating > 5){
-            throw new IllegalArgumentException("Rating must be between 1 and 5.");
-        }
-
+        
         // Find the evaluator and evaluatee
         Student evaluator = studentRepository.findById(evaluatorId).orElseThrow(() -> new RuntimeException("Evaluator not found"));
         Student evaluatee = studentRepository.findById(evaluateeId).orElseThrow(() -> new RuntimeException("Evaluatee not found"));
