@@ -81,10 +81,13 @@ public class TeamServiceImpl implements TeamService {
             if (!evaluatorTeam.getStudents().contains(selectedTeammate)) {
                 throw new RuntimeException("Selected teammate " + selectedTeammate.getUsername() + " is not in the same team.");
             }
-        }
 
-        // Save the evaluations
-        for (Student selectedTeammate : selectedTeammates) {
+             // Check if evaluation already exists
+            Optional<Evaluation> existingEvaluation = evaluationRepository.findByEvaluator_IdAndTeammate_Id(evaluator.getId(), selectedTeammate.getId());
+            if (existingEvaluation.isPresent()) {
+                throw new RuntimeException("Selected teammate " + selectedTeammate.getUsername() + " has already been evaluated.");
+        }
+            // Save the evaluations
             Evaluation evaluation = new Evaluation();
             evaluation.setEvaluator(evaluator);
             evaluation.setTeammate(selectedTeammate);
@@ -119,5 +122,37 @@ public class TeamServiceImpl implements TeamService {
             // Shouldn't technically be possible but we'll catch it anyways
             throw new UserNotFoundException("User is neither a student or a professor");
         }
+    }
+
+    @Override
+    public void submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating) {
+        if (rating < 1 || rating > 5){
+            throw new IllegalArgumentException("Rating must be between 1 and 5.");
+        }
+
+        // Find the evaluator and evaluatee
+        Student evaluator = studentRepository.findById(evaluatorId).orElseThrow(() -> new RuntimeException("Evaluator not found"));
+        Student evaluatee = studentRepository.findById(evaluateeId).orElseThrow(() -> new RuntimeException("Evaluatee not found"));
+
+        // Find existing evaluation or create a new one
+        Optional<Evaluation> optionalEvaluation = evaluationRepository.findByEvaluatorAndTeammate(evaluator, evaluatee);
+        
+        Evaluation evaluation;
+
+        if (optionalEvaluation.isPresent()) {
+            evaluation = optionalEvaluation.get();
+        } 
+        
+        else {
+            evaluation = new Evaluation();
+            evaluation.setEvaluator(evaluator);
+            evaluation.setTeammate(evaluatee);
+        }
+
+        // Set the cooperation rating
+        evaluation.setCooperationRating(rating);
+        
+        // Save the evaluation
+        evaluationRepository.save(evaluation);
     }
 }
