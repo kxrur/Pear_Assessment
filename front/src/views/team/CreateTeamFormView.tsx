@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import UserInput from '@c/input/UserInput';
 import Button from '@c/input/Button';
 import { addTeam } from '@f/teams';
+import { sidebarItems } from '@t/SampleData';
+import Sidebar from '@c/navBar/Sidebar';
 
 
 
@@ -49,6 +51,8 @@ export default function CreateTeamForm() {
   };
 
   return (
+    <div className="flex">
+      <Sidebar items={sidebarItems} />
     <div className="p-6 bg-accent h-full">
       <form onSubmit={handleSubmit} className="mb-4">
         {/* Use UserInput for all inputs */}
@@ -105,6 +109,7 @@ export default function CreateTeamForm() {
           Create Team
         </button>
       </form>
+    </div >
     </div >
   );
 };

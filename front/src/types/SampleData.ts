@@ -51,7 +51,25 @@ export const sidebarItems = [
   },
   {
     label: 'Logout',
+    to: '/welcome',
+    onClick: () => console.log('Logout clicked'),
+  },
+];
+
+export const sidebarItemsStudents = [
+  { label: 'Dashboard', to: '/dashboard' },
+  { label: 'TeamView', to: '/teamview' },
+  { label: 'Student Management', to: '/student-management' },
+  { label: 'SMS Management', to: '/sms-management' },
+  { label: 'General Settings', to: '/settings' },
+  {
+    label: 'Switch Account',
     to: '/begin',
+    onClick: () => console.log('Switch Account clicked'),
+  },
+  {
+    label: 'Logout',
+    to: '/welcome',
     onClick: () => console.log('Logout clicked'),
   },
 ];
