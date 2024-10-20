@@ -2,11 +2,11 @@ package com.monaco.peer_assessment_backend.service;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
+import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 
 public interface UserService {
 //    public User createUser(User  newUser);
-//    public User getUserById(int id);
 //    public List<User> getAllUsers();
 //    public User updateUser(int id, User newUser);
 //    public User deleteUser(int id);
@@ -15,4 +15,6 @@ public interface UserService {
 
     ProfessorDTO registerProfessor(ProfessorDTO professorDTO) throws DuplicateUserException;
 
-    }
+    UserDTO getUserById(Long id) throws UserNotFoundException;
+
+}
