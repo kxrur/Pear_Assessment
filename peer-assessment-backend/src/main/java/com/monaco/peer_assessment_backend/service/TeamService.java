@@ -16,4 +16,6 @@ public interface TeamService {
     
     void saveSelectedTeammatesForEvaluation(Long evaluatorId, List<Long> selectedTeammateIds);
 
+    void submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating);
+
 }
