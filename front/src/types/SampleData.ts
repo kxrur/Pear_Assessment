@@ -38,20 +38,3 @@ export const teams: Team[] = [
     professorId: "",
   },
 ];
-export const sidebarItems = [
-  { label: 'Dashboard', to: '/dashboard' },
-  { label: 'TeamView', to: '/team-preview' },
-  { label: 'Student Management', to: '/student-management' },
-  { label: 'SMS Management', to: '/sms-management' },
-  { label: 'General Settings', to: '/settings' },
-  {
-    label: 'Switch Account',
-    to: '/welcome',
-    onClick: () => console.log('Switch Account clicked'),
-  },
-  {
-    label: 'Logout',
-    to: '/welcome',
-    onClick: () => console.log('Logout clicked'),
-  },
-];

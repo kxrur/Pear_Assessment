@@ -20,6 +20,7 @@ const initialState: UserState = {
   roles: ["STUDENT"],
 };
 
+
 export const loginTeacher = createAsyncThunk(
   'login-teacher/fetch',
   async (formData: URLSearchParams, { rejectWithValue }) => {
@@ -32,7 +33,7 @@ export const loginTeacher = createAsyncThunk(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formData.toString(),// aint no way u just used a different parsing than registration (json) for login
+        body: formData.toString(),
       });
       const data = await response.json();
       if (response.ok) {
@@ -138,7 +139,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    resetStudent: (state) => {
+    logoutUser: (state) => {
       Object.assign(state, initialState)
     },
   },
@@ -178,4 +179,4 @@ const userSlice = createSlice({
 
 // Export the reset action and reducer
 export default userSlice.reducer;
-export const { resetStudent } = userSlice.actions;
+export const { logoutUser } = userSlice.actions;
