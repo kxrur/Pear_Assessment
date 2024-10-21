@@ -33,15 +33,12 @@ jobs:
 
       - name: Run tests
         run: |
-          cd front
           npm run test -- --watchAll=false
 
       - name: Verify App.tsx loads
         run: |
-          cd front
           npm run test -- --testPathPattern=src/App.test.tsx
 
       - name: Run the build
         run: |
-          cd front
           npm run build
