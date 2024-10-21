@@ -29,17 +29,20 @@ jobs:
       - name: Install dependencies
         run: |
           cd front
-          npm install
+          rm -r node_modules && npm install
 
       - name: Run the build
         run: |
+          cd front
           npm run build
 
       - name: Run tests
         run: |
+          cd front
           npm run test -- --watchAll=false
 
       - name: Verify App.tsx loads
         run: |
+          cd front
           npm run test -- --testPathPattern=src/App.test.tsx
 
