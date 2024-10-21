@@ -28,6 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd front
           npm install
 
       - name: Run the build
