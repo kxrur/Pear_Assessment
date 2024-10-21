@@ -39,7 +39,7 @@ jobs:
       - name: Run tests
         run: |
           cd front
-          npm run test -- --watchAll=false
+          npm run test
 
       - name: Verify App.tsx loads
         run: |
