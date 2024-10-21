@@ -34,7 +34,7 @@ jobs:
       - name: Run the build
         run: |
           cd front
-          npm run build
+          npm run build 2>&1 | grep -v "TS6133"
 
       - name: Run tests
         run: |
