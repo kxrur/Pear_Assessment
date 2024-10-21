@@ -45,7 +45,7 @@ export default function App() {
               </>
             }
           />
-          <Route path="/studentmanagement" element={<StudentManagement />} />
+          <Route path="/student-management" element={<StudentManagement />} />
           <Route path="/student"
             element={
               <>
