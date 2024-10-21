@@ -16,10 +16,40 @@ const initialState: UserState = {
   username: "tester",
   firstName: "Test",
   lastName: "Testee",
-  studentId: "1",
+  studentId: null,
   roles: ["STUDENT"],
 };
 
+export const loginTeacher = createAsyncThunk(
+  'login-teacher/fetch',
+  async (formData: URLSearchParams, { rejectWithValue }) => {
+    let message = '';
+    console.log('login request body: ' + formData.toString())
+
+    try {
+      const response = await fetch('http://localhost:8080/api/login/professor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),// aint no way u just used a different parsing than registration (json) for login
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return data;
+      } else if (response.status > 399 && response.status < 500) {
+        message = 'Invalid credentials';
+      } else {
+        message = 'An error occurred. Please try again.';
+      }
+    } catch (error) {
+      message = 'Failed to connect to the server. Error: ' + error;
+    }
+    if (message != '') {
+      toast.error(message);
+    }
+  }
+);
 
 export const loginStudent = createAsyncThunk(
   'login-student/fetch',
@@ -134,7 +164,14 @@ const userSlice = createSlice({
       state.firstName = action.payload.firstName
       state.lastName = action.payload.lastName
       state.studentId = action.payload.studentID
-      state.roles = action.payload.roles
+      state.roles = action.payload.roles[0]['name']
+    })
+    builder.addCase(loginTeacher.fulfilled, (state, action) => {
+      state.id = action.payload.id
+      state.username = action.payload.username
+      state.firstName = action.payload.firstName
+      state.lastName = action.payload.lastName
+      state.roles = action.payload.roles[0]['name']
     })
   },
 });
