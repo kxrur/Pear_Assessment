@@ -16,7 +16,7 @@ public class StudentDTO extends UserDTO {
     private long studentId;
     private boolean isTemp;
 
-    public StudentDTO(long id, String firstName, String lastName, Set<String> roles, boolean isTemp, int studentId) {
+    public StudentDTO(long id, String firstName, String lastName, Set<String> roles, boolean isTemp, long studentId) {
         super(id, null, firstName, lastName, " ", roles);
         this.isTemp = isTemp;
         this.studentId = studentId;

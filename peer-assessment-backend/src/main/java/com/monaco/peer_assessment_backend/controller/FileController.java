@@ -70,7 +70,6 @@ public class FileController {
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-
         return switch (parseStudents(file.getOriginalFilename())) {
             case 0 -> new ResponseEntity<>("No users have been added", HttpStatus.BAD_REQUEST);
             case 1 -> new ResponseEntity<>("All users have been added", HttpStatus.ACCEPTED);
@@ -78,7 +77,6 @@ public class FileController {
             default -> new ResponseEntity<>("Error adding users", HttpStatus.BAD_REQUEST);
         };
     }
-
     @Autowired
     private UserServiceImpl userService;
 
@@ -125,7 +123,13 @@ public class FileController {
             // Save all valid students to the database in one go
             for (StudentDTO tempStudent : validStudents) {
                 System.out.println("adding");
-                userService.registerStudent(tempStudent);
+                try {
+                 userService.registerStudent(tempStudent);
+                }
+                catch(Exception e){
+                    nbErrors++;
+                    e.printStackTrace();
+                }
 
             }
 

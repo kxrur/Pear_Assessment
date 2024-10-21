@@ -54,7 +54,6 @@ public class UserMapper {
      */
     public Student mapToStudentEntity(StudentDTO studentDTO) {
         Student student = new Student();
-
         User user = mapToUserEntity(studentDTO);
         student.setId(user.getId());
         student.setFirstName(user.getFirstName());
@@ -62,7 +61,7 @@ public class UserMapper {
         student.setUsername(user.getUsername());
         student.setPassword(user.getPassword());
         student.setRoles(user.getRoles());
-
+        student.setTemp(studentDTO.isTemp());
         student.setStudentID(studentDTO.getStudentId());
 
         return student;
@@ -80,9 +79,8 @@ public class UserMapper {
         Set<String> roles = student.getRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.toSet());
-
         studentDTO.setRoles(roles);
-
+        studentDTO.setTemp(student.isTemp());
         return studentDTO;
     }
 

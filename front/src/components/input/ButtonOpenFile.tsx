@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import toast from 'react-hot-toast';
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ButtonOpenFile: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -19,7 +20,7 @@ const ButtonOpenFile: React.FC = () => {
                 });
 
                 if (response.ok) {
-                    toast.success('File uploaded successfully!');
+                    toast.success(await response.text());
                 } else {
                     toast.error('Failed to upload file.');
                 }
@@ -48,6 +49,7 @@ const ButtonOpenFile: React.FC = () => {
                 className="hidden"
                 onChange={handleFileChange}
             />
+            <ToastContainer />
         </div>
     );
 };
