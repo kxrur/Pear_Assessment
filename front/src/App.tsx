@@ -10,6 +10,8 @@ import CreateTeamForm from '@v/team/CreateTeamFormView';
 import StudentManagement from '@v/StudentManagement';
 import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
 import TeamDropdown from '@c/input/Dropdown';
+import PublicLayout from '@l/PublicLayout';
+import ProtectedLayout from '@l/ProtectedLayout';
 
 import { useEffect } from 'react';
 import { GetCurrentUser } from '@f/student';
@@ -30,41 +32,34 @@ export default function App() {
       <div className='bg-background h-screen w-dvw'>
 
         <Routes>
-          <Route path="/" element={<StudentManagement />} />
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
-          />
-          <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
-          <Route path="/dropdown" element={<TeamDropdown />} />
-          <Route path='/home' element={<Welcome />} />
-          <Route path="/teacher"
-            element={
+          {/* Public Routes */}
+          <Route element={<PublicLayout />}>
+            <Route path="/welcome" element={<Welcome />} />
+            <Route path="/teacher" element={
               <>
                 <RegisterTeacher />
                 <LoginTeacher />
               </>
-            }
-          />
-          <Route path="/student-management" element={<StudentManagement />} />
-          <Route path="/student"
-            element={
+            } />
+            <Route path="/student" element={
               <>
                 <RegisterStudent />
                 <LoginStudent />
               </>
-            }
-          />
-          <Route path="/success-login"
-            element={
-              <SuccessLogin />
-            }
-          />
-          <Route path="/team-delete-preview"
-            element={
-              <TeamViewDelete teams={teams} />
-            }
-          />
-        </Routes >
+            } />
+            <Route path="/success-login" element={<SuccessLogin />} />
+          </Route>
+
+          {/* Protected Routes */}
+          <Route element={<ProtectedLayout />}>
+            <Route path="/" element={<StudentManagement />} />
+            <Route path="/create-team" element={<CreateTeamForm />} />
+            <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
+            <Route path="/dropdown" element={<TeamDropdown />} />
+            <Route path="/student-management" element={<StudentManagement />} />
+            <Route path="/team-delete-preview" element={<TeamViewDelete teams={teams} />} />
+          </Route>
+        </Routes>
       </div >
     </Router >
   )

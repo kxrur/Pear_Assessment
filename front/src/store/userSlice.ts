@@ -3,7 +3,7 @@ import { StudentRegFormData, TeacherRegFormData } from '@t/types';
 import toast from 'react-hot-toast';
 
 interface UserState {
-  id: number,
+  id: number | null, // a null id indicated that no user is signed in
   username?: string,
   firstName: string,
   lastName: string,
@@ -12,7 +12,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  id: 0,
+  id: null,
   username: "tester",
   firstName: "Test",
   lastName: "Testee",

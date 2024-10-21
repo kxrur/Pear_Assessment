@@ -20,6 +20,9 @@
       "@s/*": [
         "store/*"
       ],
+      "@l/*": [
+        "layout/*"
+      ],
     },
     "target": "ES2020",
     "useDefineForClassFields": true,

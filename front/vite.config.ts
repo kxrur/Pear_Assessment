@@ -13,6 +13,7 @@ export default defineConfig({
       '@t': fileURLToPath(new URL('./src/types', import.meta.url)),
       '@f': fileURLToPath(new URL('./src/functions', import.meta.url)),
       '@s': fileURLToPath(new URL('./src/store', import.meta.url)),
+      '@l': fileURLToPath(new URL('./src/layout', import.meta.url)),
     }
   },
 })
