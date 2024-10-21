@@ -21,18 +21,27 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Change directory to 'front' and verify contents
+        run: |
+          cd front
+          ls -la
+
       - name: Install dependencies
-        working-directory: front
-        run: npm install
+        run: |
+          cd front
+          npm install
 
       - name: Run tests
-        working-directory: front
-        run: npm run test -- --watchAll=false
+        run: |
+          cd front
+          npm run test -- --watchAll=false
 
       - name: Verify App.tsx loads
-        working-directory: front
-        run: npm run test -- --testPathPattern=src/App.test.tsx
+        run: |
+          cd front
+          npm run test -- --testPathPattern=src/App.test.tsx
 
       - name: Run the build
-        working-directory: front
-        run: npm run build
+        run: |
+          cd front
+          npm run build
