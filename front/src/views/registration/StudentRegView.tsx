@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@s/store';
 import { registerStudent } from '@s/userSlice';
-import { StudentFormData } from "@t/types";
+import { StudentRegFormData } from "@t/types";
 import { GetCurrentUser } from "@f/student";
 
 interface FormDataError {
@@ -19,11 +19,11 @@ interface FormDataError {
 export default function RegistrationForm() {
   const currentUser = GetCurrentUser();
   useEffect(() => {
-    toast.success("Welcome " + currentUser.firstName + " " + currentUser.lastName);
+    toast.success("Welcome: " + currentUser.firstName + " " + currentUser.lastName);
   }, [currentUser]);
   const dispatch = useAppDispatch();
 
-  const [formData, setFormData] = useState<StudentFormData>({
+  const [formData, setFormData] = useState<StudentRegFormData>({
     firstName: "",
     lastName: "",
     studentId: NaN,

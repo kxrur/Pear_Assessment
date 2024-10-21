@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { TeacherFormData } from "@t/types";
+import { TeacherRegFormData } from "@t/types";
 import { registerTeacher } from "@s/userSlice";
 import { useAppDispatch } from "@s/store";
 import { GetCurrentUser } from "@f/student";
@@ -24,7 +24,7 @@ const RegistrationForm: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const [formData, setFormData] = useState<TeacherFormData>({
+  const [formData, setFormData] = useState<TeacherRegFormData>({
     firstName: "",
     lastName: "",
     username: "",

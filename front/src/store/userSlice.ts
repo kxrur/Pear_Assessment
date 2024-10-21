@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { StudentFormData, TeacherFormData } from '@t/types';
+import { StudentRegFormData, TeacherRegFormData } from '@t/types';
+import toast from 'react-hot-toast';
 
 interface UserState {
   id: number,
@@ -19,9 +20,43 @@ const initialState: UserState = {
   roles: ["STUDENT"],
 };
 
+
+export const loginStudent = createAsyncThunk(
+  'login-student/fetch',
+  async (formData: URLSearchParams, { rejectWithValue }) => {
+    let message = '';
+    console.log('login request body: ' + formData.toString())
+
+    try {
+      const response = await fetch('http://localhost:8080/api/login/student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),// aint no way u just used a different parsing than registration (json) for login
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return data;
+      } else if (response.status > 399 && response.status < 500) {
+        message = 'Invalid credentials';
+      } else {
+        message = 'An error occurred. Please try again.';
+      }
+    } catch (error) {
+      message = 'Failed to connect to the server. Error: ' + error;
+    }
+    if (message != '') {
+      toast.error(message);
+    }
+  }
+);
+
+
+
 export const registerStudent = createAsyncThunk(
   'registration-student/fetch',
-  async (formData: StudentFormData, { rejectWithValue }) => {
+  async (formData: StudentRegFormData, { rejectWithValue }) => {
     try {
       const response = await fetch('http://localhost:8080/api/register/student', {
         method: 'POST',
@@ -46,7 +81,7 @@ export const registerStudent = createAsyncThunk(
 
 export const registerTeacher = createAsyncThunk(
   'registration-teacher/fetch',
-  async (formData: TeacherFormData, { rejectWithValue }) => {
+  async (formData: TeacherRegFormData, { rejectWithValue }) => {
     try {
       const response = await fetch('http://localhost:8080/api/register/professor', {
         method: 'POST',
@@ -91,6 +126,14 @@ const userSlice = createSlice({
       state.firstName = action.payload.firstName
       state.lastName = action.payload.lastName
       state.studentId = action.payload.studentId
+      state.roles = action.payload.roles
+    })
+    builder.addCase(loginStudent.fulfilled, (state, action) => {
+      state.id = action.payload.id
+      state.username = action.payload.username
+      state.firstName = action.payload.firstName
+      state.lastName = action.payload.lastName
+      state.studentId = action.payload.studentID
       state.roles = action.payload.roles
     })
   },

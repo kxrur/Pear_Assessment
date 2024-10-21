@@ -1,6 +1,6 @@
 
 
-export interface TeacherFormData {
+export interface TeacherRegFormData {
   firstName: string;
   lastName: string;
   username: string;
@@ -8,7 +8,7 @@ export interface TeacherFormData {
   confirmPassword: string;
   roles: [string];
 }
-export interface StudentFormData {
+export interface StudentRegFormData {
   firstName: string;
   lastName: string;
   studentId: number;
@@ -17,6 +17,7 @@ export interface StudentFormData {
   confirmPassword: string;
   roles: string[];
 }
+
 export interface Team {
   professorId: string;
   teamName: string;
