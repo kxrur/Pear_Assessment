@@ -5,7 +5,6 @@ import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
 import { sidebarItems } from '@t/SampleData';
 
-
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
     { id: 1, name: 'Mohamed Tremblay', studentId: '40292922', teamName: 'Think Vision', averageGrade: 4 },
@@ -21,7 +20,10 @@ const StudentManagement: React.FC = () => {
   const addStudent = (newStudent: { name: string; studentId: string; teamName?: string; averageGrade: number }) => {
     const newStudentEntry = {
       id: students.length + 1, // Simple ID increment, consider using a unique ID generator
-      ...newStudent,
+      name: newStudent.name,
+      studentId: newStudent.studentId,
+      teamName: newStudent.teamName ?? 'No Team', // Provide default if undefined
+      averageGrade: newStudent.averageGrade,
     };
     setStudents([...students, newStudentEntry]);
   };
@@ -53,4 +55,3 @@ const StudentManagement: React.FC = () => {
 };
 
 export default StudentManagement;
-// Compare this snippet from main/Monaco_SOEN341_Project_F24/front/src/components/TeamTable.tsx:
