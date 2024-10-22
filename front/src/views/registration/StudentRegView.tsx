@@ -11,6 +11,7 @@ interface FormData {
   password: string;
   confirmPassword: string;
   roles:[string];
+  isTemp: boolean;
 }
 
 interface FormDataError {
@@ -30,7 +31,8 @@ const RegistrationForm: React.FC = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    roles: ["STUDENT"]
+    roles: ["STUDENT"],
+    isTemp: false,
   });
 
   const navigate = useNavigate(); // Added navigate
@@ -241,7 +243,7 @@ const RegistrationForm: React.FC = () => {
           </div>
         </form>
       </div>
-      <ToastContainer />
+      <ToastContainer/>
     </div>
   );
 };

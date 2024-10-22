@@ -81,18 +81,18 @@ export const students: Student[] = [
 
 export const sidebarItems = [
   { label: 'Dashboard', to: '/dashboard' },
-  { label: 'TeamView', to: '/teamview' },
+  { label: 'TeamView', to: '/team-preview' },
   { label: 'Student Management', to: '/student-management' },
   { label: 'SMS Management', to: '/sms-management' },
   { label: 'General Settings', to: '/settings' },
   {
     label: 'Switch Account',
-    to: '/begin',
+    to: '/welcome',
     onClick: () => console.log('Switch Account clicked'),
   },
   {
     label: 'Logout',
-    to: '/begin',
+    to: '/welcome',
     onClick: () => console.log('Logout clicked'),
   },
 ];

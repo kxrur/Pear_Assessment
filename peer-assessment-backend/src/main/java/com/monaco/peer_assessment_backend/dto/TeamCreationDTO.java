@@ -11,9 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamDTO {
-    private Long id;
-    private Long professorID;
-    private List<StudentDTO> students;
+public class TeamCreationDTO {
+    private Long professorId;
     private String teamName;
+    private List<Long> studentIds;
 }
