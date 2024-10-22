@@ -3,7 +3,6 @@ import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
-import { sidebarItems } from '@t/SampleData';
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
@@ -35,7 +34,7 @@ const StudentManagement: React.FC = () => {
 
   return (
     <div className="flex">
-      <Sidebar items={sidebarItems} />
+      <Sidebar />
       <div className="flex-1">
         <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="p-4">

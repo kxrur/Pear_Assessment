@@ -1,18 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  studentId: number;
-  username: string;
-  password: string;
-  confirmPassword: string;
-  roles:[string];
-  isTemp: boolean;
-}
+import { useAppDispatch } from '@s/store';
+import { registerStudent } from '@s/userSlice';
+import { StudentRegFormData } from "@t/types";
+import { GetCurrentUser } from "@f/student";
 
 interface FormDataError {
   firstName: string;
@@ -23,8 +16,14 @@ interface FormDataError {
   confirmPassword: string;
 }
 
-const RegistrationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+export default function RegistrationForm() {
+  const currentUser = GetCurrentUser();
+  useEffect(() => {
+    toast.success("Welcome: " + currentUser.firstName + " " + currentUser.lastName);
+  }, [currentUser]);
+  const dispatch = useAppDispatch();
+
+  const [formData, setFormData] = useState<StudentRegFormData>({
     firstName: "",
     lastName: "",
     studentId: NaN,
@@ -35,7 +34,7 @@ const RegistrationForm: React.FC = () => {
     isTemp: false,
   });
 
-  const navigate = useNavigate(); // Added navigate
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<Partial<FormDataError>>({});
 
@@ -86,27 +85,7 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-      // Proceed with form submission (e.g., API call)
-      try {
-        const response = await fetch('http://localhost:8080/api/register/student', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          console.log('Response:', data);
-          console.log(response.status);
-          toast.success("Form submitted successfully!");
-          navigate('/success');
-        } else{
-          toast.error("User issue");
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      await dispatch(registerStudent(formData));
     }
   };
 
@@ -131,8 +110,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.firstName}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.firstName ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="First Name"
-            />
+              placeholder="First Name" />
             {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
           </div>
 
@@ -145,8 +123,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.lastName}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.lastName ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Last Name"
-            />
+              placeholder="Last Name" />
             {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
           </div>
 
@@ -167,8 +144,7 @@ const RegistrationForm: React.FC = () => {
               }}
               maxLength={15}
               className={`w-full p-2 border-2 ${errors.studentId ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="ID"
-            />
+              placeholder="ID" />
             {errors.studentId && <p className="text-red-500 text-xs">{errors.studentId}</p>}
           </div>
 
@@ -181,8 +157,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.username}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Username"
-            />
+              placeholder="Username" />
             {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
@@ -195,8 +170,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.password}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Password"
-            />
+              placeholder="Password" />
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
@@ -209,8 +183,7 @@ const RegistrationForm: React.FC = () => {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Confirm Password"
-            />
+              placeholder="Confirm Password" />
             {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
           </div>
 
@@ -243,9 +216,8 @@ const RegistrationForm: React.FC = () => {
           </div>
         </form>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
-};
+}
 
-export default RegistrationForm;
