@@ -8,7 +8,7 @@ import SuccessLogin from '@v/login/SuccessLoginView'
 import Welcome from '@v/Welcome';
 import AllTeamsView from '@v/team/AllTeamsView';
 import CreateTeamForm from '@v/team/CreateTeamFormView';
-
+import SelectTeammate from '@v/team/SelectTeammate';
 
 
 import StudentManagement from '@v/StudentManagement';
@@ -43,6 +43,7 @@ export default function App({ RouterComponent = AppRouter }) {
           <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
           />
           <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
+          <Route path="/select-teammate" element={<SelectTeammate />} />
           <Route path="/dropdown" element={<TeamDropdown />} />
           <Route path='/home' element={<Welcome />} />
           <Route path="/teacher"
@@ -77,4 +78,3 @@ export default function App({ RouterComponent = AppRouter }) {
     </RouterComponent >
   )
 }
-
