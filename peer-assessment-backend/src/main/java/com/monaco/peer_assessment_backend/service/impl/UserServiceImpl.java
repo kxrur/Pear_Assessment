@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,6 +160,21 @@ public class UserServiceImpl implements UserService {
 
         // Return the general user if it was not a Student or Professor
         return userDTO;
+    }
+
+    /**
+     * Return a list of all students currently in the database
+     * @return A list of student DTO
+     */
+    public List<StudentDTO> getAllStudents() {
+        List<Student> students = studentRepository.findAll();
+        List<StudentDTO> studentDTOList = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = userMapper.mapToStudentDTO(student);
+            studentDTOList.add(studentDTO);
+        }
+
+        return studentDTOList;
     }
 
     /**
