@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.service;
 
+import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
@@ -17,5 +18,7 @@ public interface TeamService {
     void saveSelectedTeammatesForEvaluation(Long evaluatorId, List<Long> selectedTeammateIds);
 
     void submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating);
+
+    TeamDTO deleteTeamById(Long id);
 
 }

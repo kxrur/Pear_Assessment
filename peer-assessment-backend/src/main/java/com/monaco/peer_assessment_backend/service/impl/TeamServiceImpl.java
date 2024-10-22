@@ -1,11 +1,14 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
+import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.entity.Evaluation;
 import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.entity.User;
+import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
+import com.monaco.peer_assessment_backend.mapper.TeamMapper;
 import com.monaco.peer_assessment_backend.repository.EvaluationRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.TeamRepository;
@@ -33,6 +36,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     private EvaluationRepository evaluationRepository;
+    @Autowired
+    private TeamMapper teamMapper;
 
     @Override
     public void createTeam(Long professorID, List<Long> studentIds, String teamName) {
@@ -151,5 +156,24 @@ public class TeamServiceImpl implements TeamService {
         
         // Save the evaluation
         evaluationRepository.save(evaluation);
+    }
+
+    /**
+     * Given a Team ID, delete the team from the database
+     * @param teamId The id of the team being deleted
+     * @return the TeamDTO of the team that was deleted
+     */
+    @Override
+    public TeamDTO deleteTeamById(Long teamId) {
+        // Find the Team By ID
+        Optional<Team> optionalTeam = teamRepository.findById(teamId);
+        if (optionalTeam.isEmpty()) {
+            throw new TeamNotFoundException("Team not found");
+        }
+        Team team = optionalTeam.get();
+        TeamDTO teamDTO = teamMapper.mapToTeamDTO(team);
+        teamRepository.delete(team);
+
+        return teamDTO;
     }
 }

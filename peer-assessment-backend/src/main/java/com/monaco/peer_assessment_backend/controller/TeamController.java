@@ -73,10 +73,10 @@ public class TeamController {
         }
     }
 
-    @GetMapping("/teams/{userid}")
-    public ResponseEntity<List<TeamDTO>> getTeams(@PathVariable Long userid) {
+    @GetMapping("/teams/{userId}")
+    public ResponseEntity<List<TeamDTO>> getTeams(@PathVariable Long userId) {
         try {
-            List<Team> teamList = teamService.getCurrentTeamsForUser(userid);
+            List<Team> teamList = teamService.getCurrentTeamsForUser(userId);
             List<TeamDTO> teamDTOList = new ArrayList<>();
             for (Team team : teamList) {
                 teamDTOList.add(teamMapper.mapToTeamDTO(team));
@@ -89,6 +89,17 @@ public class TeamController {
             // Handles any unexpected errors
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @GetMapping("/teams/delete/{teamId}")
+    public ResponseEntity<TeamDTO> deleteTeam(@PathVariable Long teamId) {
+        TeamDTO savedTeam;
+        try {
+            savedTeam = teamService.deleteTeamById(teamId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        return ResponseEntity.ok(savedTeam);
     }
 
 }
