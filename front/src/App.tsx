@@ -18,6 +18,8 @@ import { useEffect } from 'react';
 import { GetCurrentUser } from '@f/student';
 
 import { teams } from '@t/SampleData';
+import AssessItem from '@c/ui/assessment/AssessItem';
+import AssessmentView from '@v/assessment/AssessView';
 
 // Define a type for the expected props for the router
 interface AppRouterProps {
@@ -47,6 +49,7 @@ export default function App({ RouterComponent = AppRouter }) {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/welcome" element={<Welcome />} />
+            <Route path="/assess" element={<AssessmentView />} />
             <Route path="/teacher" element={
               <>
                 <RegisterTeacher />

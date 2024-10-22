@@ -1,10 +1,9 @@
-import React from 'react';
 
 interface StarRatingProps {
   rating: number;
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
+function StarRating({ rating }: StarRatingProps) {
   return (
     <div className="flex space-x-1">
       {[...Array(5)].map((_, i) => (
@@ -20,6 +19,6 @@ const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
       ))}
     </div>
   );
-};
+}
 
 export default StarRating;
