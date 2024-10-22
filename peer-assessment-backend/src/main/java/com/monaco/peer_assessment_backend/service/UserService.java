@@ -6,6 +6,8 @@ import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 
+import java.util.List;
+
 public interface UserService {
   // public User createUser(User newUser);
   // public List<User> getAllUsers();
@@ -17,5 +19,7 @@ public interface UserService {
   ProfessorDTO registerProfessor(ProfessorDTO professorDTO) throws DuplicateUserException;
 
   UserDTO getUserById(Long id) throws UserNotFoundException;
+
+  List<StudentDTO> getAllStudents();
 
 }
