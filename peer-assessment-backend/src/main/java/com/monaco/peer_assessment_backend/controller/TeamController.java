@@ -47,6 +47,20 @@ public class TeamController {
         }
     }
 
+    @PostMapping("/teams/evaluate/{evaluatorId}/rate/{evaluateeId}")
+    public ResponseEntity<String> submitCooperationRating(
+            @PathVariable Long evaluatorId,
+            @PathVariable Long evaluateeId,
+            @RequestParam int rating) {
+        try {
+            teamService.submitCooperationRating(evaluatorId, evaluateeId, rating);
+            return ResponseEntity.ok("Rating submitted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/teams/{userid}")
     public ResponseEntity<List<Team>> getTeams(@PathVariable Long userid) {

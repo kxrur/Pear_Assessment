@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import type { ReactNode } from 'react';
 import LoginTeacher from '@v/login/TeacherLoginView'
 import LoginStudent from '@v/login/StudentLoginView'
 import RegisterStudent from '@v/registration/StudentRegView'
@@ -16,12 +17,24 @@ import TeamDropdown from '@c/input/Dropdown';
 
 import { teams } from '@t/SampleData';
 
+// Define a type for the expected props for the router
+interface AppRouterProps {
+  children: ReactNode;  
+}
 
-export default function App() {
+const AppRouter: React.FC<AppRouterProps> = ({ children }) => (
+  <Router>{children}</Router>
+);
+
+interface AppProps {
+  RouterComponent?: React.ComponentType<AppRouterProps>;
+}
+
+export default function App({ RouterComponent = AppRouter }) {
 
   return (
 
-    <Router>
+    <RouterComponent>
       <div className='bg-background h-screen w-dvw'>
 
         <Routes>
@@ -40,7 +53,7 @@ export default function App() {
               </>
             }
           />
-          <Route path="/studentmanagement" element={<StudentManagement />} />
+          <Route path="/student-management" element={<StudentManagement />} />
           <Route path="/student"
             element={
               <>
@@ -61,7 +74,7 @@ export default function App() {
           />
         </Routes >
       </div >
-    </Router >
+    </RouterComponent >
   )
 }
 

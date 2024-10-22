@@ -48,6 +48,27 @@ public class UserMapper {
     }
 
     /**
+     * Given an entity, return the corresponding UserDTO
+     * @param user the entity we are mapping
+     * @return the corresponding DTO
+     */
+    public UserDTO mapToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+
+        Set<String> roles = user.getRoles().stream()
+                .map(Role::getName) // Assuming Role has a getName() method
+                .collect(Collectors.toSet());
+
+        userDTO.setRoles(roles);
+
+        return userDTO;
+    }
+
+    /**
      * Maps a studentDTO to a student entity
      * @param studentDTO the student DTO
      * @return the corresponding student entity
