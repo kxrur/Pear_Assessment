@@ -36,13 +36,9 @@ jobs:
           cd front
           npm run build
 
-      - name: Run tests
+      - name: Run tests (verify App.tsx loads)
         run: |
           cd front
           npm run test
 
-      - name: Verify App.tsx loads
-        run: |
-          cd front
-          npm run test -- --testPathPattern=src/App.test.tsx
 
