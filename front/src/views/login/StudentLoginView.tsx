@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import { loginStudent } from "@s/userSlice";
+import { useAppDispatch } from "@s/store";
 
 export const LoginStudent: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ id?: string; password?: string }>({});
+
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate(); // Added from the 2nd one
 
@@ -28,31 +32,11 @@ export const LoginStudent: React.FC = () => {
       setErrors(validationErrors);
       toast.error("Please fill all required fields correctly!");
     } else {
-      toast.success("Login successful!");
-    }
-    const url = new URLSearchParams();
-    url.append('username', username);
-    url.append('password', password);
-    console.log(url);
-    try {
-      const response = await fetch('http://localhost:8080/api/login/student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: url.toString(),
-      });
-      if (response.ok) {
-        const responseData = await response.text();
-        setMessage(responseData); // Message from the backend
-        navigate('/success');
-      } else if (response.status > 399 && response.status < 500) {
-        setMessage('Invalid credentials');
-      } else {
-        setMessage('An error occurred. Please try again.');
-      }
-    } catch (error) {
-      setMessage('Failed to connect to the server.');
+      const url = new URLSearchParams();
+      url.append('username', username);
+      url.append('password', password);
+      console.log('login info' + url);
+      await dispatch(loginStudent(url));
     }
   };
 

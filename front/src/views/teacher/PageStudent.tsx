@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
-import { sidebarItems } from '@t/SampleData'; // Your sidebar data
 import TableStudent from '@c/ui/table/TableStudent'; // Import TableStudent component
 import { teams } from '@t/SampleData'; // Import teams data instead of type
 import { Team } from '@t/types';
@@ -21,7 +20,7 @@ const PageStudent: React.FC = () => {
 
   return (
     <div className="flex">
-      <Sidebar items={sidebarItems} />
+      <Sidebar />
       <div className="flex-1">
         <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="p-4">

@@ -15,8 +15,13 @@ import SelectTeammate from '@v/team/SelectTeammate';
 import StudentManagement from '@v/StudentManagement';
 import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
 import TeamDropdown from '@c/input/Dropdown';
+import PublicLayout from '@l/PublicLayout';
+import ProtectedLayout from '@l/ProtectedLayout';
+
+import { useEffect } from 'react';
 
 import { teams } from '@t/SampleData';
+import { useAppSelector } from '@s/store';
 
 // Define a type for the expected props for the router
 interface AppRouterProps {
@@ -31,49 +36,46 @@ interface AppProps {
   RouterComponent?: React.ComponentType<AppRouterProps>;
 }
 
-export default function App({ RouterComponent = AppRouter }) {
+export default function App({ RouterComponent = AppRouter }: AppProps) {
+  const currentUser = useAppSelector((state) => state.user);
+  useEffect(() => {
+    console.log("Current user updated: ", currentUser);
+  }, [currentUser]);
 
   return (
 
     <RouterComponent>
       <div className='bg-background h-screen w-dvw'>
         <Routes>
-          <Route path="/" element={<StudentManagement />} />
-          <Route path='/student-page' element={<PageStudent />} />
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path='/create-team' element={<CreateTeamForm></CreateTeamForm>}
-          />
-          <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
-          <Route path="/select-teammate" element={<SelectTeammate />} />
-          <Route path="/dropdown" element={<TeamDropdown />} />
-          <Route path='/home' element={<Welcome />} />
-          <Route path="/teacher"
-            element={
+          {/* Public Routes */}
+          <Route element={<PublicLayout />}>
+            <Route path="/welcome" element={<Welcome />} />
+            <Route path="/teacher" element={
               <>
                 <RegisterTeacher />
                 <LoginTeacher />
               </>
-            }
-          />
-          <Route path="/student-management" element={<StudentManagement />} />
-          <Route path="/student"
-            element={
+            } />
+            <Route path="/student" element={
               <>
                 <RegisterStudent />
                 <LoginStudent />
               </>
-            }
-          />
-          <Route path="/success-login"
-            element={
-              <SuccessLogin />
-            }
-          />
-          <Route path="/team-delete-preview"
-            element={
-              <TeamViewDelete teams={teams} />
-            }
-          />
+            } />
+            <Route path="/success-login" element={<SuccessLogin />} />
+          </Route>
+
+          {/* Protected Routes */}
+          <Route element={<ProtectedLayout />}>
+            <Route path="/" element={<StudentManagement />} />
+            <Route path="/create-team" element={<CreateTeamForm />} />
+            <Route path='/student-page' element={<PageStudent />} />
+            <Route path="/select-teammate" element={<SelectTeammate />} />
+            <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
+            <Route path="/dropdown" element={<TeamDropdown />} />
+            <Route path="/student-management" element={<StudentManagement />} />
+            <Route path="/team-delete-preview" element={<TeamViewDelete teams={teams} />} />
+          </Route>
         </Routes >
       </div >
     </RouterComponent >

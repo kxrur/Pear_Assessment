@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { TeacherRegFormData } from "@t/types";
+import { registerTeacher } from "@s/userSlice";
+import { useAppDispatch, useAppSelector } from "@s/store";
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-  roles: [string];
-}
 
 interface FormDataError {
   firstName: string;
@@ -21,7 +16,14 @@ interface FormDataError {
 }
 
 const RegistrationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const currentUser = useAppSelector((state) => state.user);
+  useEffect(() => {
+    toast.success("Welcome " + currentUser.firstName + " " + currentUser.lastName);
+  }, [currentUser]);
+
+  const dispatch = useAppDispatch();
+
+  const [formData, setFormData] = useState<TeacherRegFormData>({
     firstName: "",
     lastName: "",
     username: "",
@@ -78,27 +80,7 @@ const RegistrationForm: React.FC = () => {
       toast.error("Please fill all required fields correctly!");
     } else {
       console.log("Form Data: ", formData);
-      try {
-        const response = await fetch('http://localhost:8080/api/register/professor', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) {
-          toast.success("Form submitted successfully!");
-          const data = await response.json();
-          console.log('Response:', data);
-          console.log(response.status);
-          navigate('/Mana');
-        }
-        else{
-          toast.error("Already created account");
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      await dispatch(registerTeacher(formData));
     }
   };
 

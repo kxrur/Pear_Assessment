@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom'; // Added navigate
 import 'react-toastify/dist/ReactToastify.css';
+import { useAppDispatch } from '@s/store';
+import { loginTeacher } from '@s/userSlice';
 
 export const LoginTeacher: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
+
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate(); // Added navigate
 
@@ -32,31 +36,9 @@ export const LoginTeacher: React.FC = () => {
       const url = new URLSearchParams();
       url.append('username', username);
       url.append('password', password);
-      console.log(url);
+      console.log('login info' + url);
+      await dispatch(loginTeacher(url));
 
-      try {
-        const response = await fetch('http://localhost:8080/api/login/professor', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: url.toString(),
-        });
-        console.log(response.status);
-        if (response.ok) {
-          const responseData = await response.text();
-          setMessage(responseData); // Message from the backend
-          toast.success("Login successful!");
-          navigate('/success');
-        } else if (response.status > 399 && response.status < 500) {
-          setMessage('Invalid credentials');
-          toast.error("Client issue");
-        } else {
-          setMessage('An error occurred. Please try again.');
-        }
-      } catch (error) {
-        setMessage('Failed to connect to the server.');
-      }
     }
   };
 

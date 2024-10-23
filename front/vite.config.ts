@@ -14,14 +14,14 @@ export default defineConfig({
       '@a': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@t': fileURLToPath(new URL('./src/types', import.meta.url)),
       '@f': fileURLToPath(new URL('./src/functions', import.meta.url)),
-    },
+      '@s': fileURLToPath(new URL('./src/store', import.meta.url)),
+      '@l': fileURLToPath(new URL('./src/layout', import.meta.url)),
+    }
   },
-
-  
   // Vitest configuration
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTest.ts', 
+    setupFiles: './src/setupTest.ts',
   },
 });

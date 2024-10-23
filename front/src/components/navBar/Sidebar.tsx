@@ -1,13 +1,32 @@
-import { SidebarItem } from '@t/types';
-import React from 'react';
+import { useAppDispatch } from '@s/store';
+import { logoutUser } from '@s/userSlice';
 import { Link } from 'react-router-dom';
 
 
-interface SidebarProps {
-  items: SidebarItem[];
-}
 
-export default function Sidebar({ items }: SidebarProps) {
+export default function Sidebar() {
+  const dispatch = useAppDispatch();
+  function logoutUserrrr() {
+    console.log('user logged out')
+    dispatch(logoutUser())
+  }
+  const items = [
+    { label: 'Dashboard', to: '/dashboard' },
+    { label: 'TeamView', to: '/team-preview' },
+    { label: 'Student Management', to: '/student-management' },
+    { label: 'SMS Management', to: '/sms-management' },
+    { label: 'General Settings', to: '/settings' },
+    {
+      label: 'Switch Account',
+      to: '/welcome',
+      onClick: () => logoutUserrrr()
+    },
+    {
+      label: 'Logout',
+      to: '/welcome',
+      onClick: () => logoutUserrrr()
+    },
+  ];
   return (
     <div className="w-64 bg-background text-white h-screen p-6">
       <h1 className="text-2xl font-semibold mb-10">Monaco Peer Assessment</h1>

@@ -1,5 +1,24 @@
 import { CheckboxProps } from "@mui/material";
 
+export interface TeacherRegFormData {
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  roles: [string];
+}
+export interface StudentRegFormData {
+  firstName: string;
+  lastName: string;
+  studentId: number;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  roles: string[];
+  isTemp: boolean,
+}
+
 export interface Team {
   professorId: string;
   teamName: string;
@@ -30,5 +49,4 @@ export interface TableOfStudents {
   teamMembers: string[];
   searchTerm: string;
   addToTeam: CheckboxProps
-
 }
