@@ -30,7 +30,8 @@ export default function RegistrationForm() {
     username: "",
     password: "",
     confirmPassword: "",
-    roles: ["STUDENT"]
+    roles: ["STUDENT"],
+    isTemp: false,
   });
 
   const navigate = useNavigate();

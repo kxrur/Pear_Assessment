@@ -82,44 +82,6 @@ const RegistrationForm: React.FC = () => {
     } else {
       console.log("Form Data: ", formData);
       await dispatch(registerTeacher(formData));
-
-      // Proceed with form submission (e.g., API call)
-      // try {
-      //   const response = await fetch('http://localhost:8080/api/register/checkUser', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(formData),
-      //   });
-      //   const data = await response.json();
-      //   console.log('Response:', data);
-      // } catch (error) {
-      //   console.error('Error:', error);
-      // }
-
-      // try {
-      //   const response = await fetch('http://localhost:8080/api/register/professor', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(formData),
-      //   });
-      //   if (response.ok) {
-      //     toast.success("Form submitted successfully!");
-      //     const data = await response.json();
-      //     console.log('Response:', data);
-      //     console.log(response.status);
-      //     navigate('/success');
-      //   }
-      //   else {
-      //     toast.error("Already created account");
-      //   }
-      // } catch (error) {
-      //   console.error('Error:', error);
-      // }
-
     }
   };
 

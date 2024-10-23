@@ -1,4 +1,5 @@
 import { Team } from "./types";
+import { Student } from "./types";
 
 export const teams: Team[] = [
   {
@@ -38,3 +39,61 @@ export const teams: Team[] = [
     professorId: "",
   },
 ];
+
+export const students: Student[] = [
+  {
+    id: 1,
+    name: 'Franck Doumbé',
+    studentId: 'S001',
+    teamName: 'Team Alpha',
+    averageGrade: 89,
+  },
+  {
+    id: 2,
+    name: 'Zakariya Sousa Oudina',
+    studentId: 'S002',
+    teamName: 'Team Alpha',
+    averageGrade: 76,
+  },
+  {
+    id: 3,
+    name: 'Charlie Nguyen',
+    studentId: 'S003',
+    teamName: 'Team Alpha',
+    averageGrade: 92,
+  },
+  {
+    id: 4,
+    name: 'Mathieu Patel',
+    studentId: 'S004',
+    teamName: 'Team Alpha',
+    averageGrade: 85,
+  },
+  {
+    id: 5,
+    name: 'Daniel Dey',
+    studentId: 'S005',
+    teamName: 'Team Alpha',
+    averageGrade: 95,
+  },
+];
+
+
+export const sidebarItems = [
+  { label: 'Dashboard', to: '/dashboard' },
+  { label: 'TeamView', to: '/team-preview' },
+  { label: 'Student Management', to: '/student-management' },
+  { label: 'SMS Management', to: '/sms-management' },
+  { label: 'General Settings', to: '/settings' },
+  {
+    label: 'Switch Account',
+    to: '/welcome',
+    onClick: () => console.log('Switch Account clicked'),
+  },
+  {
+    label: 'Logout',
+    to: '/welcome',
+    onClick: () => console.log('Logout clicked'),
+  },
+];
+
