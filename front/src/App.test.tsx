@@ -5,13 +5,17 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
+import store from '@s/store';
+import { Provider } from 'react-redux';
 
 describe('App component', () => {
   const setup = (initialEntries: string[]) => {
     render(
-      <MemoryRouter initialEntries={initialEntries}>
-        <App RouterComponent={({ children }) => <div>{children}</div>} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={initialEntries}>
+          <App RouterComponent={({ children }) => <div>{children}</div>} />
+        </MemoryRouter>
+      </Provider>
     );
   };
 

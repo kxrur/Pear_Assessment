@@ -4,8 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { TeacherRegFormData } from "@t/types";
 import { registerTeacher } from "@s/userSlice";
-import { useAppDispatch } from "@s/store";
-import { GetCurrentUser } from "@f/student";
+import { useAppDispatch, useAppSelector } from "@s/store";
 
 
 interface FormDataError {
@@ -17,7 +16,7 @@ interface FormDataError {
 }
 
 const RegistrationForm: React.FC = () => {
-  const currentUser = GetCurrentUser();
+  const currentUser = useAppSelector((state) => state.user);
   useEffect(() => {
     toast.success("Welcome " + currentUser.firstName + " " + currentUser.lastName);
   }, [currentUser]);

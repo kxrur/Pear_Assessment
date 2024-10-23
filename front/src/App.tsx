@@ -19,9 +19,9 @@ import PublicLayout from '@l/PublicLayout';
 import ProtectedLayout from '@l/ProtectedLayout';
 
 import { useEffect } from 'react';
-import { GetCurrentUser } from '@f/student';
 
 import { teams } from '@t/SampleData';
+import { useAppSelector } from '@s/store';
 
 // Define a type for the expected props for the router
 interface AppRouterProps {
@@ -36,8 +36,8 @@ interface AppProps {
   RouterComponent?: React.ComponentType<AppRouterProps>;
 }
 
-export default function App({ RouterComponent = AppRouter }) {
-  const currentUser = GetCurrentUser();
+export default function App({ RouterComponent = AppRouter }: AppProps) {
+  const currentUser = useAppSelector((state) => state.user);
   useEffect(() => {
     console.log("Current user updated: ", currentUser);
   }, [currentUser]);
