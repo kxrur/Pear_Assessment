@@ -16,6 +16,8 @@ public class Evaluation{
     @JoinColumn(name = "teammate_id", nullable = false)
     private Student teammate;
 
+    private int cooperation_rating;
+
     public Evaluation(){
 
     }
@@ -47,6 +49,14 @@ public class Evaluation{
 
     public void setTeammate(Student teammate){
         this.teammate = teammate;
+    }
+
+    public int getCooperationRating(){
+        return cooperation_rating;
+    }
+
+    public void setCooperationRating(int cooperation_rating){
+        this.cooperation_rating = cooperation_rating;
     }
     
 }

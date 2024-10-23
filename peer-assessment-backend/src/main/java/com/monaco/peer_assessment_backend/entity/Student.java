@@ -15,4 +15,7 @@ import lombok.*;
 public class Student extends User {
     @Column(name = "student_id", nullable = false) //Ensure that a student enters and ID
     private long studentID;
+    @Column(name = "is_temp", nullable = false)
+    private boolean isTemp =false;
+
 }
