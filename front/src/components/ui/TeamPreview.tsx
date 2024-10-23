@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 interface TeamProps {
   teamName: string;
   teamMembers: string[];
@@ -12,6 +13,7 @@ export const TeamPreview: React.FC<TeamProps> = ({
   teamDescription,
 }) => {
   return (
+
     <div className="flex flex-col items-center p-6 bg-secondary max-w-xl rounded-lg shadow-lg ">
       <h1 className="text-4xl font-bold text-background mb-6">{teamName}</h1>
       <div className="flex flex-row space-x-4 h-full max-w-xl ">
@@ -40,5 +42,6 @@ export const TeamPreview: React.FC<TeamProps> = ({
         </div>
       </div>
     </div>
+
   );
 };

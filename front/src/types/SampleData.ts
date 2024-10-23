@@ -96,3 +96,4 @@ export const sidebarItems = [
     onClick: () => console.log('Logout clicked'),
   },
 ];
+

@@ -1,3 +1,5 @@
+import { CheckboxProps } from "@mui/material";
+
 export interface Team {
   professorId: string;
   teamName: string;
@@ -17,4 +19,16 @@ export interface Student {
   studentId: string;
   teamName?: string; // Make teamName optional
   averageGrade: number;
+}
+export interface sidebarItemsStudents {
+  label: string;
+  to: string;
+  onClick?: () => void;
+}
+export interface TableOfStudents {
+  teamName: string;
+  teamMembers: string[];
+  searchTerm: string;
+  addToTeam: CheckboxProps
+
 }
