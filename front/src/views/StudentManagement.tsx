@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
-import ButtonOpenFile from '@c/input/buttonOpenFile';
+import ButtonOpenFile from '@c/input/ButtonOpenFile';
 import { sidebarItems } from '@t/SampleData';
 
 

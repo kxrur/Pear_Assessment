@@ -13,7 +13,7 @@ import SuccessLogin from '@v/login/SuccessLoginView';
 import Welcome from '@v/Welcome';
 import AllTeamsView from '@v/team/AllTeamsView';
 import CreateTeamForm from '@v/team/CreateTeamFormView';
-import PageStudent from './StudentPage/PageStudent';
+import PageStudent from '@v/teacher/PageStudent';
 import StudentManagement from '@v/StudentManagement';
 import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
 import TeamDropdown from '@c/input/Dropdown';
@@ -26,13 +26,13 @@ export default function App() {
       <div className='bg-background h-screen w-dvw'>
         <Routes>
           <Route path='/' element={<PageStudent />} />
-          <Route path='/begin' element={<StudentManagement />} />
+          <Route path='/student-management' element={<StudentManagement />} />
           <Route path='/welcome' element={<Welcome />} />
           <Route path='/create-team' element={<CreateTeamForm />} />
           <Route path='/team' element={<AllTeamsView teams={teams} />} />
           <Route path='/dropdown' element={<TeamDropdown />} />
           <Route path='/home' element={<Welcome />} />
-          
+
           {/* Teacher Routes */}
           <Route path='/teacher' element={
             <>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Student, Team } from '@t/types';
 interface TableStudentProps {
-    students: Student[]; // Array of Student objects
-    teams: Team[]; // Array of Team objects
-    searchTerm: string; // Search term for filtering
+  students: Student[]; // Array of Student objects
+  teams: Team[]; // Array of Team objects
+  searchTerm: string; // Search term for filtering
 }
 
 const TableStudent: React.FC<TableStudentProps> = ({ students, teams, searchTerm }) => {
@@ -19,7 +19,7 @@ const TableStudent: React.FC<TableStudentProps> = ({ students, teams, searchTerm
 
     // Find the student being updated
     const updatedStudent = students.find(student => student.id === studentId);
-    
+
     if (updatedStudent) {
       // Check if the team already exists
       const selectedTeam = teams.find(team => team.teamName === selectedTeamName);
