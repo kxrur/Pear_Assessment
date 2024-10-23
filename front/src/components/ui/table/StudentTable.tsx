@@ -92,7 +92,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.teamName || 'N/A'}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <StarRating rating={student.averageGrade} />
+                <StarRating initialRating={student.averageGrade} editable={false} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <button

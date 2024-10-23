@@ -17,7 +17,7 @@ export default function AssessItem({ name, description }: AssessItemProps) {
       {/* Star Rating Section - now below the text */}
       <div className="flex items-center justify-between mt-4">
         <div className="bg-[#3C4D3F] p-2 rounded-lg">
-          <StarRating rating={2} />
+          <StarRating initialRating={0} editable={true} />
         </div>
 
         {/* Comment Button aligned to the right */}

@@ -18,8 +18,6 @@ export default defineConfig({
       '@l': fileURLToPath(new URL('./src/layout', import.meta.url)),
     }
   },
-
-
   // Vitest configuration
   test: {
     globals: true,

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Added navigate
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from '@s/store';
+import { useAppDispatch, useAppSelector } from '@s/store';
 import { registerStudent } from '@s/userSlice';
 import { StudentRegFormData } from "@t/types";
-import { GetCurrentUser } from "@f/student";
 
 interface FormDataError {
   firstName: string;
@@ -17,7 +16,7 @@ interface FormDataError {
 }
 
 export default function RegistrationForm() {
-  const currentUser = GetCurrentUser();
+  const currentUser = useAppSelector((state) => state.user);
   useEffect(() => {
     toast.success("Welcome: " + currentUser.firstName + " " + currentUser.lastName);
   }, [currentUser]);

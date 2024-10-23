@@ -1,4 +1,4 @@
-
+import { CheckboxProps } from "@mui/material";
 
 export interface TeacherRegFormData {
   firstName: string;
@@ -15,8 +15,8 @@ export interface StudentRegFormData {
   username: string;
   password: string;
   confirmPassword: string;
-  roles: [string];
-  isTemp: boolean;
+  roles: string[];
+  isTemp: boolean,
 }
 
 export interface Team {
@@ -38,4 +38,15 @@ export interface Student {
   studentId: string;
   teamName?: string; // Make teamName optional
   averageGrade: number;
+}
+export interface sidebarItemsStudents {
+  label: string;
+  to: string;
+  onClick?: () => void;
+}
+export interface TableOfStudents {
+  teamName: string;
+  teamMembers: string[];
+  searchTerm: string;
+  addToTeam: CheckboxProps
 }
