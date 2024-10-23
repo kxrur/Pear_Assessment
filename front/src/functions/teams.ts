@@ -17,9 +17,9 @@ export async function addTeam(team: Team) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        professorID: team.professorId,
+        professorId: team.professorId,
         teamName: team.teamName,
-        studentIDs: team.teamMembers
+        studentIds: team.teamMembers
       })
     });
 
