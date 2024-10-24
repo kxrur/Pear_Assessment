@@ -1,16 +1,21 @@
+import { updateAssessment } from "@s/assessSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface StarRatingProps {
   initialRating: number;
-  editable?: boolean; // Add the editable prop, default is false
+  editable?: boolean;
 }
 
 function StarRating({ initialRating, editable = false }: StarRatingProps) {
   const [rating, setRating] = useState(initialRating);
 
+  const dispatch = useDispatch();
+
   const handleRating = (newRating: number) => {
     if (editable) {
-      setRating(newRating); // Only update the rating if editable is true
+      dispatch(updateAssessment({ conceptual: { stars: newRating } }));
+      setRating(newRating);
     }
   };
 

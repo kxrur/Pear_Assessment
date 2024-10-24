@@ -1,14 +1,19 @@
+import { updateAssessment } from "@s/assessSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function CommentButton() {
   const [isInputVisible, setInputVisible] = useState(false);
   const [comment, setComment] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleButtonClick = () => {
-    setInputVisible(!isInputVisible); // Toggle input visibility
+    setInputVisible(!isInputVisible);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(updateAssessment({ conceptual: { comment: e.target.value } }));
     setComment(e.target.value);
   };
 
