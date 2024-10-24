@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "@reduxjs/toolkit/query";
+import { RootState } from "@s/store";
 import { TeamSlice } from "@s/teamSlice";
 
 export interface AllTeamsSlice {
