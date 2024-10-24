@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AssessmentData } from '@t/types';
 import { useAppSelector } from '@s/store';
+import { toast } from 'react-toastify';
 
 interface AssessSlice {
   dbAssesseeId: number | null,
@@ -37,24 +38,27 @@ const initialState: AssessSlice = {
 
 export const assessStudent = createAsyncThunk(
   'assessment/post',
-  async (formData: AssessmentData, { rejectWithValue }) => {
-    const graderId = useAppSelector((state) => state.user.id);
-    const dbAssesseeId = useAppSelector((state) => state.assess.dbAssesseeId);
+  async ({ formData, graderId, dbAssesseeId }: { formData: AssessmentData; graderId: number | null; dbAssesseeId: number | null }, { rejectWithValue }) => {
+    if (!graderId || !dbAssesseeId) {
+      return rejectWithValue('Missing graderId or dbAssesseeId');
+    }
 
     //TODO: adapt to have all evaluation criteria
     const rating = formData.conceptual.stars;
+    console.log(`http://localhost:8080/api/teams/evaluate/${graderId}/rate/${dbAssesseeId}?rating=${rating}`);
     try {
       const response = await fetch(`http://localhost:8080/api/teams/evaluate/${graderId}/rate/${dbAssesseeId}?rating=${rating}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: "",
       });
 
-      const data = await response.json();
+      const data = await response.text();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Assessment submission failed');
+        throw new Error(data || 'Assessment submission failed');
       }
 
       return data;
@@ -89,7 +93,12 @@ const assessSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(assessStudent.fulfilled, (state, action) => {
+      toast.success("assessment submitted")
       console.log("succesfull assessment")
+    })
+    builder.addCase(assessStudent.rejected, (state, action) => {
+      toast.error("error submitting the assessment")
+      console.log("ERROR: " + action.error.message)
     })
   },
 });

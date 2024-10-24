@@ -51,8 +51,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/welcome" element={<Welcome />} />
-            <Route path="/assess" element={<AssessmentView />} />
-            <Route path="/select-teammate" element={<SelectTeammate />} />
             <Route path="/teacher" element={
               <>
                 <RegisterTeacher />
@@ -73,8 +71,9 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/" element={<StudentManagement />} />
             <Route path="/create-team" element={<CreateTeamForm />} />
             <Route path='/student-page' element={<PageStudent />} />
+            <Route path="/assess" element={<AssessmentView />} />
             <Route path="/select-teammate" element={<SelectTeammate />} />
-            <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
+            <Route path="/team-preview" element={<AllTeamsView />} />
             <Route path="/dropdown" element={<TeamDropdown />} />
             <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/team-delete-preview" element={<TeamViewDelete teams={teams} />} />

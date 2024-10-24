@@ -2,16 +2,19 @@ import Button from '@c/input/Button';
 import { findStudentById, TeamSlice } from '@s/teamSlice';
 import { RootState, useAppDispatch, useAppSelector } from '@s/store';
 import { updateAssessee } from '@s/assessSlice';
+import { useNavigate } from 'react-router-dom';
 
 function SelectTeammate() {
   const team: TeamSlice = useAppSelector((state: RootState) => state.team);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleAssessClick = (id: number, state: TeamSlice) => {
     console.log('Assessing Student:', id);
     const student = findStudentById(state, id);
     if (student) {
       dispatch(updateAssessee({ studentId: student.studentId, firstName: student.name.split(" ")[0], lastName: student.name.split(" ")[1], id: student.id }))
+      navigate('/assess')
     }
   };
 

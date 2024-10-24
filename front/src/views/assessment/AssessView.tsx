@@ -2,7 +2,8 @@ import AssessItem from '@c/ui/assessment/AssessItem';
 import UserProfile from '@c/ui/assessment/UserProfile';
 import TeamName from '@c/ui/assessment/TeamName';
 import { NavigateButton } from '@c/input/NavigateButton';
-import { useAppSelector } from '@s/store';
+import { useAppDispatch, useAppSelector } from '@s/store';
+import { assessStudent } from '@s/assessSlice';
 
 const assessItemsData = [
   {
@@ -25,10 +26,21 @@ const assessItemsData = [
 
 
 export default function AssessmentView() {
-  const teamName = "Awesome Team"
+  const teamName = useAppSelector((state) => state.team.teamName);
   const firstName = useAppSelector((state) => state.assess.assesseeFirstName);
   const lastName = useAppSelector((state) => state.assess.assesseeLastName);
+  const assessmentData = useAppSelector((state) => state.assess.assessmentData);
 
+  // Get necessary state values here
+  const graderId = useAppSelector((state) => state.user.id);
+  const dbAssesseeId = useAppSelector((state) => state.assess.dbAssesseeId);
+
+  const dispatch = useAppDispatch();
+
+  function submitAssessement() {
+    // Pass state values as arguments
+    dispatch(assessStudent({ formData: assessmentData, graderId, dbAssesseeId }));
+  }
   return (
     <div className="p-8 bg-accent rounded-lg shadow-md max-w-4xl mx-auto">
       <div className="flex items-start space-x-8">
@@ -36,7 +48,7 @@ export default function AssessmentView() {
         <div className="flex flex-col h-full last:mt-auto ">
           <UserProfile firstName={firstName} lastName={lastName} />
           <TeamName teamName={teamName} />
-          <NavigateButton text={'Submit'} path={''}></NavigateButton>
+          <button onClick={submitAssessement}>Submit</button>
         </div>
 
         {/* Assessment Items */}

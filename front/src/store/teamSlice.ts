@@ -1,21 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Student, Teacher } from '@t/types';
-import { RootState } from './store';
+import { Student } from '@t/types';
 
 export interface TeamSlice {
-  id: number | null;
-  teacher: Teacher
+  id: number | null,
+  teacherId: number | null,
   students: Student[]
+  teamName: string,
+  teamDescription: string,
 }
 
 const initialState: TeamSlice = {
+  teamName: "",
+  teamDescription: "",
   id: null,
-  teacher: {
-    id: 0,
-    firstName: "",
-    lastName: "",
-    username: "",
-  },
+  teacherId: null,
   students: [
     {
       id: 0,
@@ -59,23 +57,34 @@ const teamSlice = createSlice({
     resetTeam: (state) => {
       Object.assign(state, initialState)
     },
+    updateTeamFromAllTeams: (state, action: PayloadAction<TeamSlice>) => {
+      const { id, teacherId, students, teamName, teamDescription } = action.payload;
 
+      state.id = id;
+      state.teacherId = teacherId;
+      state.students = students;
+      state.teamName = teamName;
+      state.teamDescription = teamDescription;
+    },
     updateTeam: (state, action: PayloadAction<Partial<TeamSlice>>) => {
-      const { id, teacher, students } = action.payload;
+      const { id, teacherId, students, teamName, teamDescription } = action.payload;
 
       if (id !== undefined) {
         state.id = id;
       }
 
-      if (teacher) {
-        state.teacher = {
-          ...state.teacher,
-          ...teacher,
-        };
+      if (teacherId !== undefined) {
+        state.teacherId = teacherId;
       }
 
       if (students) {
         state.students = [...students];
+      }
+      if (teamName) {
+        state.teamName = teamName
+      }
+      if (teamDescription) {
+        state.teamDescription = teamDescription
       }
     },
   },
@@ -91,4 +100,4 @@ export const findStudentById = (state: TeamSlice, id: number) => {
 };
 
 export default teamSlice.reducer;
-export const { resetTeam } = teamSlice.actions;
+export const { resetTeam, updateTeamFromAllTeams } = teamSlice.actions;
