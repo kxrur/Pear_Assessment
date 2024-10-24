@@ -1,20 +1,22 @@
 import { updateAssessment } from "@s/assessSlice";
+import { AssessmentData } from "@t/types";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface StarRatingProps {
   initialRating: number;
   editable?: boolean;
+  type?: keyof AssessmentData;
 }
 
-function StarRating({ initialRating, editable = false }: StarRatingProps) {
+function StarRating({ initialRating, editable = false, type }: StarRatingProps) {
   const [rating, setRating] = useState(initialRating);
 
   const dispatch = useDispatch();
 
   const handleRating = (newRating: number) => {
-    if (editable) {
-      dispatch(updateAssessment({ conceptual: { stars: newRating } }));
+    if (editable && type) {
+      dispatch(updateAssessment({ [type]: { stars: newRating } }));
       setRating(newRating);
     }
   };

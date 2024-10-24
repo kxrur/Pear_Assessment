@@ -1,8 +1,13 @@
 import { updateAssessment } from "@s/assessSlice";
+import { AssessmentData } from "@t/types";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function CommentButton() {
+interface CommentButtonProps {
+  type: keyof AssessmentData;
+}
+
+export default function CommentButton({ type }: CommentButtonProps) {
   const [isInputVisible, setInputVisible] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -13,7 +18,7 @@ export default function CommentButton() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateAssessment({ conceptual: { comment: e.target.value } }));
+    dispatch(updateAssessment({ [type]: { comment: e.target.value } }));
     setComment(e.target.value);
   };
 

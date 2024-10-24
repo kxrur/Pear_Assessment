@@ -1,12 +1,14 @@
 import StarRating from "@c/ui/table/StarRating";
 import CommentButton from "@c/ui/assessment/CommentButton";
+import { AssessmentData } from "@t/types";
 
-interface AssessItemProps {
+export interface AssessItemProps {
   name: string;
   description: string;
+  type: keyof AssessmentData;
 }
 
-export default function AssessItem({ name, description }: AssessItemProps) {
+export default function AssessItem({ name, description, type }: AssessItemProps) {
   return (
     <div className="flex flex-col p-4 bg-secondary rounded-lg shadow-md mb-4">
       <div className="flex-grow">
@@ -17,11 +19,11 @@ export default function AssessItem({ name, description }: AssessItemProps) {
       {/* Star Rating Section - now below the text */}
       <div className="flex items-center justify-between mt-4">
         <div className="bg-highlight p-2 rounded-lg">
-          <StarRating initialRating={0} editable={true} />
+          <StarRating initialRating={0} editable={true} type={type} />
         </div>
 
         {/* Comment Button aligned to the right */}
-        <CommentButton />
+        <CommentButton type={type} />
       </div>
     </div>
   );
