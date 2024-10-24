@@ -1,5 +1,23 @@
 import { CheckboxProps } from "@mui/material";
 
+export interface AssessmentData {
+  cooperation: IndividualAssessmentData;
+  conceptual: IndividualAssessmentData;
+  practical: IndividualAssessmentData;
+  workEthic: IndividualAssessmentData;
+}
+interface IndividualAssessmentData {
+  stars?: number;
+  comment?: string;
+}
+
+export interface Teacher {
+  id: number,
+  firstName: string,
+  lastName: string,
+  username: string,
+}
+
 export interface TeacherRegFormData {
   firstName: string;
   lastName: string;

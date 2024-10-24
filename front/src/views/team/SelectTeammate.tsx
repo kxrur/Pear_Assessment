@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Student } from '@t/types';
 import Button from '@c/input/Button';
-import { fetchTeammates } from '@f/student';
-import { students as sampleStudents } from '@t/SampleData'; 
+import { findStudentById, TeamSlice } from '@s/teamSlice';
+import { RootState, useAppDispatch, useAppSelector } from '@s/store';
+import { updateAssessee } from '@s/assessSlice';
+import { useNavigate } from 'react-router-dom';
 
 function SelectTeammate() {
-  const [students, setStudents] = useState<Student[]>(sampleStudents);
+  const team: TeamSlice = useAppSelector((state: RootState) => state.team);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadStudents = async () => {
-      const fetchedStudents = await fetchTeammates();
-      setStudents(fetchedStudents);
-    };
-
-    loadStudents();
-  }, []);
-
-  const handleAssessClick = (studentId: string) => {
-    console.log('Assessing Student:', studentId);
-    // Implement assessment functionality or navigation here
+  const handleAssessClick = (id: number, state: TeamSlice) => {
+    console.log('Assessing Student:', id);
+    const student = findStudentById(state, id);
+    if (student) {
+      dispatch(updateAssessee({ studentId: student.studentId, firstName: student.name.split(" ")[0], lastName: student.name.split(" ")[1], id: student.id }))
+      navigate('/assess')
+    }
   };
 
   return (
     <div className="p-6 bg-gray-100 h-full">
       <h1 className="text-2xl font-bold mb-6">Assess Your Teammates</h1>
-      {students.map(student => (
+      {team.students.map(student => (
         <div key={student.id} className="mb-6 p-4 bg-white rounded shadow">
           <div className="flex justify-between items-center">
             <div>
@@ -35,9 +32,9 @@ function SelectTeammate() {
               )}
               <p className="text-sm text-gray-500">Average Grade: {student.averageGrade}</p>
             </div>
-            <Button 
-              text="Assess" 
-              handleClick={() => handleAssessClick(student.studentId)} //
+            <Button
+              text="Assess"
+              handleClick={() => handleAssessClick(student.id, team)} //
             />
           </div>
         </div>

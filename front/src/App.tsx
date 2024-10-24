@@ -21,6 +21,7 @@ import ProtectedLayout from '@l/ProtectedLayout';
 import { useEffect } from 'react';
 
 import { teams } from '@t/SampleData';
+import AssessmentView from '@v/assessment/AssessView';
 import { useAppSelector } from '@s/store';
 
 // Define a type for the expected props for the router
@@ -70,8 +71,9 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/" element={<StudentManagement />} />
             <Route path="/create-team" element={<CreateTeamForm />} />
             <Route path='/student-page' element={<PageStudent />} />
+            <Route path="/assess" element={<AssessmentView />} />
             <Route path="/select-teammate" element={<SelectTeammate />} />
-            <Route path="/team-preview" element={<AllTeamsView teams={teams} />} />
+            <Route path="/team-preview" element={<AllTeamsView />} />
             <Route path="/dropdown" element={<TeamDropdown />} />
             <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/team-delete-preview" element={<TeamViewDelete teams={teams} />} />

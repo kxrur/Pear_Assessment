@@ -1,16 +1,32 @@
-import React from 'react';
+import { updateAssessment } from "@s/assessSlice";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface StarRatingProps {
-  rating: number;
+  initialRating: number;
+  editable?: boolean;
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
+function StarRating({ initialRating, editable = false }: StarRatingProps) {
+  const [rating, setRating] = useState(initialRating);
+
+  const dispatch = useDispatch();
+
+  const handleRating = (newRating: number) => {
+    if (editable) {
+      dispatch(updateAssessment({ conceptual: { stars: newRating } }));
+      setRating(newRating);
+    }
+  };
+
   return (
     <div className="flex space-x-1">
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}
-          className={`h-5 w-5 ${i < rating ? 'text-yellow-400' : 'text-gray-400'}`}
+          onClick={() => handleRating(i + 1)} // Update rating when a star is clicked
+          className={`h-5 w-5 ${editable ? 'cursor-pointer' : ''
+            } ${i < rating ? 'text-yellow-400' : 'text-gray-400'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -20,6 +36,6 @@ const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
       ))}
     </div>
   );
-};
+}
 
 export default StarRating;
