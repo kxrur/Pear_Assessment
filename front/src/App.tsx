@@ -51,6 +51,7 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/welcome" element={<Welcome />} />
+            <Route path="/create-team" element={<CreateTeamForm />} />
             <Route path="/teacher" element={
               <>
                 <RegisterTeacher />

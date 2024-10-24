@@ -1,9 +1,11 @@
 import { Team } from '@t/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserInput from '@c/input/UserInput';
 import Button from '@c/input/Button';
 import { addTeam } from '@f/teams';
+import { useAppDispatch, useAppSelector } from '@s/store';
+import { AllStudentsSlice, fetchStudents, Student } from '@s/allStudentsSlice';
 
 
 
@@ -15,6 +17,13 @@ export default function CreateTeamForm() {
     teamName: '',
     studentIds: [''],
     teamDescription: '',
+  });
+  const dispatch = useAppDispatch();
+  const availableStudents: Student[] = useAppSelector((state) => state.allStudents.allStudents)
+
+  // Fetch the list of students when the component mounts
+  useEffect(() => {
+    dispatch(fetchStudents(1))
   });
 
   const handleInputChange = (
@@ -81,18 +90,22 @@ export default function CreateTeamForm() {
         />
 
         <div className="mb-2">
-          <h3 className="font-semibold text-highlight">Student IDs:</h3>
+          <h3 className="font-semibold text-highlight">Select Students:</h3>
           {newTeam.studentIds.map((studentId, index) => (
-            <div key={index} className="flex items-center ">
-              <UserInput
-                type="number"
-                min={0}
+            <div key={index} className="flex items-center mb-2">
+              <select
                 value={studentId}
                 onChange={(e) => handleStudentIdChange(index, e.target.value)}
                 required={true}
-                placeholder={`Student ID ${index + 1}`}
-              //label={`Student ID ${index + 1}`}
-              />
+                className="form-select rounded"
+              >
+                <option value="">Select a student</option>
+                {availableStudents.map((student: Student) => (
+                  <option key={student.id} value={student.id.toString()}>
+                    {student.firstName} {student.lastName}
+                  </option>
+                ))}
+              </select>
             </div>
           ))}
           <Button text={'Add Another Student'} handleClick={handleAddStudent}></Button>
