@@ -93,6 +93,8 @@ public class FileController {
         Path fileToCheck = storageService.load(fileName);
         int nbCorrect = 0, nbErrors = 0;
         List<StudentDTO> validStudents = new ArrayList<>();
+        List<StudentDTO> addedStudents = new ArrayList<>();
+
 
         try (BufferedReader reader = Files.newBufferedReader(fileToCheck)) {
             String line;
@@ -132,7 +134,8 @@ public class FileController {
             for (StudentDTO tempStudent : validStudents) {
                 System.out.println("adding");
                 try {
-                 userService.registerStudent(tempStudent);
+                 StudentDTO newStudent = userService.registerStudent(tempStudent);
+                 addedStudents.add(newStudent);
                 }
                 catch(Exception e){
                     nbErrors++;
@@ -145,11 +148,11 @@ public class FileController {
             e.printStackTrace();
         }
         if (nbCorrect == 0)
-            return new validStudentsEntity(validStudents,0);
+            return new validStudentsEntity(addedStudents,0);
         if (nbErrors == 0)
-            return new validStudentsEntity(validStudents,1);
+            return new validStudentsEntity(addedStudents,1);
 
-        return new validStudentsEntity(validStudents,2);
+        return new validStudentsEntity(addedStudents,2);
     }
 
 
