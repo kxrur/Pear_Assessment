@@ -11,6 +11,13 @@ interface IndividualAssessmentData {
   comment?: string;
 }
 
+export interface Teacher {
+  id: number,
+  firstName: string,
+  lastName: string,
+  username: string,
+}
+
 export interface TeacherRegFormData {
   firstName: string;
   lastName: string;

@@ -5,12 +5,16 @@ import { useAppSelector } from '@s/store';
 interface AssessSlice {
   dbAssesseeId: number | null,
   assesseeId: string | null,
+  assesseeFirstName: string,
+  assesseeLastName: string,
   assessmentData: AssessmentData
 }
 
 const initialState: AssessSlice = {
   dbAssesseeId: null,
   assesseeId: null,
+  assesseeFirstName: "",
+  assesseeLastName: "",
   assessmentData: {
     cooperation: {
       stars: 0,
@@ -32,7 +36,7 @@ const initialState: AssessSlice = {
 };
 
 export const assessStudent = createAsyncThunk(
-  'registration-teacher/fetch',
+  'assessment/post',
   async (formData: AssessmentData, { rejectWithValue }) => {
     const graderId = useAppSelector((state) => state.user.id);
     const dbAssesseeId = useAppSelector((state) => state.assess.dbAssesseeId);
@@ -76,6 +80,12 @@ const assessSlice = createSlice({
         };
       });
     },
+    updateAssessee: (state, action: PayloadAction<{ studentId: string, firstName: string, lastName: string, id: number }>) => {
+      state.assesseeId = action.payload.studentId;
+      state.assesseeFirstName = action.payload.firstName;
+      state.assesseeLastName = action.payload.lastName;
+      state.dbAssesseeId = action.payload.id;
+    }
   },
   extraReducers(builder) {
     builder.addCase(assessStudent.fulfilled, (state, action) => {
@@ -85,4 +95,4 @@ const assessSlice = createSlice({
 });
 
 export default assessSlice.reducer;
-export const { resetAssessment, updateAssessment } = assessSlice.actions;
+export const { resetAssessment, updateAssessment, updateAssessee } = assessSlice.actions;

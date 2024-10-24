@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import assessReducer from './assessSlice';
+import teamReducer from './teamSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    assess: assessReducer
+    assess: assessReducer,
+    team: teamReducer,
   },
 });
 

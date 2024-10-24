@@ -2,6 +2,7 @@ import AssessItem from '@c/ui/assessment/AssessItem';
 import UserProfile from '@c/ui/assessment/UserProfile';
 import TeamName from '@c/ui/assessment/TeamName';
 import { NavigateButton } from '@c/input/NavigateButton';
+import { useAppSelector } from '@s/store';
 
 const assessItemsData = [
   {
@@ -25,8 +26,8 @@ const assessItemsData = [
 
 export default function AssessmentView() {
   const teamName = "Awesome Team"
-  const firstName = "Fname"
-  const lastName = "Lname"
+  const firstName = useAppSelector((state) => state.assess.assesseeFirstName);
+  const lastName = useAppSelector((state) => state.assess.assesseeLastName);
 
   return (
     <div className="p-8 bg-accent rounded-lg shadow-md max-w-4xl mx-auto">
