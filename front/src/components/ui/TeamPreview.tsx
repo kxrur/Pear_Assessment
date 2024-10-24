@@ -24,8 +24,10 @@ export const TeamPreview: React.FC<TeamProps> = ({
   const selectedTeam = useAppSelector((state) => selectTeamById(state, teamId))
 
   function handleTeamSelect() {
-    dispatch(updateTeamFromAllTeams(selectedTeam));
-    navigate('/select-teammate')
+    if (selectedTeam) {
+      dispatch(updateTeamFromAllTeams(selectedTeam));
+      navigate('/select-teammate')
+    }
   }
   return (
 
