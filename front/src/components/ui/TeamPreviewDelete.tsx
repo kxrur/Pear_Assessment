@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
 interface TeamProps {
+  teamId: number;
   teamName: string;
   teamMembers: string[];
   teamDescription: string;
-  onDelete?: () => void;
+  onDelete: (teamId: number) => void;
 }
 
 export const TeamPreviewDelete: React.FC<TeamProps> = ({
+  teamId,
   teamName,
   teamMembers,
   teamDescription,
@@ -34,7 +36,7 @@ export const TeamPreviewDelete: React.FC<TeamProps> = ({
     >
       {/* Delete button */}
       <button
-        onClick={onDelete}
+        onClick={() => onDelete(teamId)}
         className="absolute top-1 right-1 bg-highlight text-white rounded-full w-10 h-10 flex items-center justify-center"
       >
         X

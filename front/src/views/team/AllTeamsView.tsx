@@ -17,7 +17,6 @@ export default function TeamView() {
 
   useEffect(() => {
     dispatch(fetchTeams(userId || 0))
-    //console.log(teamsState.allTeams)
   }, [teamsState.allTeams, userId])
 
 

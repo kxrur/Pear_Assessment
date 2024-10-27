@@ -69,7 +69,6 @@ export const fetchTeams = createAsyncThunk(
   }
 );
 
-//TODO: create team thunk
 export const createTeam = createAsyncThunk(
   'create-team/post',
   async ({ team, dbStudentId }: { team: otherTeam, dbStudentId: number }, { dispatch, rejectWithValue }) => {
@@ -103,8 +102,34 @@ export const createTeam = createAsyncThunk(
 
   }
 );
-//TODO: delete team thunk
+export const deleteTeam = createAsyncThunk(
+  'delete-team/post',
+  async ({ teamId, dbStudentId }: { teamId: number, dbStudentId: number }, { dispatch, rejectWithValue }) => {
+    try {
 
+      // Make a POST request to the correct API endpoint
+      const response = await fetch(`http://localhost:8080/api/teams/delete/${teamId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message || "Failed to create team");
+      }
+
+      console.log("Team deleted successfully:", response.json());
+
+      dispatch(fetchTeams(dbStudentId));
+    } catch (error) {
+      console.error("Error occurred while creating team:", error);
+      return rejectWithValue(error || "An error occurred");
+    }
+
+  }
+);
 
 const allTeamsSlice = createSlice({
   name: 'allTeams',
