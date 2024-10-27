@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 export interface Student {
   id: number;
@@ -49,6 +50,36 @@ export const fetchStudents = createAsyncThunk(
       return data;
     } catch (error) {
       return rejectWithValue(error || 'Network Error');
+    }
+  }
+);
+
+
+export const fetchCSVStudents = createAsyncThunk(
+  'fetch-csv-students/get',
+  async (file: File, { rejectWithValue }) => {
+    // Create a FormData object to send the file
+    const formData = new FormData();
+    formData.append('file', file);  // 'file' should match the backend @RequestParam("file")
+
+    try {
+      // Send the file to the backend
+      const response = await fetch('http://localhost:8080/api/upload/students', {
+        method: 'POST',
+        body: formData,  // Send FormData object
+      });
+
+      if (response.ok) {
+        //const data = await response.json();
+        //console.log(data)
+        toast.success(await response.text());
+        //return data;
+      } else {
+        toast.error('Failed to upload file.');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast.error('Failed to upload file.');
     }
   }
 );
