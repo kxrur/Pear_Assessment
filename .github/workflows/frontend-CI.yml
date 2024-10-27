@@ -23,21 +23,25 @@ jobs:
 
       - name: Change directory to 'front' and verify contents
         run: |
+          cd app
           cd front
           ls -la
 
       - name: Install dependencies
         run: |
+          cd app
           cd front
           npm install
 
       - name: Run the build
         run: |
+          cd app
           cd front
           npm run build
 
       - name: Run tests (verify App.tsx loads)
         run: |
+          cd app
           cd front
           npm run test
 
