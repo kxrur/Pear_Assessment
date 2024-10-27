@@ -1,13 +1,21 @@
+
 import React, { useState } from 'react';
 import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
-import { sidebarItems } from '@t/SampleData';
+import { sidebarItems, teams } from '@t/SampleData';
 
+interface Student {
+  id: number;
+  name: string;
+  studentId: string;
+  teamName?: string;
+  averageGrade?: number;
+}
 
 const StudentManagement: React.FC = () => {
-  const [students, setStudents] = useState([
+  const [students, setStudents] = useState<Student[]>([
     { id: 1, name: 'Mohamed Tremblay', studentId: '40292922', teamName: 'Think Vision', averageGrade: 4 },
     // Add more initial students if needed
   ]);
@@ -18,39 +26,38 @@ const StudentManagement: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const addStudent = (newStudent: { name: string; studentId: string; teamName?: string; averageGrade: number }) => {
-    const newStudentEntry = {
-      id: students.length + 1, // Simple ID increment, consider using a unique ID generator
+  const addStudent = (newStudent: { name: string; studentId: string; teamName?: string; }) => {
+    const newStudentEntry: Student = {
+      id: students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1,
       ...newStudent,
     };
     setStudents([...students, newStudentEntry]);
   };
 
-  // Function to delete a student based on ID
   const deleteStudent = (id: number) => {
     setStudents(students.filter(student => student.id !== id));
   };
 
   return (
-    <div className="flex">
-      <Sidebar items={sidebarItems} />
-      <div className="flex-1">
-        <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
-        <div className="p-4">
-          <StudentTable
-            students={students}
-            searchTerm={searchTerm}
-            addStudent={addStudent} // Pass the addStudent function correctly
-            deleteStudent={deleteStudent} // Pass the delete function
-          />
-          <div className="mt-4">
-            <ButtonOpenFile />
+      <div className="flex">
+        <Sidebar items={sidebarItems} />
+        <div className="flex-1">
+          <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
+          <div className="p-4">
+            <StudentTable
+                students={students}
+                searchTerm={searchTerm}
+                addStudent={addStudent} // Pass the addStudent function correctly
+                deleteStudent={deleteStudent} // Pass the delete function
+                teams={teams} // Pass teams directly
+            />
+            <div className="mt-4">
+              <ButtonOpenFile />
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
 export default StudentManagement;
-// Compare this snippet from main/Monaco_SOEN341_Project_F24/front/src/components/TeamTable.tsx:
