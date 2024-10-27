@@ -1,4 +1,4 @@
-import { SidebarItem } from '@t/types';
+import { SidebarItem } from '@t/types.ts';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
