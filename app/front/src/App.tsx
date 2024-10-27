@@ -1,20 +1,20 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginTeacher from '@v/login/TeacherLoginView'
-import LoginStudent from '@v/login/StudentLoginView'
-import RegisterStudent from '@v/registration/StudentRegView'
-import RegisterTeacher from '@v/registration/TeacherRegView'
-import SuccessLogin from '@v/login/SuccessLoginView'
-import Welcome from '@v/Welcome';
-import AllTeamsView from '@v/team/AllTeamsView';
-import CreateTeamForm from '@v/team/CreateTeamFormView';
+import LoginTeacher from '@v/login/TeacherLoginView.tsx'
+import LoginStudent from '@v/login/StudentLoginView.tsx'
+import RegisterStudent from '@v/registration/StudentRegView.tsx'
+import RegisterTeacher from '@v/registration/TeacherRegView.tsx'
+import SuccessLogin from '@v/login/SuccessLoginView.tsx'
+import Welcome from '@v/Welcome.tsx';
+import AllTeamsView from '@v/team/AllTeamsView.tsx';
+import CreateTeamForm from '@v/team/CreateTeamFormView.tsx';
 
 
 
-import StudentManagement from '@v/StudentManagement';
-import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
-import TeamDropdown from '@c/input/Dropdown';
+import StudentManagement from '@v/StudentManagement.tsx';
+import { TeamViewDelete } from '@v/team/AllTeamsDeleteView.tsx';
+import TeamDropdown from '@c/input/Dropdown.tsx';
 
-import { teams } from '@t/SampleData';
+import { teams } from '@t/SampleData.ts';
 
 
 export default function App() {
