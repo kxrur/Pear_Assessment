@@ -1,9 +1,9 @@
-import { Team } from '@t/types';
+import { Team } from '@t/types.ts';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserInput from '@c/input/UserInput';
-import Button from '@c/input/Button';
-import { addTeam } from '@f/teams';
+import UserInput from '@c/input/UserInput.tsx';
+import Button from '@c/input/Button.tsx';
+import { addTeam } from '@f/teams.ts';
 
 
 

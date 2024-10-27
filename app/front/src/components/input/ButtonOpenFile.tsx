@@ -1,6 +1,6 @@
 import React from 'react';
 import Papa from 'papaparse';
-import { Student } from '@t/types';
+import { Student } from '@t/types.ts';
 
 
 
