@@ -53,7 +53,17 @@ export const fetchStudents = createAsyncThunk(
     }
   }
 );
-
+//TODO: implement add/delete student
+export const addStudent = createAsyncThunk(
+  'add-student/get',
+  async (student: Student, { rejectWithValue }) => {
+  }
+);
+export const deleteStudent = createAsyncThunk(
+  'remove-student/get',
+  async (student: Student, { rejectWithValue }) => {
+  }
+);
 
 export const fetchCSVStudents = createAsyncThunk(
   'fetch-csv-students/get',
