@@ -1,6 +1,6 @@
-import { TeamPreview } from '@c/ui/TeamPreview'; // Adjust the import path as needed
-import { NavigateButton } from '@c/input/NavigateButton';
-import { Team } from '@t/types';
+import { TeamPreview } from '@c/ui/TeamPreview.tsx'; // Adjust the import path as needed
+import { NavigateButton } from '@c/input/NavigateButton.tsx';
+import { Team } from '@t/types.ts';
 
 
 interface TeamViewProps {

@@ -1,5 +1,5 @@
-import { teams } from "@t/SampleData";
-import { Team } from "@t/types";
+import { teams } from "@t/SampleData.ts";
+import { Team } from "@t/types.ts";
 
 
 //TODO:-BE fetch teams of a user (student or prof) logic

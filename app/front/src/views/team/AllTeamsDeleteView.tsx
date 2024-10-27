@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TeamPreviewDelete } from '@c/ui/TeamPreviewDelete';
+import { TeamPreviewDelete } from '@c/ui/TeamPreviewDelete.tsx';
 
 interface Team {
   teamName: string;
