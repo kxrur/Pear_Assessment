@@ -1,50 +1,40 @@
-import React, { useRef } from 'react';
-import toast from 'react-hot-toast'; 
+import React from 'react';
+import Papa from 'papaparse';
+import { Student } from '@t/types';
 
-const ButtonOpenFile: React.FC = () => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+
+const ButtonOpenFile: React.FC<ButtonOpenFileProps> = ({ addStudentsFromCSV }) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
-      // Construct the file path (Note: This will not work directly as browsers do not allow access to full paths for security reasons)
-      const filePath = file.name; // Only getting the file name
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (result) => {
+          const students = result.data.map((row: any, index: number) => ({
+         
+            name: row.name,
+            studentId: row.studentId,
+            teamName: '', // Initialize teamName as empty or any default value
+          })) as Student[];
 
-      // Send file path to the backend
-      const response = await fetch('/api/upload-path', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+          addStudentsFromCSV(students);
         },
-        body: JSON.stringify({ filePath }),
+        error: (error) => {
+          console.error('Error parsing CSV:', error);
+        },
       });
-
-      if (response.ok) {
-        toast.success('File path sent successfully!');
-      } else {
-        toast.error('Failed to send file path.');
-      }
     }
   };
 
-  const triggerFileDialog = () => {
-    fileInputRef.current?.click();
-  };
-
   return (
-    <div className="flex flex-col items-center p-4 rounded-lg">
-      <button
-        onClick={triggerFileDialog}
-        className="bg-accent text-background py-2 px-6 rounded-lg shadow-lg hover:bg-accent-dark"
-      >
-        Upload CSV
-      </button>
+    <div>
       <input
-        ref={fileInputRef}
         type="file"
         accept=".csv"
-        className="hidden"
         onChange={handleFileChange}
+        className="p-2 border border-gray-300 rounded bg-gray-200 text-black mb-4"
       />
     </div>
   );

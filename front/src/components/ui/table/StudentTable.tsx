@@ -1,6 +1,7 @@
 import React from 'react';
 import StarRating from './StarRating';
 import { Student } from '@t/types';
+import Dropdown from '@c/input/Dropdown.tsx'; // Import the new TeamDropdown component
 
 interface StudentTableProps {
   students: Student[];
@@ -14,30 +15,31 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
   const filteredStudents = students.filter(student =>
       student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.studentId.includes(searchTerm) ||
-      (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase())) // Check if teamName is present
+      (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const [newStudent, setNewStudent] = React.useState({
     name: '',
     studentId: '',
-    teamName: '', // Keep teamName in state but it's optional
+    teamName: '',
     averageGrade: 0,
   });
+
+  // Local state to manage the current teams of students
+  const [studentTeams, setStudentTeams] = React.useState<Student[]>(students);
 
   const handleAddStudent = () => {
     if (newStudent.name && newStudent.studentId) {
       addStudent(newStudent);
-      setNewStudent({ name: '', studentId: '', teamName: '', averageGrade: 0 }); // Reset input fields
+      setNewStudent({ name: '', studentId: '', teamName: '', averageGrade: 0 });
     }
   };
 
   const handleTeamChange = (studentId: number, newTeamName: string) => {
-    // Handle updating the team name of the student
-    const updatedStudents = students.map(student =>
+    const updatedStudents = studentTeams.map(student =>
         student.id === studentId ? { ...student, teamName: newTeamName } : student
     );
-    // Assuming you have a function to update students in parent
-    // updateStudents(updatedStudents);
+    setStudentTeams(updatedStudents); // Update local state
   };
 
   return (
@@ -93,19 +95,11 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <select
-                      value={student.teamName || ''} // Show current selected team or default to empty
-                      onChange={(e) => handleTeamChange(student.id, e.target.value)} // Call the handler when value changes
-                      className="border border-gray-300 rounded p-1 bg-gray-200 text-black"
-                  >
-                    <option value="">Select Team</option>
-                    {/* Dynamically render all available teams from the teams array */}
-                    {teams.map((team) => (
-                        <option key={team.id} value={team.teamName}>
-                          {team.teamName}
-                        </option>
-                    ))}
-                  </select>
+                  <Dropdown
+                      teams={teams}
+                      selectedTeam={student.teamName || ''} // Bind the current team's name
+                      onTeamChange={(newTeamName) => handleTeamChange(student.id, newTeamName)} // Handle team change
+                  />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <StarRating rating={student.averageGrade} />

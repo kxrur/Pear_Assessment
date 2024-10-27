@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
@@ -47,8 +46,8 @@ const StudentManagement: React.FC = () => {
             <StudentTable
                 students={students}
                 searchTerm={searchTerm}
-                addStudent={addStudent} // Pass the addStudent function correctly
-                deleteStudent={deleteStudent} // Pass the delete function
+                addStudent={addStudent}
+                deleteStudent={deleteStudent}
                 teams={teams} // Pass teams directly
             />
             <div className="mt-4">
