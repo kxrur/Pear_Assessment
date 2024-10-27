@@ -12,6 +12,7 @@ interface StudentTableProps {
   teams: { id: number; teamName: string }[]; // Add teams prop to the component
 }
 
+
 const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addStudent, deleteStudent, teams }) => {
   const filteredStudents = students.filter(student =>
       student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -97,13 +98,11 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <Dropdown
-                      teams={teams}
-                      selectedTeam={student.teamName || ''} // Bind the current team's name
-                      onTeamChange={(newTeamName) => handleTeamChange(student.id, newTeamName)} // Handle team change
+
                   />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <StarRating ratings={student.averageGrade} />
+                  <StarRating initialRating={student.averageGrade} editable={false} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <button
