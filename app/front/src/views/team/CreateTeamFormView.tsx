@@ -1,9 +1,11 @@
 import { Team } from '@t/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserInput from '@c/input/UserInput';
 import Button from '@c/input/Button';
-import { addTeam } from '@f/teams';
+import { useAppDispatch, useAppSelector } from '@s/store';
+import { fetchStudents, Student } from '@s/allStudentsSlice';
+import { createTeam } from '@s/allTeamsSlice';
 
 
 
@@ -11,10 +13,16 @@ import { addTeam } from '@f/teams';
 export default function CreateTeamForm() {
   const navigate = useNavigate();
   const [newTeam, setNewTeam] = useState({
-    teacherId: '',
     teamName: '',
     studentIds: [''],
     teamDescription: '',
+  });
+  const dispatch = useAppDispatch();
+  const availableStudents: Student[] = useAppSelector((state) => state.allStudents.allStudents)
+  const userId: number = useAppSelector((state) => state.user.id) || 0
+
+  useEffect(() => {
+    dispatch(fetchStudents(1))
   });
 
   const handleInputChange = (
@@ -38,13 +46,13 @@ export default function CreateTeamForm() {
     e.preventDefault();
 
     const teamDTO: Team = {
-      professorId: newTeam.teacherId,
+      professorId: userId.toString(),
       teamName: newTeam.teamName,
       teamMembers: newTeam.studentIds.map(id => id),
       teamDescription: newTeam.teamDescription
     };
 
-    addTeam(teamDTO);
+    dispatch(createTeam({ team: teamDTO, dbStudentId: userId }))
     navigate('/team-preview'); // Redirect to the team preview page after submission
   };
 
@@ -52,16 +60,6 @@ export default function CreateTeamForm() {
     <div className="p-6 bg-accent h-full">
       <form onSubmit={handleSubmit} className="mb-4">
         {/* Use UserInput for all inputs */}
-        <UserInput
-          type="number"
-          min={0}
-          value={newTeam.teacherId}
-          onChange={(e) => handleInputChange(e, 'teacherId')}
-          required={true}
-          placeholder="Teacher ID"
-          label="Teacher ID"
-        />
-
         <UserInput
           type="text"
           value={newTeam.teamName}
@@ -81,18 +79,22 @@ export default function CreateTeamForm() {
         />
 
         <div className="mb-2">
-          <h3 className="font-semibold text-highlight">Student IDs:</h3>
+          <h3 className="font-semibold text-highlight">Select Students:</h3>
           {newTeam.studentIds.map((studentId, index) => (
-            <div key={index} className="flex items-center ">
-              <UserInput
-                type="number"
-                min={0}
+            <div key={index} className="flex items-center mb-2">
+              <select
                 value={studentId}
                 onChange={(e) => handleStudentIdChange(index, e.target.value)}
                 required={true}
-                placeholder={`Student ID ${index + 1}`}
-              //label={`Student ID ${index + 1}`}
-              />
+                className="form-select rounded"
+              >
+                <option value="">Select a student</option>
+                {availableStudents.map((student: Student) => (
+                  <option key={student.studentId} value={student.studentId.toString()}>
+                    {student.firstName} {student.lastName}
+                  </option>
+                ))}
+              </select>
             </div>
           ))}
           <Button text={'Add Another Student'} handleClick={handleAddStudent}></Button>

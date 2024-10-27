@@ -13,7 +13,7 @@ import SelectTeammate from '@v/team/SelectTeammate';
 
 
 import StudentManagement from '@v/StudentManagement';
-import { TeamViewDelete } from '@v/team/AllTeamsDeleteView';
+import TeamViewDelete from '@v/team/AllTeamsDeleteView';
 import TeamDropdown from '@c/input/Dropdown';
 import PublicLayout from '@l/PublicLayout';
 import ProtectedLayout from '@l/ProtectedLayout';
@@ -76,7 +76,7 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/team-preview" element={<AllTeamsView />} />
             <Route path="/dropdown" element={<TeamDropdown />} />
             <Route path="/student-management" element={<StudentManagement />} />
-            <Route path="/team-delete-preview" element={<TeamViewDelete teams={teams} />} />
+            <Route path="/team-delete-preview" element={<TeamViewDelete />} />
           </Route>
         </Routes >
       </div >

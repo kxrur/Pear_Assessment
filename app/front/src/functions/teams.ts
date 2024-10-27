@@ -7,6 +7,7 @@ export function fetchTeams(memberId: number): Team[] {
   return teams
 }
 
+//moved to a slice
 export async function addTeam(team: Team) {
   try {
 
