@@ -10,16 +10,16 @@ interface StudentTableProps {
 
 export default function StudentTable({ searchTerm }: StudentTableProps) {
   const dispatch = useAppDispatch();
-  const allStudents = useSelector((state: RootState) => state.allStudents.allStudents);
+  const allStudents = useSelector((state: RootState) => state.allStudents);
 
   useEffect(() => {
     dispatch(fetchStudents(1))
-  });
+  }, [allStudents.allStudents]);
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   useEffect(() => {
     // Filter students dynamically based on search term
     setFilteredStudents(
-      allStudents.filter(student =>
+      allStudents.allStudents.filter(student =>
         student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.studentId.toString().includes(searchTerm) ||

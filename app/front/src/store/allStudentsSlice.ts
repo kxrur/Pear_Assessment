@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "./store";
 
 export interface Student {
   id: number;
@@ -47,6 +48,7 @@ export const fetchStudents = createAsyncThunk(
         throw new Error(data.message || 'Fetching students failed');
       }
 
+
       return data;
     } catch (error) {
       return rejectWithValue(error || 'Network Error');
@@ -67,7 +69,7 @@ export const deleteStudent = createAsyncThunk(
 
 export const fetchCSVStudents = createAsyncThunk(
   'fetch-csv-students/get',
-  async (file: File, { rejectWithValue }) => {
+  async (file: File, { dispatch, rejectWithValue }) => {
     // Create a FormData object to send the file
     const formData = new FormData();
     formData.append('file', file);  // 'file' should match the backend @RequestParam("file")
@@ -83,6 +85,7 @@ export const fetchCSVStudents = createAsyncThunk(
         //const data = await response.json();
         //console.log(data)
         toast.success(await response.text());
+        dispatch(fetchStudents(1)); // Replace 1 with the actual teamId if needed
         //return data;
       } else {
         toast.error('Failed to upload file.');
