@@ -64,19 +64,22 @@ const allStudentsSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchStudents.fulfilled, (state, action) => {
-      state.allStudents = [];
+      if (state.allStudents.length !== action.payload.length) {
 
-      action.payload.forEach((student: Student) => {
-        state.allStudents.push({
-          id: student.id,
-          firstName: student.firstName,
-          lastName: student.lastName,
-          username: student.username,
-          studentId: student.studentId,
-          teamName: student.teamName,
-          averageGrade: student.averageGrade,
+        state.allStudents = [];
+
+        action.payload.forEach((student: Student) => {
+          state.allStudents.push({
+            id: student.id,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            username: student.username,
+            studentId: student.studentId,
+            teamName: student.teamName,
+            averageGrade: student.averageGrade,
+          });
         });
-      });
+      }
     });
   },
 });
