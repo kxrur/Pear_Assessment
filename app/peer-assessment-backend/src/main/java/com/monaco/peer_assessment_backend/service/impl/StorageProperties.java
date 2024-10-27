@@ -23,11 +23,11 @@ public class StorageProperties {
         this.location = location;
     }
     public static Path getResourcePath(String folderName) {
-        Path path = Paths.get("src/main/resources", folderName);
+        Path path = Paths.get("peer-assessment-backend/src/main/resources", folderName);
 
         // If path doesn't exist, try the alternative path
         if (!path.toFile().exists()) {
-            path = Paths.get("peer-assessment-backend/src/main/resources", folderName);
+            path = Paths.get("src/main/resources", folderName);
         }
         return path;
     }
