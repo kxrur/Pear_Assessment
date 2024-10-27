@@ -3,6 +3,7 @@ import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
+import {teams} from "@t/SampleData.ts";
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
@@ -32,25 +33,27 @@ const StudentManagement: React.FC = () => {
     setStudents(students.filter(student => student.id !== id));
   };
 
-  return (
+  let div = <>
     <div className="flex">
-      <Sidebar />
+      <Sidebar/>
       <div className="flex-1">
-        <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
+        <Header searchTerm={searchTerm} onSearchChange={handleSearchChange}/>
         <div className="p-4">
           <StudentTable
-            students={students}
-            searchTerm={searchTerm}
-            addStudent={addStudent} // Pass the addStudent function correctly
-            deleteStudent={deleteStudent} // Pass the delete function
+              students={students}
+              searchTerm={searchTerm}
+              addStudent={addStudent} // Pass the addStudent function correctly
+              deleteStudent={deleteStudent}
+              // Pass the delete function
           />
           <div className="mt-4">
-            <ButtonOpenFile />
+            <ButtonOpenFile/>
           </div>
         </div>
       </div>
     </div>
-  );
+  </>;
+  return div;
 };
 
 export default StudentManagement;
