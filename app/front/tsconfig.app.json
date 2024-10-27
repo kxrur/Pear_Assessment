@@ -16,7 +16,7 @@
       ],
       "@f/*": [
         "functions/*"
-      ],
+      ]
     },
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -45,6 +45,6 @@
     "src",
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx",
+    "src/**/*.tsx"
   ]
 }
