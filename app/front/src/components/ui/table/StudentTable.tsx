@@ -1,6 +1,6 @@
 import React from 'react';
-import StarRating from './StarRating';
-import { Student } from '@t/types';
+import StarRating from './StarRating.tsx';
+import { Student } from '@t/types.ts';
 import Dropdown from '@c/input/Dropdown.tsx'; // Import the new TeamDropdown component
 
 interface StudentTableProps {

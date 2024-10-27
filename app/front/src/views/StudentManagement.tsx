@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Sidebar from '@c/navBar/Sidebar';
-import Header from '@c/ui/table/Header';
-import StudentTable from '@c/ui/table/StudentTable';
-import ButtonOpenFile from '@c/input/ButtonOpenFile';
-import { sidebarItems, teams } from '@t/SampleData';
+import Sidebar from '@c/navBar/Sidebar.tsx';
+import Header from '@c/ui/table/Header.tsx';
+import StudentTable from '@c/ui/table/StudentTable.tsx';
+import ButtonOpenFile from '@c/input/ButtonOpenFile.tsx';
+import { sidebarItems, teams } from '@t/SampleData.ts';
 
 interface Student {
   id: number;
