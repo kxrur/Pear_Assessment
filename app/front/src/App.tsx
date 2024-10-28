@@ -10,6 +10,7 @@ import Welcome from '@v/Welcome';
 import AllTeamsView from '@v/team/AllTeamsView';
 import CreateTeamForm from '@v/team/CreateTeamFormView';
 import SelectTeammate from '@v/team/SelectTeammate';
+import ConfirmationPage from '@c/ui/assessment/ConfirmationPage.tsx';
 
 
 import StudentManagement from '@v/StudentManagement';
@@ -50,6 +51,7 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
+
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/teacher" element={
               <>
@@ -77,6 +79,7 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/dropdown" element={<TeamDropdown />} />
             <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/team-delete-preview" element={<TeamViewDelete />} />
+            <Route path="/confirmation" element={<ConfirmationPage />} />
           </Route>
         </Routes >
       </div >
