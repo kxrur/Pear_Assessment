@@ -49,7 +49,9 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
       <div className='bg-background h-screen w-dvw'>
         <Routes>
           {/* Public Routes */}
-          <Route element={<PublicLayout />}>
+
+          <Route element={<PublicLayout  />} >
+
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/teacher" element={
               <>
