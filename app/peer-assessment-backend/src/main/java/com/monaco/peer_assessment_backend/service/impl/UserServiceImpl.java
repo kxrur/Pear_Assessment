@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         if (studentRepository.existsByStudentID(studentDTO.getStudentId())) {
             Optional<Student> optionalStudent = studentRepository.findByStudentID(studentDTO.getStudentId());
             if (optionalStudent.isPresent()) {
-                if (optionalStudent.get().isTemp())
+                if (optionalStudent.get().isTemp() && !studentDTO.isTemp())
                     student = updateStudent(optionalStudent, studentDTO);
             } else {
                 throw new DuplicateUserException("Student ID already in use");
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Retrieves a user by their unique ID.
      * 
-     * @param id the user ID
+     *  id the user ID
      * @return an optional user if found, empty otherwise
      */
     public List<User> getAllUsers() {

@@ -132,10 +132,10 @@ public class FileController {
 
             // Save all valid students to the database in one go
             for (StudentDTO tempStudent : validStudents) {
-                System.out.println("adding");
                 try {
                  StudentDTO newStudent = userService.registerStudent(tempStudent);
                  addedStudents.add(newStudent);
+                    System.out.println("adding"+ newStudent);
                 }
                 catch(Exception e){
                     nbErrors++;
