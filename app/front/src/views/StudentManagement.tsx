@@ -3,7 +3,7 @@ import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
-import {teams} from "@t/SampleData.ts";
+import { teams } from "@t/SampleData.ts";
 import { Team } from "@t/types.ts";
 
 const StudentManagement: React.FC = () => {
@@ -35,31 +35,31 @@ const StudentManagement: React.FC = () => {
   };
   const updateStudentTeam = (studentId: number, teamName: string) => {
     const updatedStudents = students.map(student =>
-        student.id === studentId ? { ...student, teamName } : student
+      student.id === studentId ? { ...student, teamName } : student
     );
     setStudents(updatedStudents);
   };
- return (
+  return (
     <div className="flex">
-      <Sidebar/>
+      <Sidebar />
       <div className="flex-1">
-        <Header searchTerm={searchTerm} onSearchChange={handleSearchChange}/>
+        <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="p-4">
           <StudentTable
-              students={students}
-              searchTerm={searchTerm}
-              addStudent={addStudent} // Pass the addStudent function correctly
-              deleteStudent={deleteStudent}
-              // Pass the delete function
-              teams={teams}
-              updateStudentTeam={updateStudentTeam}/>
+            students={students}
+            searchTerm={searchTerm}
+            addStudent={addStudent} // Pass the addStudent function correctly
+            deleteStudent={deleteStudent}
+            // Pass the delete function
+            teams={teams}
+          />
           <div className="mt-4">
-            <ButtonOpenFile/>
+            <ButtonOpenFile />
           </div>
         </div>
       </div>
     </div>
-);
+  );
 };
 
 export default StudentManagement;
