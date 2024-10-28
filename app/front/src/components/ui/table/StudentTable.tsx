@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import StarRating from './StarRating';
 import { RootState, useAppDispatch } from '@s/store';
 import { addStudent, deleteStudent, fetchStudents, Student } from '@s/allStudentsSlice';
-import { Team } from '@t/types.ts';
 import Dropdown from '@c/input/Dropdown.tsx';
 
 interface StudentTableProps {
@@ -48,12 +47,6 @@ export default function StudentTable({ searchTerm }: StudentTableProps) {
     }
   };
 
-  // const handleTeamChange = (studentId: number, newTeamName: string) => {
-  //   const updatedStudents = studentTeams.map(student =>
-  //     student.id === studentId ? { ...student, teamName: newTeamName } : student
-  //   );
-  //   setStudentTeams(updatedStudents); // Update local state
-  // };
 
   return (
     <div className="p-4 bg-white">

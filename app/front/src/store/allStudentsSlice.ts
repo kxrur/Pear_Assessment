@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { useAppDispatch } from "./store";
 
 export interface Student {
   id: number;
@@ -11,9 +10,16 @@ export interface Student {
   teamName: string;
   averageGrade: number;
 }
+export interface TempStudent {
+  id: number;
+  firstName: string;
+  lastName: string;
+  studentId: string;
+}
 
 export interface AllStudentsSlice {
   allStudents: Student[];
+  allAddedStudents: TempStudent[]
 }
 
 const initialState: AllStudentsSlice = {
@@ -26,6 +32,14 @@ const initialState: AllStudentsSlice = {
       username: "",
       teamName: "",
       averageGrade: 0,
+    }
+  ],
+  allAddedStudents: [
+    {
+      id: 0,
+      firstName: "",
+      lastName: "",
+      studentId: "",
     }
   ]
 };
@@ -70,23 +84,21 @@ export const deleteStudent = createAsyncThunk(
 export const fetchCSVStudents = createAsyncThunk(
   'fetch-csv-students/get',
   async (file: File, { dispatch, rejectWithValue }) => {
-    // Create a FormData object to send the file
     const formData = new FormData();
-    formData.append('file', file);  // 'file' should match the backend @RequestParam("file")
+    formData.append('file', file);
 
     try {
-      // Send the file to the backend
       const response = await fetch('http://localhost:8080/api/upload/students', {
         method: 'POST',
         body: formData,  // Send FormData object
       });
 
       if (response.ok) {
-        //const data = await response.json();
-        //console.log(data)
-        toast.success(await response.text());
-        dispatch(fetchStudents(1)); // Replace 1 with the actual teamId if needed
-        //return data;
+        const data = await response.json();
+        console.log(data)
+        toast.success("Upload successful");
+        dispatch(fetchStudents(1));
+        return data;
       } else {
         toast.error('Failed to upload file.');
       }
@@ -124,6 +136,15 @@ const allStudentsSlice = createSlice({
           });
         });
       }
+    });
+    builder.addCase(fetchCSVStudents.fulfilled, (state, action) => {
+      state.allStudents = [];
+      state.allAddedStudents = action.payload.map((student: TempStudent) => ({
+        id: student.id,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        studentId: student.studentId,
+      }));
     });
   },
 });

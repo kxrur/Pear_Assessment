@@ -3,8 +3,6 @@ import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
-import { Student } from '@s/allStudentsSlice';
-import { Team } from "@t/types.ts";
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([

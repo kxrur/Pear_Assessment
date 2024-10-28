@@ -1,17 +1,20 @@
 import { fetchCSVStudents } from '@s/allStudentsSlice';
 import { useAppDispatch } from '@s/store';
 import React, { useRef } from 'react';
-import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const ButtonOpenFile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      dispatch(fetchCSVStudents(file))
+      await dispatch(fetchCSVStudents(file))
+      navigate("/table-student")
     }
   };
 
