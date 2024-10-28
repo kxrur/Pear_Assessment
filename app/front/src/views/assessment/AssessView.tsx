@@ -47,55 +47,55 @@ export default function AssessmentView() {
     const assessmentDetails = { formData: assessmentData, graderId, dbAssesseeId };
 
     dispatch(assessStudent(assessmentDetails))
-        .unwrap()
-        .then(() => {
-          console.log('Assessment submitted successfully! Navigating to confirmation...');
-          navigate('/confirmation', { state: { assessmentDetails } }); // Pass assessment data
-        })
-        .catch((error) => {
-          console.error('Failed to submit assessment:', error);
-        });
+      .unwrap()
+      .then(() => {
+        console.log('Assessment submitted successfully! Navigating to confirmation...');
+        navigate('/confirmation', { state: { assessmentDetails } }); // Pass assessment data
+      })
+      .catch((error) => {
+        console.error('Failed to submit assessment:', error);
+      });
   }
   function handleCancel() {
     navigate('/student-page'); // Navigate to TableStudent
   }
 
   return (
-      <div className="p-8 bg-accent rounded-lg shadow-md max-w-4xl mx-auto">
-        <div className="flex items-start space-x-8">
-          {/* User/Team Profile */}
-          <div className="flex flex-col h-full last:mt-auto">
-            <UserProfile firstName={firstName} lastName={lastName}/>
-            <TeamName teamName={teamName}/>
-            <button
-                onClick={submitAssessment}
-                className="mt-4 px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Submit
-            </button>
-            <button
-                onClick={handleCancel}
-                className="mt-4 ml-4 px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              Cancel
-            </button>
-            <PrintButton
-                className="mt-4 ml-4"
-                onBeforePrint={() => console.log('Preparing to print...')}
-            />
-          </div>
+    <div className="p-8 bg-accent rounded-lg shadow-md max-w-4xl mx-auto">
+      <div className="flex items-start space-x-8">
+        {/* User/Team Profile */}
+        <div className="flex flex-col h-full last:mt-auto">
+          <UserProfile firstName={firstName} lastName={lastName} />
+          <TeamName teamName={teamName} />
+          <button
+            onClick={submitAssessment}
+            className="mt-4 px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Submit
+          </button>
+          <button
+            onClick={handleCancel}
+            className="mt-4 ml-4 px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Cancel
+          </button>
+          <PrintButton
+            className="mt-4 ml-4"
+            onBeforePrint={() => console.log('Preparing to print...')}
+          />
+        </div>
 
-          {/* Assessment Items */}
-          <div className="flex flex-col flex-grow">
-            <div className="mt-4 p-4 bg-white rounded-3xl">
-              <div className="grid grid-cols-1 gap-4">
-                {assessItemsData.map((item) => (
-                    <AssessItem key={item.name} name={item.name} description={item.description} type={item.type} />
-                ))}
-              </div>
+        {/* Assessment Items */}
+        <div className="flex flex-col flex-grow">
+          <div className="mt-4 p-4 bg-white rounded-3xl">
+            <div className="grid grid-cols-1 gap-4">
+              {assessItemsData.map((item) => (
+                <AssessItem key={item.name} name={item.name} description={item.description} type={item.type} />
+              ))}
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 }

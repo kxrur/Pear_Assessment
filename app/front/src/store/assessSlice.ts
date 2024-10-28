@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AssessmentData } from '@t/types';
-import { useAppSelector } from '@s/store';
 import { toast } from 'react-toastify';
 
 interface AssessSlice {

@@ -7,7 +7,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange }) => {
   return (
-    <div className="flex justify-between items-center bg-red-700 p-4 text-white">
+    <div className="flex justify-between items-center bg-background p-4 text-white">
       <div className="w-1/3">
         <input
           type="text"

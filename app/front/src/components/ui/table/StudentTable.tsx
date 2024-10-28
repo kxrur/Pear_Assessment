@@ -1,48 +1,52 @@
-import React from 'react';
-import StarRating from './StarRating.tsx';
-import { Student, Team } from '@t/types.ts';
-import Dropdown from '@c/input/Dropdown.tsx'; // Import the new TeamDropdown component
-import { teams } from "@t/SampleData.ts";
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import StarRating from './StarRating';
+import { RootState, useAppDispatch } from '@s/store';
+import { addStudent, deleteStudent, fetchStudents, Student } from '@s/allStudentsSlice';
+import Dropdown from '@c/input/Dropdown.tsx';
 
 interface StudentTableProps {
-  students: Student[];
   searchTerm: string;
-  addStudent: (student: { name: string; studentId: string; teamName?: string; averageGrade: number }) => void;
-  deleteStudent: (id: number) => void;
-  teams: Team[]; // Add teams prop to the component
 }
 
+export default function StudentTable({ searchTerm }: StudentTableProps) {
+  const dispatch = useAppDispatch();
+  const allStudents = useSelector((state: RootState) => state.allStudents);
 
-const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addStudent, deleteStudent, teams }) => {
-  const filteredStudents = students.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.studentId.includes(searchTerm) ||
-    (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  useEffect(() => {
+    dispatch(fetchStudents(1))
+  }, [allStudents.allStudents]);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  useEffect(() => {
+    // Filter students dynamically based on search term
+    setFilteredStudents(
+      allStudents.allStudents.filter(student =>
+        student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.studentId.toString().includes(searchTerm) ||
+        (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+    );
+  }, [searchTerm, allStudents]);
 
-  const [newStudent, setNewStudent] = React.useState({
-    name: '',
+  const [newStudent, setNewStudent] = React.useState<Student>({
+    id: 0,
+    firstName: '',
+    lastName: '',
+    username: '',
     studentId: '',
     teamName: '',
     averageGrade: 0,
   });
 
-  // Local state to manage the current teams of students
-  const [studentTeams, setStudentTeams] = React.useState<Student[]>(students);
 
   const handleAddStudent = () => {
-    if (newStudent.name && newStudent.studentId) {
-      addStudent(newStudent);
-      setNewStudent({ name: '', studentId: '', teamName: '', averageGrade: 0 });
+    if (newStudent.firstName && newStudent.studentId) {
+      dispatch(addStudent(newStudent))
+      setNewStudent({ firstName: '', lastName: '', studentId: '', teamName: '', averageGrade: 0, id: 0, username: '' });
     }
   };
 
-  const handleTeamChange = (studentId: number, newTeamName: string) => {
-    const updatedStudents = studentTeams.map(student =>
-      student.id === studentId ? { ...student, teamName: newTeamName } : student
-    );
-    setStudentTeams(updatedStudents); // Update local state
-  };
 
   return (
     <div className="p-4 bg-white">
@@ -58,32 +62,36 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Student Name"
-          value={newStudent.name}
-          onChange={e => setNewStudent({ ...newStudent, name: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black"
-        />
+          placeholder="First Name"
+          value={newStudent.firstName}
+          onChange={e => setNewStudent({ ...newStudent, firstName: e.target.value })}
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black" />
+        <input
+          type="text"
+          placeholder="Last Name"
+          value={newStudent.lastName}
+          onChange={e => setNewStudent({ ...newStudent, lastName: e.target.value })}
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" />
         <input
           type="text"
           placeholder="Student ID"
           value={newStudent.studentId}
           onChange={e => setNewStudent({ ...newStudent, studentId: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
-        />
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" />
         <input
           type="number"
           placeholder="Average Grade"
           value={newStudent.averageGrade}
           onChange={e => setNewStudent({ ...newStudent, averageGrade: Number(e.target.value) })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
-        />
+          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" />
       </div>
 
       <table className="min-w-full bg-gray-100 border">
         <thead>
           <tr>
             <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">No</th>
-            <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">Student Name</th>
+            <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">First Name</th>
+            <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">Last Name</th>
             <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">ID</th>
             <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">Team Name</th>
             <th className="px-6 py-3 border-b border-gray-300 bg-gray-200 text-left text-sm font-semibold text-gray-600">Average Peer Grade</th>
@@ -91,23 +99,22 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
           </tr>
         </thead>
         <tbody>
-          {filteredStudents.map((student) => (
+          {filteredStudents.map((student, index) => (
             <tr key={student.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.firstName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.lastName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <Dropdown
-
-                />
+                <Dropdown dbStudentId={student.id} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <StarRating initialRating={student.averageGrade} editable={false} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <button
-                  onClick={() => deleteStudent(student.id)}
-                  className="text-red-600 hover:text-red-800">
+                  onClick={() => dispatch(deleteStudent(student))} // Dispatch delete action
+                  className="text-red-600 hover:text-background">
                   Delete
                 </button>
               </td>
@@ -117,6 +124,4 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
       </table>
     </div>
   );
-};
-
-export default StudentTable;
+}

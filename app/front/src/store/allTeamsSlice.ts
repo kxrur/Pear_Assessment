@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "@s/store";
 import { TeamSlice } from "@s/teamSlice";
 import { Team as otherTeam } from "@t/types"
@@ -166,9 +166,20 @@ const allTeamsSlice = createSlice({
   },
 });
 
-export const selectTeamById = (state: RootState, teamId: number | null) =>
+export const selectTeamByTeamId = (state: RootState, teamId: number | null) =>
   state.allTeams.allTeams.find((team) => team.id === teamId);
-
+export const selectTeamNamesByStudentId = createSelector(
+  [
+    (state: RootState) => state.allTeams.allTeams,
+    (_: RootState, dbStudentId: number) => dbStudentId,
+  ],
+  (allTeams, dbStudentId) =>
+    allTeams
+      .filter((team) =>
+        team.students.some((student) => student.id === dbStudentId)
+      )
+      .map((team) => team.teamName)
+);
 
 export default allTeamsSlice.reducer;
 export const { resetAllTeams } = allTeamsSlice.actions;
