@@ -20,7 +20,6 @@ import ProtectedLayout from '@l/ProtectedLayout';
 
 import { useEffect } from 'react';
 
-import { teams } from '@t/SampleData';
 import AssessmentView from '@v/assessment/AssessView';
 import { useAppSelector } from '@s/store';
 
@@ -49,9 +48,10 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
       <div className='bg-background h-screen w-dvw'>
         <Routes>
           {/* Public Routes */}
-          <Route element={<PublicLayout />}>
+
+          <Route element={<PublicLayout />} >
+
             <Route path="/welcome" element={<Welcome />} />
-            <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/teacher" element={
               <>
                 <RegisterTeacher />
@@ -75,7 +75,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/assess" element={<AssessmentView />} />
             <Route path="/select-teammate" element={<SelectTeammate />} />
             <Route path="/team-preview" element={<AllTeamsView />} />
-            <Route path="/dropdown" element={<TeamDropdown />} />
             <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/team-delete-preview" element={<TeamViewDelete />} />
           </Route>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import StarRating from './StarRating';
-import { RootState, useAppDispatch } from '@s/store'; // Update with the correct path to your store
+import { RootState, useAppDispatch } from '@s/store';
 import { addStudent, deleteStudent, fetchStudents, Student } from '@s/allStudentsSlice';
+import { Team } from '@t/types.ts';
+import Dropdown from '@c/input/Dropdown.tsx';
 
 interface StudentTableProps {
   searchTerm: string;
@@ -38,12 +40,20 @@ export default function StudentTable({ searchTerm }: StudentTableProps) {
     averageGrade: 0,
   });
 
+
   const handleAddStudent = () => {
     if (newStudent.firstName && newStudent.studentId) {
       dispatch(addStudent(newStudent))
       setNewStudent({ firstName: '', lastName: '', studentId: '', teamName: '', averageGrade: 0, id: 0, username: '' });
     }
   };
+
+  // const handleTeamChange = (studentId: number, newTeamName: string) => {
+  //   const updatedStudents = studentTeams.map(student =>
+  //     student.id === studentId ? { ...student, teamName: newTeamName } : student
+  //   );
+  //   setStudentTeams(updatedStudents); // Update local state
+  // };
 
   return (
     <div className="p-4 bg-white">
@@ -76,12 +86,6 @@ export default function StudentTable({ searchTerm }: StudentTableProps) {
           onChange={e => setNewStudent({ ...newStudent, studentId: e.target.value })}
           className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" />
         <input
-          type="text"
-          placeholder="Team Name (optional)"
-          value={newStudent.teamName}
-          onChange={e => setNewStudent({ ...newStudent, teamName: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2" />
-        <input
           type="number"
           placeholder="Average Grade"
           value={newStudent.averageGrade}
@@ -108,7 +112,9 @@ export default function StudentTable({ searchTerm }: StudentTableProps) {
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.firstName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.lastName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.teamName || 'N/A'}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <Dropdown dbStudentId={student.id} />
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <StarRating initialRating={student.averageGrade} editable={false} />
               </td>

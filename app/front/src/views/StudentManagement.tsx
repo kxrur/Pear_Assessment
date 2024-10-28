@@ -4,6 +4,7 @@ import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
 import { Student } from '@s/allStudentsSlice';
+import { Team } from "@t/types.ts";
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
@@ -16,22 +17,6 @@ const StudentManagement: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-
-  // const addStudent = (newStudent: Student) => {
-  //   const newStudentEntry = {
-  //     id: students.length + 1, // Simple ID increment, consider using a unique ID generator
-  //     name: newStudent.firstName + newStudent.lastName,
-  //     studentId: newStudent.studentId,
-  //     teamName: newStudent.teamName ?? 'No Team', // Provide default if undefined
-  //     averageGrade: newStudent.averageGrade,
-  //   };
-  //   setStudents([...students, newStudentEntry]);
-  // };
-  //
-  // // Function to delete a student based on ID
-  // const deleteStudent = (id: number) => {
-  //   setStudents(students.filter(student => student.id !== id));
-  // };
 
   return (
     <div className="flex">

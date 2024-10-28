@@ -1,6 +1,5 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
-
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
@@ -45,8 +44,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
-     * Registers a new student, ensuring the username is unique and password is encrypted.
-     *
+     * Registers a new student, ensuring the username is unique and password is
+     * encrypted.
+     * 
      * @param studentDTO the student data transfer object containing student details
      * @return the saved student DTO
      * @throws DuplicateUserException if the username already exists in the system
@@ -58,9 +58,9 @@ public class UserServiceImpl implements UserService {
         if (studentRepository.existsByStudentID(studentDTO.getStudentId())) {
             Optional<Student> optionalStudent = studentRepository.findByStudentID(studentDTO.getStudentId());
             if (optionalStudent.isPresent()) {
-                if (optionalStudent.get().isTemp())
-                   student = updateStudent(optionalStudent,studentDTO);
-            }else {
+                if (optionalStudent.get().isTemp() && !studentDTO.isTemp())
+                    student = updateStudent(optionalStudent, studentDTO);
+            } else {
                 throw new DuplicateUserException("Student ID already in use");
             }
         }
@@ -86,11 +86,12 @@ public class UserServiceImpl implements UserService {
         return studentToChange;
     }
 
-
     /**
-     * Registers a new professor, ensuring the username is unique and password is encrypted.
-     *
-     * @param professorDTO the professor data transfer object containing professor details
+     * Registers a new professor, ensuring the username is unique and password is
+     * encrypted.
+     * 
+     * @param professorDTO the professor data transfer object containing professor
+     *                     details
      * @return the saved professor DTO
      * @throws DuplicateUserException if the username already exists in the system
      */
@@ -113,12 +114,11 @@ public class UserServiceImpl implements UserService {
     /**
      * Handles the login process by checking both the username or student ID.
      * It verifies if the provided password matches the stored one.
-     *
+     * 
      * @param usernameOrStudentId the username or student ID
      * @param password            the raw password entered by the user
      * @return an optional user if the login is successful, empty otherwise
      */
-
     public Optional<User> login(String usernameOrStudentId, String password) {
         boolean isTemp = false;
         // User is verified through their username
@@ -152,7 +152,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Retrieves a user by their unique ID.
-     *
+     * 
+     *  id the user ID
      * @return an optional user if found, empty otherwise
      */
     public List<User> getAllUsers() {
@@ -161,7 +162,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Fetches all users from the database.
-     *
+     * 
      * @return a list of all users
      */
     @Override
@@ -188,6 +189,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Return a list of all students currently in the database
+     * 
      * @return A list of student DTO
      */
     public List<StudentDTO> getAllStudents() {
@@ -203,7 +205,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Deletes a user by their unique ID.
-     *
+     * 
      * @param id the user ID to be deleted
      */
     public void deleteUser(Long id) {
