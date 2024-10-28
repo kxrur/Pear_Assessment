@@ -1,14 +1,10 @@
-// PageStudent.tsx
 import React, { useState } from 'react';
-import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
-import TableStudent from '@c/ui/table/TableStudent'; // Import TableStudent component
-import { teams } from '@t/SampleData'; // Import teams data instead of type
-import { Team } from '@t/types';
+import StudentTable from '@c/ui/table/AddedStudentsTable';
 
-const PageStudent: React.FC = () => {
+const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
-    { id: 1, name: 'Mohamed Tremblay', studentId: '40292922', averageGrade: 4 },
+    { id: 1, name: 'Mohamed Tremblay', studentId: '40292922', teamName: 'Think Vision', averageGrade: 4 },
     // Add more initial students if needed
   ]);
 
@@ -20,13 +16,10 @@ const PageStudent: React.FC = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
       <div className="flex-1">
         <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="p-4">
-          <TableStudent
-            students={students}
-            teams={teams} // Pass the teams array correctly
+          <StudentTable
             searchTerm={searchTerm}
           />
         </div>
@@ -35,4 +28,4 @@ const PageStudent: React.FC = () => {
   );
 };
 
-export default PageStudent;
+export default StudentManagement;

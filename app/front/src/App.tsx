@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PageStudent from '@v/teacher/PageStudent';
 import type { ReactNode } from 'react';
 import LoginTeacher from '@v/login/TeacherLoginView'
 import LoginStudent from '@v/login/StudentLoginView'
@@ -10,21 +9,20 @@ import Welcome from '@v/Welcome';
 import AllTeamsView from '@v/team/AllTeamsView';
 import CreateTeamForm from '@v/team/CreateTeamFormView';
 import SelectTeammate from '@v/team/SelectTeammate';
+import ConfirmationPage from '@c/ui/assessment/ConfirmationPage.tsx';
 
 
 import StudentManagement from '@v/StudentManagement';
 import TeamViewDelete from '@v/team/AllTeamsDeleteView';
-import TeamDropdown from '@c/input/Dropdown';
 import PublicLayout from '@l/PublicLayout';
 import ProtectedLayout from '@l/ProtectedLayout';
 
 import { useEffect } from 'react';
 
-import { teams } from '@t/SampleData';
 import AssessmentView from '@v/assessment/AssessView';
 import { useAppSelector } from '@s/store';
+import AddedStudentsView from '@v/confirmation/AddedStudentsConfirmationView';
 
-// Define a type for the expected props for the router
 interface AppRouterProps {
   children: ReactNode;
 }
@@ -51,7 +49,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/welcome" element={<Welcome />} />
-            <Route path="/assess" element={<AssessmentView />} />
             <Route path="/teacher" element={
               <>
                 <RegisterTeacher />
@@ -70,14 +67,15 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
           {/* Protected Routes */}
           <Route element={<ProtectedLayout />}>
             <Route path="/" element={<StudentManagement />} />
+            <Route path="/table-student" element={<AddedStudentsView />} />
             <Route path="/create-team" element={<CreateTeamForm />} />
             <Route path='/student-page' element={<PageStudent />} />
-
+            <Route path="/assess" element={<AssessmentView />} />
             <Route path="/select-teammate" element={<SelectTeammate />} />
             <Route path="/team-preview" element={<AllTeamsView />} />
-            <Route path="/dropdown" element={<TeamDropdown />} />
             <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/team-delete-preview" element={<TeamViewDelete />} />
+            <Route path="/confirmation" element={<ConfirmationPage />} />
           </Route>
         </Routes >
       </div >

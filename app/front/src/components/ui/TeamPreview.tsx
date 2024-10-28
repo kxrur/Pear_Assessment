@@ -1,4 +1,4 @@
-import { selectTeamById } from '@s/allTeamsSlice';
+import { selectTeamByTeamId } from '@s/allTeamsSlice';
 import { RootState, useAppDispatch, useAppSelector } from '@s/store';
 import { updateTeamFromAllTeams } from '@s/teamSlice';
 import React from 'react';
@@ -21,7 +21,7 @@ export const TeamPreview: React.FC<TeamProps> = ({
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const selectedTeam = useAppSelector((state) => selectTeamById(state, teamId))
+  const selectedTeam = useAppSelector((state) => selectTeamByTeamId(state, teamId))
 
   function handleTeamSelect() {
     if (selectedTeam) {

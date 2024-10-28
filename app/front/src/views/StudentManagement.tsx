@@ -16,22 +16,6 @@ const StudentManagement: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const addStudent = (newStudent: { name: string; studentId: string; teamName?: string; averageGrade: number }) => {
-    const newStudentEntry = {
-      id: students.length + 1, // Simple ID increment, consider using a unique ID generator
-      name: newStudent.name,
-      studentId: newStudent.studentId,
-      teamName: newStudent.teamName ?? 'No Team', // Provide default if undefined
-      averageGrade: newStudent.averageGrade,
-    };
-    setStudents([...students, newStudentEntry]);
-  };
-
-  // Function to delete a student based on ID
-  const deleteStudent = (id: number) => {
-    setStudents(students.filter(student => student.id !== id));
-  };
-
   return (
     <div className="flex">
       <Sidebar />
@@ -39,10 +23,9 @@ const StudentManagement: React.FC = () => {
         <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="p-4">
           <StudentTable
-            students={students}
             searchTerm={searchTerm}
-            addStudent={addStudent} // Pass the addStudent function correctly
-            deleteStudent={deleteStudent} // Pass the delete function
+          // addStudent={addStudent} // Pass the addStudent function correctly
+          // deleteStudent={deleteStudent} // Pass the delete function
           />
           <div className="mt-4">
             <ButtonOpenFile />
