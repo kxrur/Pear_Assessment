@@ -17,6 +17,9 @@ import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -63,31 +66,38 @@ public class FileController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
-
+    /*
+    case 0 -> new ResponseEntity<>("No users have been added", HttpStatus.resolve(401));
+    case 1 -> new ResponseEntity<>("All users have been added", HttpStatus.resolve(201));
+    case 2 -> new ResponseEntity<>("Some users have been added", HttpStatus.resolve(203));
+    default -> new ResponseEntity<>("Error adding users", HttpStatus.BAD_REQUEST);
+     */
     @PostMapping("/upload/students")
     public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file,
                                               RedirectAttributes redirectAttributes) {
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-        return switch (parseStudents(file.getOriginalFilename())) {
-            case 0 -> new ResponseEntity<>("No users have been added", HttpStatus.BAD_REQUEST);
-            case 1 -> new ResponseEntity<>("All users have been added", HttpStatus.ACCEPTED);
-            case 2 -> new ResponseEntity<>("Some users have been added", HttpStatus.ACCEPTED);
-            default -> new ResponseEntity<>("Error adding users", HttpStatus.BAD_REQUEST);
+        validStudentsEntity uploadEntity = parseStudents(file.getOriginalFilename());
+        return switch (uploadEntity.getAnswer()) {
+            case 0 -> new ResponseEntity<>(uploadEntity.getAddedStudents(), HttpStatus.valueOf(401));
+            case 1 -> new ResponseEntity<>(uploadEntity.getAddedStudents(), HttpStatus.valueOf(201));
+            case 2 -> new ResponseEntity<>(uploadEntity.getAddedStudents(), HttpStatus.valueOf(203));
+            default -> new ResponseEntity<>(uploadEntity.getAddedStudents(), HttpStatus.BAD_REQUEST);
         };
     }
     @Autowired
     private UserServiceImpl userService;
 
-    public int parseStudents(String fileName) {
+    public validStudentsEntity parseStudents(String fileName) {
         Path fileToCheck = storageService.load(fileName);
         int nbCorrect = 0, nbErrors = 0;
+        List<StudentDTO> validStudents = new ArrayList<>();
+        List<StudentDTO> addedStudents = new ArrayList<>();
+
 
         try (BufferedReader reader = Files.newBufferedReader(fileToCheck)) {
             String line;
-            List<StudentDTO> validStudents = new ArrayList<>();
-
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
 
@@ -122,9 +132,10 @@ public class FileController {
 
             // Save all valid students to the database in one go
             for (StudentDTO tempStudent : validStudents) {
-                System.out.println("adding");
                 try {
-                 userService.registerStudent(tempStudent);
+                 StudentDTO newStudent = userService.registerStudent(tempStudent);
+                 addedStudents.add(newStudent);
+                    System.out.println("adding"+ newStudent);
                 }
                 catch(Exception e){
                     nbErrors++;
@@ -137,10 +148,11 @@ public class FileController {
             e.printStackTrace();
         }
         if (nbCorrect == 0)
-            return 0;
+            return new validStudentsEntity(addedStudents,0);
         if (nbErrors == 0)
-            return 1;
-        return 2;
+            return new validStudentsEntity(addedStudents,1);
+
+        return new validStudentsEntity(addedStudents,2);
     }
 
 
@@ -148,4 +160,13 @@ public class FileController {
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
     }
+}
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+class validStudentsEntity{
+    List<StudentDTO> addedStudents;
+    int answer;
+
 }

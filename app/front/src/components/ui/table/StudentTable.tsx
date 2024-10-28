@@ -1,34 +1,47 @@
 import React from 'react';
-import StarRating from './StarRating';
-import { Student } from '@t/types';
-
+import StarRating from './StarRating.tsx';
+import { Student, Team } from '@t/types.ts';
+import Dropdown from '@c/input/Dropdown.tsx'; // Import the new TeamDropdown component
+import { teams } from "@t/SampleData.ts";
 
 interface StudentTableProps {
   students: Student[];
   searchTerm: string;
   addStudent: (student: { name: string; studentId: string; teamName?: string; averageGrade: number }) => void;
-  deleteStudent: (id: number) => void; // Accept the delete function as a prop
+  deleteStudent: (id: number) => void;
+  teams: Team[]; // Add teams prop to the component
 }
 
-const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addStudent, deleteStudent }) => {
+
+const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addStudent, deleteStudent, teams }) => {
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.studentId.includes(searchTerm) ||
-    (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase())) // Check if teamName is present
+    (student.teamName && student.teamName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const [newStudent, setNewStudent] = React.useState({
     name: '',
     studentId: '',
-    teamName: '', // Keep teamName in state but it's optional
+    teamName: '',
     averageGrade: 0,
   });
 
+  // Local state to manage the current teams of students
+  const [studentTeams, setStudentTeams] = React.useState<Student[]>(students);
+
   const handleAddStudent = () => {
-    if (newStudent.name && newStudent.studentId) { // Only check for name and studentId
+    if (newStudent.name && newStudent.studentId) {
       addStudent(newStudent);
-      setNewStudent({ name: '', studentId: '', teamName: '', averageGrade: 0 }); // Reset input fields
+      setNewStudent({ name: '', studentId: '', teamName: '', averageGrade: 0 });
     }
+  };
+
+  const handleTeamChange = (studentId: number, newTeamName: string) => {
+    const updatedStudents = studentTeams.map(student =>
+      student.id === studentId ? { ...student, teamName: newTeamName } : student
+    );
+    setStudentTeams(updatedStudents); // Update local state
   };
 
   return (
@@ -58,13 +71,6 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
           className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
         />
         <input
-          type="text"
-          placeholder="Team Name (optional)"
-          value={newStudent.teamName}
-          onChange={e => setNewStudent({ ...newStudent, teamName: e.target.value })}
-          className="p-2 border border-gray-300 rounded bg-gray-200 text-black ml-2"
-        />
-        <input
           type="number"
           placeholder="Average Grade"
           value={newStudent.averageGrade}
@@ -90,13 +96,17 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, searchTerm, addSt
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.studentId}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.teamName || 'N/A'}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <Dropdown
+
+                />
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <StarRating initialRating={student.averageGrade} editable={false} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <button
-                  onClick={() => deleteStudent(student.id)} // Call the delete function
+                  onClick={() => deleteStudent(student.id)}
                   className="text-red-600 hover:text-red-800">
                   Delete
                 </button>

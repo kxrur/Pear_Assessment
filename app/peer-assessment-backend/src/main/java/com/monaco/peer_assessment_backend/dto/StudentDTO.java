@@ -21,4 +21,13 @@ public class StudentDTO extends UserDTO {
         this.isTemp = isTemp;
         this.studentId = studentId;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "studentId=" + studentId +
+                ", isTemp=" + isTemp +
+                getFirstName()+" "+getLastName()+
+                '}';
+    }
 }

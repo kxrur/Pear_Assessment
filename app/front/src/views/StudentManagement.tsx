@@ -3,6 +3,8 @@ import Sidebar from '@c/navBar/Sidebar';
 import Header from '@c/ui/table/Header';
 import StudentTable from '@c/ui/table/StudentTable';
 import ButtonOpenFile from '@c/input/ButtonOpenFile';
+import { teams } from "@t/SampleData.ts";
+import { Team } from "@t/types.ts";
 
 const StudentManagement: React.FC = () => {
   const [students, setStudents] = useState([
@@ -31,7 +33,12 @@ const StudentManagement: React.FC = () => {
   const deleteStudent = (id: number) => {
     setStudents(students.filter(student => student.id !== id));
   };
-
+  const updateStudentTeam = (studentId: number, teamName: string) => {
+    const updatedStudents = students.map(student =>
+      student.id === studentId ? { ...student, teamName } : student
+    );
+    setStudents(updatedStudents);
+  };
   return (
     <div className="flex">
       <Sidebar />
@@ -42,7 +49,9 @@ const StudentManagement: React.FC = () => {
             students={students}
             searchTerm={searchTerm}
             addStudent={addStudent} // Pass the addStudent function correctly
-            deleteStudent={deleteStudent} // Pass the delete function
+            deleteStudent={deleteStudent}
+            // Pass the delete function
+            teams={teams}
           />
           <div className="mt-4">
             <ButtonOpenFile />
