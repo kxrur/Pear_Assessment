@@ -19,9 +19,16 @@ const ButtonOpenFile: React.FC = () => {
                     body: formData,  // Send FormData object
                 });
 
-                if (response.ok) {
-                    toast.success(await response.text());
-                } else {
+                if (response.status==201) {
+                    toast.success("All users have been added");
+                }
+                else if(response.status==203){
+                    toast.success("Some users have been added");
+                }
+                else if(response.status==401){
+                    toast.error("No users have been added");
+                }
+                else {
                     toast.error('Failed to upload file.');
                 }
             } catch (error) {
