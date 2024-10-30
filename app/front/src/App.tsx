@@ -69,7 +69,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/" element={<StudentManagement />} />
             <Route path="/table-student" element={<AddedStudentsView />} />
             <Route path="/create-team" element={<CreateTeamForm />} />
-            <Route path='/student-page' element={<PageStudent />} />
             <Route path="/assess" element={<AssessmentView />} />
             <Route path="/select-teammate" element={<SelectTeammate />} />
             <Route path="/team-preview" element={<AllTeamsView />} />
