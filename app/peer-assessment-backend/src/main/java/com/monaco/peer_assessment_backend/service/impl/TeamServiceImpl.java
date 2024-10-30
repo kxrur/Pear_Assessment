@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
+import com.monaco.peer_assessment_backend.dto.EvaluationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.entity.Evaluation;
 import com.monaco.peer_assessment_backend.entity.Professor;
@@ -8,6 +9,7 @@ import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
+import com.monaco.peer_assessment_backend.mapper.EvaluationMapper;
 import com.monaco.peer_assessment_backend.mapper.TeamMapper;
 import com.monaco.peer_assessment_backend.repository.EvaluationRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
@@ -38,6 +40,8 @@ public class TeamServiceImpl implements TeamService {
     private EvaluationRepository evaluationRepository;
     @Autowired
     private TeamMapper teamMapper;
+    @Autowired
+    private EvaluationMapper evaluationMapper;
 
     @Override
     public void createTeam(Long professorID, List<Long> studentIds, String teamName) {
@@ -130,7 +134,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating) {
+    public EvaluationDTO submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating) {
         
         // Find the evaluator and evaluatee
         Student evaluator = studentRepository.findById(evaluatorId).orElseThrow(() -> new RuntimeException("Evaluator not found"));
@@ -156,6 +160,7 @@ public class TeamServiceImpl implements TeamService {
         
         // Save the evaluation
         evaluationRepository.save(evaluation);
+        return evaluationMapper.mapToEvaluationDTO(evaluation);
     }
 
     /**

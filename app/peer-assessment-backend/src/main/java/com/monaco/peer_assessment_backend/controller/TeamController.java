@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.controller;
 
+import com.monaco.peer_assessment_backend.dto.EvaluationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamCreationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.dto.TeammateSelectionDTO;
@@ -59,13 +60,13 @@ public class TeamController {
   }
 
   @PostMapping("/teams/evaluate/{evaluatorId}/rate/{evaluateeId}")
-  public ResponseEntity<String> submitCooperationRating(
+  public ResponseEntity<?> submitCooperationRating(
       @PathVariable Long evaluatorId,
       @PathVariable Long evaluateeId,
       @RequestParam int rating) {
+    EvaluationDTO eval;
     try {
-      teamService.submitCooperationRating(evaluatorId, evaluateeId, rating);
-      return ResponseEntity.ok("Rating submitted successfully.");
+      return ResponseEntity.ok(teamService.submitCooperationRating(evaluatorId, evaluateeId, rating));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     } catch (RuntimeException e) {
