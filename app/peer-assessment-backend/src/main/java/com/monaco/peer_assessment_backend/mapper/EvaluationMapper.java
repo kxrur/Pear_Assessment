@@ -14,6 +14,13 @@ public class EvaluationMapper {
         evaluationDTO.setEvaluator(evaluation.getEvaluator());
         evaluationDTO.setTeammate(evaluation.getTeammate());
         evaluationDTO.setCooperation_rating(evaluation.getCooperationRating());
+        evaluationDTO.setCooperation_comment(evaluation.getCooperationComment());
+        evaluationDTO.setConceptual_contribution_rating(evaluation.getConceptualContributionRating());
+        evaluationDTO.setConceptual_contribution_comment(evaluation.getConceptualContributionComment());
+        evaluationDTO.setPractical_contribution_rating(evaluation.getPracticalContributionRating());
+        evaluationDTO.setPractical_contribution_comment(evaluation.getPracticalContributionComment());
+        evaluationDTO.setWork_ethic_rating(evaluation.getWorkEthicRating());
+        evaluationDTO.setWork_ethic_comment(evaluation.getWorkEthicComment());
         return evaluationDTO;
     }
 }

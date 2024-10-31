@@ -134,34 +134,44 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public EvaluationDTO submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating) {
+    public EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, 
+                                      int conceptual_contribution_rating, int practical_contribution_rating, 
+                                      int work_ethic_rating, 
+                                      String cooperation_comment, String conceptual_contribution_comment,
+                                      String practical_contribution_comment, String work_ethic_comment) {
+    
+        Student evaluator = studentRepository.findById(evaluatorId)
+                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
         
-        // Find the evaluator and evaluatee
-        Student evaluator = studentRepository.findById(evaluatorId).orElseThrow(() -> new RuntimeException("Evaluator not found"));
-        Student evaluatee = studentRepository.findById(evaluateeId).orElseThrow(() -> new RuntimeException("Evaluatee not found"));
+        Student evaluatee = studentRepository.findById(evaluateeId)
+                .orElseThrow(() -> new RuntimeException("Evaluatee not found"));
 
-        // Find existing evaluation or create a new one
-        Optional<Evaluation> optionalEvaluation = evaluationRepository.findByEvaluatorAndTeammate(evaluator, evaluatee);
+        Evaluation evaluation = new Evaluation();
+        evaluation.setEvaluator(evaluator);
+        evaluation.setTeammate(evaluatee);
         
-        Evaluation evaluation;
+        evaluation.setCooperationRating(cooperation_rating);
+        evaluation.setConceptualContributionRating(conceptual_contribution_rating);
+        evaluation.setPracticalContributionRating(practical_contribution_rating);
+        evaluation.setWorkEthicRating(work_ethic_rating);
+        
+        evaluation.setCooperationComment(cooperation_comment);
+        evaluation.setConceptualContributionComment(conceptual_contribution_comment);
+        evaluation.setPracticalContributionComment(practical_contribution_comment);
+        evaluation.setWorkEthicComment(work_ethic_comment);
 
-        if (optionalEvaluation.isPresent()) {
-            evaluation = optionalEvaluation.get();
-        } 
-        
-        else {
-            evaluation = new Evaluation();
-            evaluation.setEvaluator(evaluator);
-            evaluation.setTeammate(evaluatee);
-        }
+        double totalRating = cooperation_rating + conceptual_contribution_rating + 
+                            practical_contribution_rating + work_ethic_rating;
 
-        // Set the cooperation rating
-        evaluation.setCooperationRating(rating);
-        
-        // Save the evaluation
+        double averageRating = totalRating / 4.0;
+
+        evaluation.setAverageRating(averageRating);
         evaluationRepository.save(evaluation);
+
+        // Return the DTO
         return evaluationMapper.mapToEvaluationDTO(evaluation);
     }
+
 
     /**
      * Given a Team ID, delete the team from the database
