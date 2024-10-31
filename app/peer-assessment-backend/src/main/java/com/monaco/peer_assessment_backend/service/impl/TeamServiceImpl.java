@@ -134,7 +134,10 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public EvaluationDTO submitCooperationRating(Long evaluatorId, Long evaluateeId, int rating) {
+    public EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, int conceptual_contribution_rating, 
+    int practical_contribution_rating, int work_ethic_rating, 
+    String cooperation_comment, String conceptual_contribution_comment,
+    String practical_contribution_comment, String work_ethic_comment) {
         
         // Find the evaluator and evaluatee
         Student evaluator = studentRepository.findById(evaluatorId).orElseThrow(() -> new RuntimeException("Evaluator not found"));
@@ -155,8 +158,25 @@ public class TeamServiceImpl implements TeamService {
             evaluation.setTeammate(evaluatee);
         }
 
-        // Set the cooperation rating
-        evaluation.setCooperationRating(rating);
+        
+        evaluation.setCooperationRating(cooperation_rating);
+        evaluation.setConceptualContributionRating(conceptual_contribution_rating);
+        evaluation.setPracticalContributionRating(practical_contribution_rating);
+        evaluation.setWorkEthicRating(work_ethic_rating);
+        
+        evaluation.setCooperationComment(cooperation_comment);
+        evaluation.setConceptualContributionComment(conceptual_contribution_comment);
+        evaluation.setPracticalContributionComment(practical_contribution_comment);
+        evaluation.setWorkEthicComment(work_ethic_comment);
+
+        int total_rating = evaluation.getCooperationRating() +
+        evaluation.getConceptualContributionRating() +
+        evaluation.getPracticalContributionRating() +
+        evaluation.getWorkEthicRating();
+
+        double average_rating = total_rating / 4.0;
+
+        evaluation.setAverageRating(average_rating);
         
         // Save the evaluation
         evaluationRepository.save(evaluation);

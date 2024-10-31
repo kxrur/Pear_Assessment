@@ -28,6 +28,8 @@ public class Evaluation{
     private int work_ethic_rating;
     private String work_ethic_comment;
 
+    private double average_rating;
+
     public Evaluation(){
 
     }
@@ -123,5 +125,13 @@ public class Evaluation{
 
     public void setWorkEthicComment(String work_ethic_comment) {
         this.work_ethic_comment = work_ethic_comment;
+    }
+
+    public double getAverageRating(){
+        return average_rating;
+    }
+
+    public void setAverageRating(double average_rating){
+        this.average_rating = average_rating;
     }
 }
