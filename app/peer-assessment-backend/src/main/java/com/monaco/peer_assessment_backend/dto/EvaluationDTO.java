@@ -16,4 +16,11 @@ public class EvaluationDTO {
     private Student evaluator;
     private Student teammate;
     private int cooperation_rating;
+    private String cooperation_comment;
+    private int conceptual_contribution_rating;
+    private String conceptual_contribution_comment;
+    private int practical_contribution_rating;
+    private String practical_contribution_comment;
+    private int work_ethic_rating;
+    private String work_ethic_comment;
 }

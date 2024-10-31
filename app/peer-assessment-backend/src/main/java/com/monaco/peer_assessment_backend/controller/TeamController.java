@@ -63,10 +63,21 @@ public class TeamController {
   public ResponseEntity<?> submitCooperationRating(
       @PathVariable Long evaluatorId,
       @PathVariable Long evaluateeId,
-      @RequestParam int rating) {
+      @RequestParam int cooperation_rating,
+      @RequestParam String cooperation_comment,
+      @RequestParam int conceptual_contribution_rating,
+      @RequestParam String conceptual_contribution_comment,
+      @RequestParam int practical_contribution_rating,
+      @RequestParam String practical_contribution_comment,
+      @RequestParam int work_ethic_rating,
+      @RequestParam String work_ethic_comment) {
     EvaluationDTO eval;
     try {
-      return ResponseEntity.ok(teamService.submitCooperationRating(evaluatorId, evaluateeId, rating));
+      return ResponseEntity.ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating, 
+      practical_contribution_rating, work_ethic_rating, 
+      cooperation_comment, conceptual_contribution_comment,
+      practical_contribution_comment, work_ethic_comment));
+      
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     } catch (RuntimeException e) {
