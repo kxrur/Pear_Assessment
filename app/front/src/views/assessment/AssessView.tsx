@@ -69,20 +69,16 @@ export default function AssessmentView() {
           <TeamName teamName={teamName} />
           <button
             onClick={submitAssessment}
-            className="mt-4 px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="mt-4 px-4 py-2 text-white bg-red-600 rounded hover:bg-background focus:outline-none focus:ring-2 focus:ring-red-500 w-36"
           >
             Submit
           </button>
           <button
             onClick={handleCancel}
-            className="mt-4 ml-4 px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="mt-4 px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 w-36"
           >
             Cancel
           </button>
-          <PrintButton
-            className="mt-4 ml-4"
-            onBeforePrint={() => console.log('Preparing to print...')}
-          />
         </div>
 
         {/* Assessment Items */}
