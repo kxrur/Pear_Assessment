@@ -17,6 +17,16 @@ public class Evaluation{
     private Student teammate;
 
     private int cooperation_rating;
+    private String cooperation_comment;
+
+    private int conceptual_contribution_rating;
+    private String conceptual_contribution_comment;
+
+    private int practical_contribution_rating;
+    private String practical_contribution_comment;
+
+    private int work_ethic_rating;
+    private String work_ethic_comment;
 
     public Evaluation(){
 
@@ -58,5 +68,60 @@ public class Evaluation{
     public void setCooperationRating(int cooperation_rating){
         this.cooperation_rating = cooperation_rating;
     }
-    
+
+    public String getCooperationComment() {
+        return cooperation_comment;
+    }
+
+    public void setCooperationComment(String cooperationComment) {
+        this.cooperation_comment = cooperationComment;
+    }
+
+    public int getConceptualContributionRating() {
+        return conceptual_contribution_rating;
+    }
+
+    public void setConceptualContributionRating(int conceptual_contribution_rating) {
+        this.conceptual_contribution_rating = conceptual_contribution_rating;
+    }
+
+    public String getConceptualContributionComment() {
+        return conceptual_contribution_comment;
+    }
+
+    public void setConceptualContributionComment(String conceptual_contribution_comment) {
+        this.conceptual_contribution_comment = conceptual_contribution_comment;
+    }
+
+    public int getPracticalContributionRating() {
+        return practical_contribution_rating;
+    }
+
+    public void setPracticalContributionRating(int practical_contribution_rating) {
+        this.practical_contribution_rating = practical_contribution_rating;
+    }
+
+    public String getPracticalContributionComment() {
+        return practical_contribution_comment;
+    }
+
+    public void setPracticalContributionComment(String practical_contribution_comment) {
+        this.practical_contribution_comment = practical_contribution_comment;
+    }
+
+    public int getWorkEthicRating() {
+        return work_ethic_rating;
+    }
+
+    public void setWorkEthicRating(int work_ethic_rating) {
+        this.work_ethic_rating = work_ethic_rating;
+    }
+
+    public String getWorkEthicComment() {
+        return work_ethic_comment;
+    }
+
+    public void setWorkEthicComment(String work_ethic_comment) {
+        this.work_ethic_comment = work_ethic_comment;
+    }
 }
