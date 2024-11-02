@@ -7,8 +7,8 @@ export interface AssessmentData {
   workEthic: IndividualAssessmentData;
 }
 interface IndividualAssessmentData {
-  stars?: number;
-  comment?: string;
+  stars: number;
+  comment: string | "no comment";
 }
 
 export interface Teacher {

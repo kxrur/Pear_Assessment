@@ -1,3 +1,5 @@
+import { encodeFormData } from '@f/apiHelper';
+import { UTurnRightSharp } from '@mui/icons-material';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AssessmentData } from '@t/types';
 import { toast } from 'react-toastify';
@@ -18,40 +20,50 @@ const initialState: AssessSlice = {
   assessmentData: {
     cooperation: {
       stars: 0,
-      comment: "",
+      comment: "no comment",
     },
     conceptual: {
       stars: 0,
-      comment: "",
+      comment: "no comment",
     },
     practical: {
       stars: 0,
-      comment: "",
+      comment: "no comment",
     },
     workEthic: {
       stars: 0,
-      comment: "",
+      comment: "no comment",
     },
   }
 };
 
 export const assessStudent = createAsyncThunk(
   'assessment/post',
-  async ({ formData, graderId, dbAssesseeId }: { formData: AssessmentData; graderId: number | null; dbAssesseeId: number | null }, { rejectWithValue }) => {
+  async ({ formData: { cooperation, conceptual, practical, workEthic }, graderId, dbAssesseeId }: { formData: AssessmentData; graderId: number | null; dbAssesseeId: number | null }, { rejectWithValue }) => {
     if (!graderId || !dbAssesseeId) {
       return rejectWithValue('Missing graderId or dbAssesseeId');
     }
 
-    //TODO: adapt to have all evaluation criteria
-    const rating = formData.conceptual.stars;
-    console.log(`http://localhost:8080/api/teams/evaluate/${graderId}/rate/${dbAssesseeId}?rating=${rating}`);
+    const bodyData = {
+      cooperation_rating: cooperation.stars.toString(),
+      cooperation_comment: cooperation.comment,
+      conceptual_contribution_rating: conceptual.stars.toString(),
+      conceptual_contribution_comment: conceptual.comment,
+      practical_contribution_rating: practical.stars.toString(),
+      practical_contribution_comment: practical.comment,
+      work_ethic_rating: workEthic.stars.toString(),
+      work_ethic_comment: workEthic.comment,
+    };
+
+    const encodedBody = encodeFormData(bodyData);
+    console.log(encodedBody)
+    console.log(`http://localhost:8080/api/teams/evaluate/${graderId}/rate/${dbAssesseeId}`);
     try {
-      const response = await fetch(`http://localhost:8080/api/teams/evaluate/${graderId}/rate/${dbAssesseeId}?rating=${rating}`, {
+      const response = await fetch(`http://localhost:8080/api/teams/evaluate/${graderId}/rate/${dbAssesseeId}?${encodedBody.toString()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: "",
       });
 
       const data = await response.text();
@@ -60,6 +72,7 @@ export const assessStudent = createAsyncThunk(
         throw new Error(data || 'Assessment submission failed');
       }
 
+      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error || 'Network Error');
