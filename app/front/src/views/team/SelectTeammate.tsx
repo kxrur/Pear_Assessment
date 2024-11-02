@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function SelectTeammate() {
   const team: TeamSlice = useAppSelector((state: RootState) => state.team);
+  const userId = useAppSelector((state) => state.user.id)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ function SelectTeammate() {
   return (
     <div className="p-6 bg-gray-100 h-full">
       <h1 className="text-2xl font-bold mb-6">Assess Your Teammates</h1>
-      {team.students.map(student => (
+      {team.students.filter(student => student.id != userId).map(student => (
         <div key={student.id} className="mb-6 p-4 bg-white rounded shadow">
           <div className="flex justify-between items-center">
             <div>
