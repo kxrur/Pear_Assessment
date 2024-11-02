@@ -110,5 +110,11 @@ public class UserServiceTests {
         // Here we are making sure that the student was saved in the studentRepository
         verify(studentRepository).save(student);
     }
+
+    @DisplayName("A random test (should be 3 now)")
+    @Test
+    public void testRandom() {
+        assertEquals("String", "String");
+    }
 }
 
