@@ -18,6 +18,8 @@ public interface TeamService {
     
     void saveSelectedTeammatesForEvaluation(Long evaluatorId, List<Long> selectedTeammateIds);
 
+    List<Student> getAvailableTeammatesForEvaluation(Long evaluatorId, Long teamId);
+
     EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, int conceptual_contribution_rating, 
     int practical_contribution_rating, int work_ethic_rating, 
     String cooperation_comment, String conceptual_contribution_comment,

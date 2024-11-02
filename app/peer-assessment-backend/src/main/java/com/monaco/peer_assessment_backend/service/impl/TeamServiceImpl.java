@@ -19,8 +19,12 @@ import com.monaco.peer_assessment_backend.service.TeamService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -132,6 +136,41 @@ public class TeamServiceImpl implements TeamService {
             throw new UserNotFoundException("User is neither a student or a professor");
         }
     }
+
+    @Override
+    public List<Student> getAvailableTeammatesForEvaluation(Long evaluatorId, Long teamId) {
+        // Fetch the evaluator and the team
+        Student evaluator = studentRepository.findById(evaluatorId)
+                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
+        
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        // Ensure the evaluator is part of the team
+        if (!team.getStudents().contains(evaluator)) {
+            throw new RuntimeException("Evaluator is not a part of this team");
+        }
+
+        // Get all students in the team
+        List<Student> allTeammates = team.getStudents();
+
+        // Get the list of students the evaluator has already evaluated
+        List<Student> evaluatedTeammates = evaluationRepository.findByEvaluator(evaluator)
+                .stream()
+                .map(Evaluation::getTeammate)
+                .collect(Collectors.toList());
+
+        // Remove the evaluator and any already evaluated teammates from the list
+        List<Student> availableTeammates = new ArrayList<>();
+        for (Student teammate : allTeammates) {
+            if (!Objects.equals(teammate.getId(), evaluator.getId()) && !evaluatedTeammates.contains(teammate)) {
+                availableTeammates.add(teammate);
+            }
+        }
+
+        return availableTeammates;
+    }
+
 
     @Override
     public EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, 

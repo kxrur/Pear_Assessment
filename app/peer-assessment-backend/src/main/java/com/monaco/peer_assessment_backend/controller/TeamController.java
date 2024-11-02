@@ -42,6 +42,18 @@ public class TeamController {
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
+  @GetMapping("/teams/{teamId}/available-teammates/{evaluatorId}")
+  public ResponseEntity<List<Student>> getAvailableTeammates(
+          @PathVariable Long teamId,
+          @PathVariable Long evaluatorId) {
+      try {
+          List<Student> availableTeammates = teamService.getAvailableTeammatesForEvaluation(evaluatorId, teamId);
+          return ResponseEntity.ok(availableTeammates);
+      } catch (RuntimeException e) {
+          return ResponseEntity.badRequest().body(null);
+      }
+  }
+
   @PostMapping("/teams/evaluate")
   public ResponseEntity<String> evaluateTeammates(
       @RequestParam Long evaluatorId,
