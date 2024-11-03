@@ -4,6 +4,7 @@ import com.monaco.peer_assessment_backend.dto.EvaluationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamCreationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.dto.TeammateSelectionDTO;
+import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -41,6 +43,20 @@ public class TeamController {
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
+  @PostMapping("/teams/available-teammates")
+  public ResponseEntity<List<StudentDTO>> getAvailableTeammates(
+          @RequestBody Map<String, Long> requestBody) {
+      Long teamId = requestBody.get("teamId");
+      Long evaluatorId = requestBody.get("evaluatorId");
+      
+      try {
+          List<StudentDTO> availableTeammates = teamService.getAvailableTeammatesForEvaluation(evaluatorId, teamId);
+          return ResponseEntity.ok(availableTeammates);
+      } catch (RuntimeException e) {
+          return ResponseEntity.badRequest().body(null);
+      }
+  }
+  
 
   @PostMapping("/teams/evaluate")
   public ResponseEntity<String> evaluateTeammates(

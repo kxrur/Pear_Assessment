@@ -2,6 +2,7 @@ package com.monaco.peer_assessment_backend.service.impl;
 
 import com.monaco.peer_assessment_backend.dto.EvaluationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamDTO;
+import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.entity.Evaluation;
 import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.Student;
@@ -11,6 +12,7 @@ import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.mapper.EvaluationMapper;
 import com.monaco.peer_assessment_backend.mapper.TeamMapper;
+import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.EvaluationRepository;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.TeamRepository;
@@ -19,6 +21,8 @@ import com.monaco.peer_assessment_backend.service.TeamService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +46,9 @@ public class TeamServiceImpl implements TeamService {
     private TeamMapper teamMapper;
     @Autowired
     private EvaluationMapper evaluationMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public void createTeam(Long professorID, List<Long> studentIds, String teamName) {
@@ -132,6 +139,48 @@ public class TeamServiceImpl implements TeamService {
             throw new UserNotFoundException("User is neither a student or a professor");
         }
     }
+
+    @Override
+    public List<StudentDTO> getAvailableTeammatesForEvaluation(Long evaluatorId, Long teamId) {
+        // Fetch the evaluator and the team
+        Student evaluator = studentRepository.findById(evaluatorId)
+                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
+        
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        // Ensure the evaluator is part of the team
+        if (!team.getStudents().contains(evaluator)) {
+            throw new RuntimeException("Evaluator is not a part of this team");
+        }
+
+        // Get all students in the team
+        List<Student> allTeammates = team.getStudents();
+
+        // Get already evaluated teammate IDs
+        List<Evaluation> evaluations = evaluationRepository.findByEvaluator(evaluator);
+        List<Long> evaluatedIds = new ArrayList<>();
+        for (Evaluation evaluation : evaluations) {
+            evaluatedIds.add(evaluation.getTeammate().getId());
+        }
+
+        List<Student> unevaluatedTeammates = new ArrayList<>();
+        for (Student teammate : allTeammates) {
+            // Check if the teammate is neither the evaluator nor already evaluated
+            if (teammate.getId() != evaluator.getId() && !evaluatedIds.contains(teammate.getId())) {
+                unevaluatedTeammates.add(teammate);
+            }
+        }
+
+        // Convert List<Student> to List<StudentDTO> without using streams
+        List<StudentDTO> unevaluatedTeammateDTOs = new ArrayList<>();
+        for (Student student : unevaluatedTeammates) {
+            unevaluatedTeammateDTOs.add(userMapper.mapToStudentDTO(student));
+        }
+
+        return unevaluatedTeammateDTOs;
+    }
+
 
     @Override
     public EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, 
