@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { Student as TypeStudent } from "@t/types"
+
 
 export interface Student {
   id: number;
@@ -20,6 +22,7 @@ export interface TempStudent {
 export interface AllStudentsSlice {
   allStudents: Student[];
   allAddedStudents: TempStudent[]
+  nonEvaluatedStudents: TypeStudent[]
 }
 
 const initialState: AllStudentsSlice = {
@@ -41,10 +44,48 @@ const initialState: AllStudentsSlice = {
       lastName: "",
       studentId: "",
     }
+  ],
+  nonEvaluatedStudents: [
+    {
+      id: 0,
+      name: "",
+      studentId: "",
+      teamName: "",
+      averageGrade: 0,
+    }
   ]
 };
 
-// Thunk to fetch students data
+export const fetchNonEvaluatedStudents = createAsyncThunk(
+  'fetch-non-evaluated/post',
+  async ({ teamId, evaluatorId }: { teamId: number; evaluatorId: number }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/teams/available-teammates`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          teamId: teamId,
+          evaluatorId: evaluatorId
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Fetching students failed');
+      }
+
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error || 'Network Error');
+    }
+  }
+);
+
+
 export const fetchStudents = createAsyncThunk(
   'fetch-students/get',
   async (teamId: number, { rejectWithValue }) => {
@@ -144,6 +185,15 @@ const allStudentsSlice = createSlice({
         firstName: student.firstName,
         lastName: student.lastName,
         studentId: student.studentId,
+      }));
+    });
+    builder.addCase(fetchNonEvaluatedStudents.fulfilled, (state, action) => {
+      state.nonEvaluatedStudents = action.payload.map((student: TypeStudent) => ({
+        id: student.id,
+        name: student.name,
+        studentId: student.studentId,
+        teamName: student.teamName,
+        averageGrade: student.averageGrade,
       }));
     });
   },
