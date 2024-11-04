@@ -87,7 +87,8 @@ public class UserServiceTests {
 
         /**
          * This is where you have to manually define the behaviour of all the objects that were defined
-         * as @Mock. So any methods that are called by 'registerStudent()' must be manually defined
+         * as @Mock. So any methods that are called by 'registerStudent()' must be manually defined.
+         * when(x behavior).thenReturn(what you want to return)
          */
         when(userMapper.mapToStudentEntity(studentDTO)).thenReturn(student);
         when(studentRepository.existsByStudentID(studentDTO.getStudentId())).thenReturn(false);
@@ -111,10 +112,5 @@ public class UserServiceTests {
         verify(studentRepository).save(student);
     }
 
-    @DisplayName("A random test (should be 3 now)")
-    @Test
-    public void testRandom() {
-        assertEquals("String", "String");
-    }
 }
 
