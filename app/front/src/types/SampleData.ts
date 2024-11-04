@@ -1,6 +1,6 @@
 import { Team } from "./types";
 import { Student } from "./types";
-import {SummaryView} from "./types";
+import { SummaryView } from "./types";
 
 export const teams: Team[] = [
   {
