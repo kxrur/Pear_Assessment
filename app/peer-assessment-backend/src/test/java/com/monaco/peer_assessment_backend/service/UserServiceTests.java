@@ -1,8 +1,13 @@
 package com.monaco.peer_assessment_backend.service;
+import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
+import com.monaco.peer_assessment_backend.dto.UserDTO;
+import com.monaco.peer_assessment_backend.entity.Professor;
 import com.monaco.peer_assessment_backend.entity.Role;
 import com.monaco.peer_assessment_backend.entity.Student;
+import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
+import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.StudentRepository;
 import com.monaco.peer_assessment_backend.repository.UserRepository;
@@ -16,10 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.HashSet;
-import java.util.Set;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -56,6 +61,9 @@ public class UserServiceTests {
      */
     private StudentDTO studentDTO;
     private Student student;
+    private Professor professor;
+    private ProfessorDTO professorDTO;
+    private User user;
 
     /**
      *  Any behaviour that needs to be done before the tests.
@@ -63,17 +71,34 @@ public class UserServiceTests {
      */
     @BeforeEach
     public void setup() {
-        Role role = new Role(2, "STUDENT");
-        Set<Role> roles = new HashSet<>();
+        Role studentRole = new Role(2, "STUDENT");
+        Role professorRole = new Role(1, "PROFESSOR");
+        Set<Role> studentRoles = new HashSet<>();
+        Set<Role> professorRoles = new HashSet<>();
 
-        roles.add(role);
+        professorRoles.add(professorRole);
+
+        studentRoles.add(studentRole);
         student = new Student(1L, "Bob", "Ross", "bobross123",
-                "password", roles, 1234567L, false);
+                "password", studentRoles, 1234567L, false);
 
-        Set<String> rolesDTO = new HashSet<>();
-        rolesDTO.add("STUDENT");
+        Set<String> studentRolesDTO = new HashSet<>();
+        studentRolesDTO.add("STUDENT");
         studentDTO = new StudentDTO(1L, "Bob", "Ross",
-                rolesDTO, false, 1234567L);
+                studentRolesDTO, false, 1234567L);
+
+        professor = new Professor(1L, "Rob", "Boss", "robboss123", "password",
+                professorRoles);
+        Set<String> professorRolesDTO = new HashSet<>();
+        professorRolesDTO.add("PROFESSOR");
+        
+        professorDTO = new ProfessorDTO(1L, "robboss123", "Rob", "Boss", "ppassword",
+                professorRolesDTO);
+
+        user = new User();
+
+        user.setUsername("user");
+        user.setPassword("password");
 
     }
 
@@ -110,6 +135,94 @@ public class UserServiceTests {
         // The 'verify' does a check to see if the 'save' was actually called.
         // Here we are making sure that the student was saved in the studentRepository
         verify(studentRepository).save(student);
+    }
+
+    @DisplayName("Testing Professor Registration")
+    @Test
+    public void testRegisterProfessor() throws DuplicateUserException {
+        when(userMapper.mapToProfessorEntity(professorDTO)).thenReturn(professor);
+        when(passwordEncoder.encode(professorDTO.getPassword())).thenReturn("encodedPassword");
+        when(userRepository.existsByUsername(professorDTO.getUsername())).thenReturn(false);
+        when(userRepository.save(professor)).thenReturn(professor);
+        when(userMapper.mapToProfessorDTO(professor)).thenReturn(professorDTO);
+
+        ProfessorDTO result = userService.registerProfessor(professorDTO);
+
+        assertNotNull(result);
+        assertEquals("robboss123", result.getUsername());
+        verify(userRepository).save(professor);
+    }
+
+    @DisplayName("Testing Login by Username")
+    @Test
+    public void testLoginByUsername() {
+        when(userRepository.findByUsername("user")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("password", "password")).thenReturn(true);
+
+        Optional<User> result = userService.login("user", "password");
+
+        assertTrue(result.isPresent());
+        assertEquals("user", result.get().getUsername());
+    }
+
+    @DisplayName("Testing Get User by ID")
+    @Test
+    public void testGetUserById() throws UserNotFoundException {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userMapper.mapToUserDTO(user)).thenReturn(new UserDTO());
+
+        UserDTO result = userService.getUserById(1L);
+
+        assertNotNull(result);
+        verify(userRepository).findById(1L);
+    }
+
+    @DisplayName("Testing Get All Students")
+    @Test
+    public void testGetAllStudents() {
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        when(studentRepository.findAll()).thenReturn(students);
+        when(userMapper.mapToStudentDTO(student)).thenReturn(studentDTO);
+
+        List<StudentDTO> result = userService.getAllStudents();
+
+
+        assertEquals(1, result.size());
+        assertEquals("Bob", result.get(0).getFirstName()
+        );
+        verify(studentRepository).findAll();
+    }
+
+    @DisplayName("Testing Delete User")
+    @Test
+    public void testDeleteUser() {
+        userService.deleteUser(1L);
+        verify(userRepository).deleteById(1L);
+    }
+
+    @DisplayName("Testing Update Student")
+    @Test
+    public void testUpdateStudent() {
+        // Arrange
+        Student existingStudent = new Student();
+        existingStudent.setTemp(true);
+        existingStudent.setPassword("oldPassword");
+        existingStudent.setUsername("oldUsername");
+
+        Optional<Student> optionalStudent = Optional.of(existingStudent);
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setPassword("newPassword");
+        studentDTO.setUsername("newUsername");
+        studentDTO.setTemp(false);
+
+        Student updatedStudent = userService.updateStudent(optionalStudent, studentDTO);
+
+        assertNotNull(updatedStudent);
+        assertFalse(updatedStudent.isTemp());
+        assertEquals("newPassword", updatedStudent.getPassword());
+        assertEquals("newUsername", updatedStudent.getUsername());
     }
 
 }
