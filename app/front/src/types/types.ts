@@ -17,6 +17,18 @@ export interface Teacher {
   lastName: string,
   username: string,
 }
+export interface SummaryView {
+  studentId: string;
+  lastName: string;
+  firstName: string;
+  teamName: string;
+  cooperation: IndividualAssessmentData;
+  conceptual: IndividualAssessmentData;
+  practical: IndividualAssessmentData;
+  workEthic: IndividualAssessmentData;
+  averageGrade: number;
+  peersResponded: number;
+}
 
 export interface TeacherRegFormData {
   firstName: string;

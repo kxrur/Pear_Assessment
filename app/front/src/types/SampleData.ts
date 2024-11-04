@@ -1,5 +1,6 @@
 import { Team } from "./types";
 import { Student } from "./types";
+import { SummaryView } from "./types";
 
 export const teams: Team[] = [
   {
@@ -38,6 +39,45 @@ export const teams: Team[] = [
     teamDescription: 'Specializing in design and user experience.',
     professorId: "",
   },
+];
+export const summaryData: SummaryView[] = [
+  {
+    studentId: '402XXXXX',
+    lastName: 'Doe',
+    firstName: 'John',
+    teamName: 'Invincibles',
+    cooperation: { stars: 1.4, comment: "Good teamwork" },
+    conceptual: { stars: 1.4, comment: "Solid understanding" },
+    practical: { stars: 1.8, comment: "Excellent execution" },
+    workEthic: { stars: 1.8, comment: "Consistently high effort" },
+    averageGrade: 1.6,
+    peersResponded: 5,
+  },
+  {
+    studentId: '403XXXXX',
+    lastName: 'Smith',
+    firstName: 'Jane',
+    teamName: 'Innovators',
+    cooperation: { stars: 4.0, comment: "Excellent collaborator" },
+    conceptual: { stars: 4.5, comment: "Good grasp of concepts" },
+    practical: { stars: 4.5, comment: "Very practical approach" },
+    workEthic: { stars: 4.2, comment: "Strong commitment" },
+    averageGrade: 4.03,
+    peersResponded: 4,
+  },
+  {
+    studentId: '404XXXXX',
+    lastName: 'Johnson',
+    firstName: 'Emily',
+    teamName: 'Achievers',
+    cooperation: { stars: 4.5, comment: "Needs improvement in collaboration" },
+    conceptual: { stars: 3.0, comment: "Average understanding" },
+    practical: { stars: 3.8, comment: "Meets basic expectations" },
+    workEthic: { stars: 3.2, comment: "Shows potential" },
+    averageGrade: 3.88,
+    peersResponded: 3,
+  },
+  // Add more entries as needed
 ];
 
 export const students: Student[] = [
@@ -83,7 +123,7 @@ export const sidebarItems = [
   { label: 'Dashboard', to: '/dashboard' },
   { label: 'TeamView', to: '/team-preview' },
   { label: 'Student Management', to: '/student-management' },
-  { label: 'SMS Management', to: '/sms-management' },
+  { label: 'Summary', to: '/summary' },
   { label: 'General Settings', to: '/settings' },
   {
     label: 'Switch Account',
