@@ -42,6 +42,7 @@ public class TeamController {
     }
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
+
   @PostMapping("/teams/available-teammates")
   public ResponseEntity<List<StudentDTO>> getAvailableTeammates(
           @RequestBody Map<String, Long> requestBody) {
