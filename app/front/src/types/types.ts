@@ -7,8 +7,8 @@ export interface AssessmentData {
   workEthic: IndividualAssessmentData;
 }
 interface IndividualAssessmentData {
-  stars?: number;
-  comment?: string;
+  stars: number;
+  comment: string | "no comment";
 }
 
 export interface Teacher {
@@ -16,6 +16,18 @@ export interface Teacher {
   firstName: string,
   lastName: string,
   username: string,
+}
+export interface SummaryView {
+  studentId: string;
+  lastName: string;
+  firstName: string;
+  teamName: string;
+  cooperation: IndividualAssessmentData;
+  conceptual: IndividualAssessmentData;
+  practical: IndividualAssessmentData;
+  workEthic: IndividualAssessmentData;
+  averageGrade: number;
+  peersResponded: number;
 }
 
 export interface TeacherRegFormData {

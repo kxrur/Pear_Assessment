@@ -3,16 +3,17 @@ import React from 'react';
 type ButtonProps = {
   text: string;
   handleClick: () => void;
+  disabled?: boolean
 };
 
-export default function Button({ text, handleClick }: ButtonProps) {
+export default function Button({ text, handleClick, disabled = false }: ButtonProps) {
 
   const buttonStyle: React.CSSProperties = {
-    backgroundColor: '#A52A2A',  // Brown background
+    backgroundColor: disabled ? '#D3D3D3' : '#A52A2A',
+    cursor: disabled ? 'not-allowed' : 'pointer',
     color: '#F2EBE2',            // Light cream text
     padding: '10px 20px',
     border: 'none',
-    cursor: 'pointer',
     borderRadius: '4px',         // Rounded corners
     fontSize: '16px',
     fontWeight: 'bold',
@@ -21,23 +22,18 @@ export default function Button({ text, handleClick }: ButtonProps) {
     transition: 'background-color 0.3s ease',
   };
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.style.backgroundColor = '#8B0000'; // Darken on hover
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.style.backgroundColor = '#A52A2A'; // Reset color
-  };
+  const hoverStyle: React.CSSProperties = !disabled
+    ? { backgroundColor: '#8B0000' }  // Darken on hover if not disabled
+    : {};
 
   return (
     <button
-      style={buttonStyle}
+      style={{ ...buttonStyle, ...hoverStyle }}
       onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      disabled={disabled}
     >
       {text}
-    </button>
+    </button >
   );
 };
 

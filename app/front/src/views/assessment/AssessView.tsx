@@ -1,11 +1,9 @@
-import React from 'react';
 import AssessItem, { AssessItemProps } from '@c/ui/assessment/AssessItem';
 import UserProfile from '@c/ui/assessment/UserProfile';
 import TeamName from '@c/ui/assessment/TeamName';
 import { useAppDispatch, useAppSelector } from '@s/store';
-import { assessStudent } from '@s/assessSlice';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import PrintButton from '@c/input/printpagebutton'; // Ensure the correct import path
+import { assessStudent, resetAssessment } from '@s/assessSlice';
+import { useNavigate } from 'react-router-dom';
 
 const assessItemsData: AssessItemProps[] = [
   {
@@ -39,8 +37,8 @@ export default function AssessmentView() {
   const dbAssesseeId = useAppSelector((state) => state.assess.dbAssesseeId);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate(); // Initialize useNavigate
-
+  const navigate = useNavigate();
+  resetAssessment();
 
 
   function submitAssessment() {
