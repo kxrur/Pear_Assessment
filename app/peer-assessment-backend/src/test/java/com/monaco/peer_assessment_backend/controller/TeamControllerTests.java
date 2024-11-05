@@ -101,6 +101,7 @@ public class TeamControllerTests {
         teamCreationDTO = new TeamCreationDTO(1L, "TEST", studentIdList);
 
         team = new Team(1L, professor, studentList, "TEST");
+
     }
 
     @DisplayName("Testing Create Team Request")
@@ -114,6 +115,50 @@ public class TeamControllerTests {
 
         // We expect the response to return a HttpStatus.CREATED
         response.andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("Testing Get Available Teammates Request")
+    public void getAvailableTeammatesRequest() throws Exception {
+        List<StudentDTO> teammates = List.of(studentDTO);
+        when(teamService.getAvailableTeammatesForEvaluation(1L, 1L)).thenReturn(teammates);
+
+        ResultActions response = mockMvc.perform(post("/api/teams/available-teammates")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"teamId\":1, \"evaluatorId\":1}"));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].firstName").value("Bob"));
+    }
+
+    @Test
+    @DisplayName("Testing Evaluate Teammate")
+    public void evaluateTeammatesRequest() throws Exception {
+        List<Long> selectedIds = List.of(2L, 3L);
+        ResultActions response = mockMvc.perform(post("/api/teams/evaluate")
+                        .param("evaluatorId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(selectedIds)));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().string("Selected teammates for evaluation successfully."));
+    }
+
+    @Test
+    @DisplayName("Testing Submit Rating")
+    public void submitCooperationRatingRequest() throws Exception {
+        ResultActions response = mockMvc.perform(post("/api/teams/evaluate/1/rate/2")
+                .param("cooperation_rating", "4")
+                .param("cooperation_comment", "Good teamwork")
+                .param("conceptual_contribution_rating", "5")
+                .param("conceptual_contribution_comment", "Excellent ideas")
+                .param("practical_contribution_rating", "3")
+                .param("practical_contribution_comment", "Needs improvement")
+                .param("work_ethic_rating", "4")
+                .param("work_ethic_comment", "Solid effort")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        response.andExpect(status().isOk());
     }
 
     @DisplayName("Testing Get Teams for a User")
@@ -130,7 +175,22 @@ public class TeamControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0]").value(teamDTO)); // json is returned as a list, get the first expression
 
+        System.out.println(response);
         // Check if the API call executed this method
         verify(teamService).getCurrentTeamsForUser(userId);
+    }
+
+    @Test
+    @DisplayName("Testing Delete Team")
+    public void deleteTeamRequest() throws Exception {
+        TeamDTO teamDTO1 = new TeamDTO();
+        teamDTO1.setTeamName("TEST");
+        when(teamService.deleteTeamById(1L)).thenReturn(teamDTO1);
+
+
+
+        mockMvc.perform(get("/api/teams/delete/{teamId}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.teamName").value("TEST"));
     }
 }
