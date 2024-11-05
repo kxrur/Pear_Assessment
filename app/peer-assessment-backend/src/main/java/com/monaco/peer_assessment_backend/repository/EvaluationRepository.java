@@ -2,9 +2,11 @@ package com.monaco.peer_assessment_backend.repository;
 
 import com.monaco.peer_assessment_backend.entity.Evaluation;
 import com.monaco.peer_assessment_backend.entity.Student;
+import com.monaco.peer_assessment_backend.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +17,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long>{
     Optional<Evaluation> findByEvaluator_IdAndTeammate_Id(Long evaluatorId, Long teammateId);
 
     Optional<Evaluation> findByEvaluatorAndTeammate(Student evaluator, Student teammate);
+    List<Evaluation> findByTeammate(Student teammate);
+    List<Evaluation> findAllByEvaluatorInAndTeammateAndTeam
+            (Collection<Student> evaluator, Student teammate, Team team);
 }

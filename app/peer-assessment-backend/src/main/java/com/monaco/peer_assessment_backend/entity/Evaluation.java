@@ -11,7 +11,10 @@ public class Evaluation{
     @ManyToOne
     @JoinColumn(name = "evaluate_id", nullable = false)
     private Student evaluator;
-    
+
+    @ManyToOne
+    @JoinColumn(name="team_id")
+    private Team team;
     @ManyToOne
     @JoinColumn(name = "teammate_id", nullable = false)
     private Student teammate;
