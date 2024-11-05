@@ -8,13 +8,14 @@ const GradePage: React.FC = () => {
     const navigate = useNavigate();
 
     const handleGamblePageNavigation = () => {
-        navigate("/GamblePage");
+        navigate("/gamble-page");
     };
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
+
 
     return (
         <div className="flex">
