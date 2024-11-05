@@ -45,4 +45,7 @@ jobs:
           cd front
           npm run test
 
+      - name: Run Cypress tests
+        run: npx cypress run --headless
+
 
