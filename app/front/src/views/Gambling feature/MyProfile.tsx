@@ -8,7 +8,7 @@ const MyProfile: React.FC = () => {
     const navigate = useNavigate();
 
     const handleGradePageNavigation = () => {
-        navigate("/GradePage");
+        navigate("/grade-page");
     };
     const [searchTerm, setSearchTerm] = useState('');
 
