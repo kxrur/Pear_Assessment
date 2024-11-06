@@ -11,6 +11,9 @@ import CreateTeamForm from '@v/team/CreateTeamFormView';
 import SelectTeammate from '@v/team/SelectTeammate';
 import ConfirmationPage from '@c/ui/assessment/ConfirmationPage.tsx';
 import Summary from '@v/Summary.tsx'
+import MyProfile from '@v/Gambling feature/MyProfile';
+import GradePage from '@v/Gambling feature/GradePage.tsx';
+import GamblePage from '@v/Gambling feature/GamblePage.tsx';
 
 
 import StudentManagement from '@v/StudentManagement';
@@ -49,6 +52,9 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
+            <Route path="/gamble-profile" element={<MyProfile />} />
+            <Route path="/gamble-grade" element={<GradePage />} />
+            <Route path="/gamble-page" element={<GamblePage />} />
             <Route path="/summary" element={<Summary />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/teacher" element={
