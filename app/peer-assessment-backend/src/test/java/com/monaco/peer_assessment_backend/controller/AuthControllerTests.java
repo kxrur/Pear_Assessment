@@ -136,5 +136,4 @@ public class AuthControllerTests {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
-
 }
