@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SummaryView } from '@t/types'; // Adjust the path as needed
 import { summaryData } from '@t/SampleData.ts'; // Adjust the path accordingly
-import Sidebar from '@c/navBar/Sidebar';
+import SideBarStudent from '@c/navBar/SideBarStudent.tsx';
 import CommentModal from '@c/ui/team/PopUpComment';
-
+import { sidebarItemsStudents } from '@t/SampleData.ts'; // Import sidebarItems here
 export default function Summary() {
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function Summary() {
 
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <SideBarStudent items={sidebarItemsStudents} />
       <div className="flex-grow p-2 bg-white overflow-y-auto">
         <h2 className="text-2xl font-semibold mb-4">Student Summary View</h2>
 
