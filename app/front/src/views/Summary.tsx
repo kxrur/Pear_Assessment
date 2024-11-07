@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { SummaryView } from '@t/types'; // Adjust the path as needed
 import { summaryData } from '@t/SampleData.ts'; // Adjust the path accordingly
 import SideBarStudent from '@c/navBar/SideBarStudent.tsx';
-import CommentModal from '@c/ui/team/PopUpComment';
+
 import { sidebarItemsStudents } from '@t/SampleData.ts'; // Import sidebarItems here
+import CommentModal from '@c/ui/team/PopUpComment';
 export default function Summary() {
 
   const [isModalOpen, setModalOpen] = useState(false);
