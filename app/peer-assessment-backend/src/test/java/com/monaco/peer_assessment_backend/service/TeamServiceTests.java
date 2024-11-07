@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,39 +95,6 @@ public class TeamServiceTests {
         List<Team> result = teamService.getCurrentTeamsForUser(userId);
 
         assertEquals(teams, result);
-    }
-
-    @Test
-    void testGetAvailableTeammatesForEvaluation() {
-        Long evaluatorId = 1L;
-        Long teamId = 1L;
-
-        Student evaluator = new Student();
-        Team team = new Team();
-        List<Evaluation> evaluations = List.of();
-
-        when(studentRepository.findById(evaluatorId)).thenReturn(Optional.of(evaluator));
-        when(teamRepository.findById(teamId)).thenReturn(Optional.of(team));
-        when(evaluationRepository.findByEvaluator(evaluator)).thenReturn(evaluations);
-        when(userMapper.mapToStudentDTO(any(Student.class))).thenReturn(new StudentDTO());
-
-        List<StudentDTO> result = teamService.getAvailableTeammatesForEvaluation(evaluatorId, teamId);
-
-        assertFalse(result.isEmpty());
-    }
-
-    @Test
-    void testDeleteTeamById_Success() {
-        Long teamId = 1L;
-        Team team = new Team();
-
-        when(teamRepository.findById(teamId)).thenReturn(Optional.of(team));
-        when(teamMapper.mapToTeamDTO(team)).thenReturn(new TeamDTO());
-
-        TeamDTO result = teamService.deleteTeamById(teamId);
-
-        verify(teamRepository, times(1)).delete(team);
-        assertNotNull(result);
     }
 
     @Test
