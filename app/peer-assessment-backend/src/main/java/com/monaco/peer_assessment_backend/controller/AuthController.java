@@ -79,21 +79,6 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable long userId) {
-        UserDTO savedUser = null;
-        try {
-            savedUser = userService.getUserById(userId);
-            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-        } catch (UserNotFoundException e) {
-            logger.info("User not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            logger.info("Unexpected error");
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-
-    }
 
 
 }
