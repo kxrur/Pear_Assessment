@@ -10,6 +10,7 @@ import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.mapper.TeamMapper;
+import com.monaco.peer_assessment_backend.repository.EvaluationRepository;
 import com.monaco.peer_assessment_backend.service.TeamService;
 import com.monaco.peer_assessment_backend.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,10 @@ public class TeamControllerTests {
      */
     @MockBean
     private TeamService teamService;
+
+    @MockBean
+    private EvaluationRepository evaluationRepository;
+
 
     @MockBean
     private TeamMapper teamMapper;
