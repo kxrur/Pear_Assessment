@@ -1,5 +1,3 @@
-import React from 'react';
-
 type AssessmentBoxProps = {
   conceptual: string;
   cooperation: string;

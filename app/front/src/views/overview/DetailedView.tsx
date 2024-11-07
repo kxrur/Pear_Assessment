@@ -9,7 +9,7 @@ export default function DetailedView() {
         <Profile firstName={'fname'} lastName={'lname'} />
         <TeamName teamName={'team name'}></TeamName>
       </div>
-      <div className="w-3/4">
+      <div className="w-2/4">
         <StudentAssessmentList />
       </div>
     </div>

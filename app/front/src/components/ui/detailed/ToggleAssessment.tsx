@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AssessmentBox from './AssessmentBox';
+import UserProfile from '@c/ui/assessment/UserProfile';
 
 export default function ToggleAssessment() {
   const [view, setView] = useState<'grade' | 'comment' | 'profile'>('grade');
@@ -34,12 +35,11 @@ export default function ToggleAssessment() {
           cooperation="Comment on Cooperation"
           work="Comment on Work Ethic"
           practical="Comment on Practical"
-          avg="Average Comment" />
+          avg="Grade Avg" />
       )}
       {view === 'profile' && (
-        <div className="bg-accent p-4 rounded-lg flex items-center gap-2">
-          <div className="w-12 h-12 bg-foreground rounded-full"></div> {/* Placeholder for profile icon */}
-          <div className="text-secondary">Assessor Name</div>
+        <div className="w-1/3">
+          <UserProfile firstName={'fname'} lastName={'lname'} />
         </div>
       )}
     </div>
