@@ -52,5 +52,10 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
+  ],
+  "exclude": [
+    "src/cypress",   // Add the folder that contains your Cypress test files here
+    "**/*.cy.ts",  // Exlude all cy.tsx files
+    "**/*.cy.tsx" // Exclude all cy.tsx files
   ]
 }
