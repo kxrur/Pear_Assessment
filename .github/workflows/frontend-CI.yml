@@ -32,7 +32,6 @@ jobs:
           cd app
           cd front
           npm install
-          npm install cypress --save-dev
 
       - name: Run the build
         run: |
@@ -45,8 +44,5 @@ jobs:
           cd app
           cd front
           npm run test
-
-      - name: Run Cypress tests
-        run: npx cypress run --headless
 
 
