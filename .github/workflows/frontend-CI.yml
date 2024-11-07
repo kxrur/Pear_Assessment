@@ -47,6 +47,10 @@ jobs:
           npm run test
 
       - name: Run Cypress tests
-        run: npx cypress run --headless
+        run: |
+          cd app
+          cd front
+          npx cypress run --headless
+
 
 
