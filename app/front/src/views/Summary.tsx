@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SummaryView } from '@t/types'; // Adjust the path as needed
+
 import { summaryData } from '@t/SampleData.ts'; // Adjust the path accordingly
 import SideBarStudent from '@c/navBar/SideBarStudent.tsx';
 
