@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from '@c/navBar/Sidebar';
+
 import Header from '@c/ui/table/Header';
 import SideBarStudent from "@c/navBar/SideBarStudent.tsx";
 import {sidebarItemsStudents} from "@t/SampleData.ts";
