@@ -1,17 +1,16 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
+import com.monaco.peer_assessment_backend.dto.GambleDTO;
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
-import com.monaco.peer_assessment_backend.entity.Professor;
-import com.monaco.peer_assessment_backend.entity.User;
-import com.monaco.peer_assessment_backend.entity.Student;
+import com.monaco.peer_assessment_backend.entity.*;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
+import com.monaco.peer_assessment_backend.exception.GradeNotFoundException;
+import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.mapper.UserMapper;
-import com.monaco.peer_assessment_backend.repository.UserRepository;
-import com.monaco.peer_assessment_backend.repository.StudentRepository;
-import com.monaco.peer_assessment_backend.repository.RoleRepository;
+import com.monaco.peer_assessment_backend.repository.*;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -41,7 +41,16 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private EvaluationRepository evaluationRepository;
+
+    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private GambleRepository gambleRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
 
     /**
      * Registers a new student, ensuring the username is unique and password is
@@ -210,5 +219,79 @@ public class UserServiceImpl implements UserService {
      */
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    /**
+     * Get the average score for a student for a specific team
+     * @param studentId
+     * @param teamId
+     * @return
+     */
+    public double getAverageStudentGrade(Long studentId, Long teamId) {
+        double averageScore = 0;
+        try {
+
+            // Get all evaluations given to a student for the given team
+            List<Evaluation> evaluations = evaluationRepository.findAllByTeammateIdAndTeamId(studentId, teamId);
+
+            if (evaluations.isEmpty()) {
+                System.out.println("No evaluations found.");
+                return -1;
+            }
+            double evaluationSum = 0;
+            for (int i = 0; i < evaluations.size(); i++) {
+                Evaluation evaluation = evaluations.get(i);
+                evaluationSum += evaluation.getAverageRating();
+            }
+
+            averageScore = evaluationSum / (evaluations.size());
+        } catch (TeamNotFoundException e) {
+            System.out.println("Team with id " + teamId + " not found");
+        }
+        return averageScore;
+    }
+
+    /**
+     * Implement the dice roll logic and return a student's gambled grade
+     * @param studentId
+     * @param teamId
+     * @return
+     */
+    public GambleDTO gambleGrade(Long studentId, Long teamId) throws Exception {
+        Gamble gamble = gambleRepository.findByStudentIdAndTeamId(studentId, teamId)
+                .orElse(new Gamble());
+        Optional<Team> team = teamRepository.findById(teamId);
+        Optional<Student> student = studentRepository.findById(studentId);
+        team.ifPresent(gamble::setTeam);
+        student.ifPresent(gamble::setStudent);
+
+        GambleDTO gambleDTO = new GambleDTO();
+        Random random = new Random();
+        // Generate a random number between 0 and 5
+        int diceRoll = random.nextInt(6);
+        // increment to set a lower bound
+        diceRoll += 1;
+
+        gambleDTO.setDiceRoll(diceRoll);
+
+        double startingGrade = gamble.getGambledScore() != null
+                ? gamble.getGambledScore()
+                : getAverageStudentGrade(studentId, teamId);
+
+        if (startingGrade == -1) {
+            throw new GradeNotFoundException("Student has no grades");
+        }
+
+        if ((diceRoll % 2) == 1) {
+            startingGrade += ((double) diceRoll / 10);
+        } else {
+            startingGrade -= ((double) diceRoll / 10);
+        }
+
+        gambleDTO.setGambledGrade(startingGrade);
+        gamble.setGambledScore(startingGrade);
+
+        gambleRepository.save(gamble);
+        return gambleDTO;
     }
 }
