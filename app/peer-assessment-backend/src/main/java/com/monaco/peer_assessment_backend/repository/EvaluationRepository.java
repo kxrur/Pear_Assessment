@@ -20,4 +20,8 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long>{
     List<Evaluation> findByTeammate(Student teammate);
     List<Evaluation> findAllByEvaluatorInAndTeammateAndTeam
             (Collection<Student> evaluator, Student teammate, Team team);
+
+    List<Evaluation> findAllByTeammateIdAndTeamId(Long teammateId, Long teamId);
+
+    Evaluation findByTeammateId(Long i);
 }
