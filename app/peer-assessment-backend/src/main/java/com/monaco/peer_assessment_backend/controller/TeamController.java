@@ -90,7 +90,6 @@ public class TeamController {
       @RequestParam String practical_contribution_comment,
       @RequestParam int work_ethic_rating,
       @RequestParam String work_ethic_comment) {
-    EvaluationDTO eval;
     try {
       return ResponseEntity.ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating,
       practical_contribution_rating, work_ethic_rating,
