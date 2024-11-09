@@ -182,44 +182,44 @@ public class TeamServiceImpl implements TeamService {
     }
 
 
-    @Override
-    public EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, 
-                                      int conceptual_contribution_rating, int practical_contribution_rating, 
-                                      int work_ethic_rating, 
-                                      String cooperation_comment, String conceptual_contribution_comment,
-                                      String practical_contribution_comment, String work_ethic_comment,long team_id) {
-
-        Student evaluator = studentRepository.findById(evaluatorId)
-                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
-        
-        Student evaluatee = studentRepository.findById(evaluateeId)
-                .orElseThrow(() -> new RuntimeException("Evaluatee not found"));
-        Evaluation evaluation = new Evaluation();
-        evaluation.setEvaluator(evaluator);
-        evaluation.setTeammate(evaluatee);
-        evaluation.setCooperationRating(cooperation_rating);
-        evaluation.setConceptualContributionRating(conceptual_contribution_rating);
-        evaluation.setPracticalContributionRating(practical_contribution_rating);
-        evaluation.setWorkEthicRating(work_ethic_rating);
-        
-        evaluation.setCooperationComment(cooperation_comment);
-        evaluation.setConceptualContributionComment(conceptual_contribution_comment);
-        evaluation.setPracticalContributionComment(practical_contribution_comment);
-        evaluation.setWorkEthicComment(work_ethic_comment);
-
-        double totalRating = cooperation_rating + conceptual_contribution_rating + 
-                            practical_contribution_rating + work_ethic_rating;
-
-        double averageRating = totalRating / 4.0;
-        if (teamRepository.findById(team_id).isPresent())
-            evaluation.setTeam(teamRepository.getReferenceById(team_id));
-        evaluation.setAverageRating(averageRating);
-        evaluationRepository.save(evaluation);
-
-        // Return the DTO
-        return evaluationMapper.mapToEvaluationDTO(evaluation);
-    }
-
+//    @Override
+//    public EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating,
+//                                      int conceptual_contribution_rating, int practical_contribution_rating,
+//                                      int work_ethic_rating,
+//                                      String cooperation_comment, String conceptual_contribution_comment,
+//                                      String practical_contribution_comment, String work_ethic_comment,long team_id) {
+//
+//        Student evaluator = studentRepository.findById(evaluatorId)
+//                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
+//
+//        Student evaluatee = studentRepository.findById(evaluateeId)
+//                .orElseThrow(() -> new RuntimeException("Evaluatee not found"));
+//        Evaluation evaluation = new Evaluation();
+//        evaluation.setEvaluator(evaluator);
+//        evaluation.setTeammate(evaluatee);
+//        evaluation.setCooperationRating(cooperation_rating);
+//        evaluation.setConceptualContributionRating(conceptual_contribution_rating);
+//        evaluation.setPracticalContributionRating(practical_contribution_rating);
+//        evaluation.setWorkEthicRating(work_ethic_rating);
+//
+//        evaluation.setCooperationComment(cooperation_comment);
+//        evaluation.setConceptualContributionComment(conceptual_contribution_comment);
+//        evaluation.setPracticalContributionComment(practical_contribution_comment);
+//        evaluation.setWorkEthicComment(work_ethic_comment);
+//
+//        double totalRating = cooperation_rating + conceptual_contribution_rating +
+//                            practical_contribution_rating + work_ethic_rating;
+//
+//        double averageRating = totalRating / 4.0;
+//        if (teamRepository.findById(team_id).isPresent())
+//            evaluation.setTeam(teamRepository.getReferenceById(team_id));
+//        evaluation.setAverageRating(averageRating);
+//        evaluationRepository.save(evaluation);
+//
+//        // Return the DTO
+//        return evaluationMapper.mapToEvaluationDTO(evaluation);
+//    }
+//
 
     /**
      * Given a Team ID, delete the team from the database
