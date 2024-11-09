@@ -179,6 +179,18 @@ id = professorDTO.getId();
     return ResponseEntity.ok(allStudentsSummary);
   }
 
+  @PostMapping("/teams/detailed-view")
+    public ResponseEntity<List<DetailedViewDTO>> getDetailedView(@RequestBody Map<String, Long> requestBody) {
+        Long teamId = requestBody.get("teamId");
+
+        try {
+            List<DetailedViewDTO> detailedViewDTOList = teamService.getDetailedView(teamId);
+            return ResponseEntity.ok(detailedViewDTOList);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+  }
+
   @GetMapping("/teams/delete/{teamId}")
   public ResponseEntity<TeamDTO> deleteTeam(@PathVariable Long teamId) {
     TeamDTO savedTeam;

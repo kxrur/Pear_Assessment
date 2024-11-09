@@ -5,6 +5,7 @@ import java.util.List;
 public class DetailedViewDTO {
 
     private String teamName;
+    private String studentName;
     private List<StudentRatingDTO> studentRatings;
 
     public String getTeamName() {
@@ -13,6 +14,14 @@ public class DetailedViewDTO {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public List<StudentRatingDTO> getStudentRatings() {
@@ -25,7 +34,7 @@ public class DetailedViewDTO {
 
     // Inner class to represent the individual student details
     public static class StudentRatingDTO {
-        private String studentName;
+        private String teammateName;
         private int cooperationRating;
         private int conceptualRating;
         private int practicalRating;
@@ -36,12 +45,12 @@ public class DetailedViewDTO {
         private String workEthicComment;
         private double averageRating;
 
-        public String getStudentName() {
-            return studentName;
+        public String getTeammateName() {
+            return teammateName;
         }
 
-        public void setStudentName(String studentName) {
-            this.studentName = studentName;
+        public void setTeammateName(String teammateName) {
+            this.teammateName = teammateName;
         }
 
         public int getCooperationRating() {
