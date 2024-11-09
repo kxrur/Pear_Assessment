@@ -24,7 +24,7 @@ public interface TeamService {
     EvaluationDTO submitEvaluation(Long evaluatorId, Long evaluateeId, int cooperation_rating, int conceptual_contribution_rating, 
     int practical_contribution_rating, int work_ethic_rating, 
     String cooperation_comment, String conceptual_contribution_comment,
-    String practical_contribution_comment, String work_ethic_comment);
+    String practical_contribution_comment, String work_ethic_comment, long team_id);
 
     TeamDTO deleteTeamById(Long id);
 

@@ -161,6 +161,7 @@ public class TeamControllerTests {
                 .param("practical_contribution_comment", "Needs improvement")
                 .param("work_ethic_rating", "4")
                 .param("work_ethic_comment", "Solid effort")
+                .param("team_id","4")
                 .contentType(MediaType.APPLICATION_JSON));
 
         response.andExpect(status().isOk());
