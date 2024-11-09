@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import Sidebar from '@c/navBar/Sidebar';
+
 import Header from '@c/ui/table/Header';
+import SideBarStudent from "@c/navBar/SideBarStudent.tsx";
+import {sidebarItemsStudents} from "@t/SampleData.ts";
 
 const GamblePage: React.FC = () => {
     const [dice, setDice] = useState<number | null>(null);
@@ -17,7 +19,7 @@ const GamblePage: React.FC = () => {
 
     return (
         <div className="flex">
-            <Sidebar />
+            <SideBarStudent items={sidebarItemsStudents} />
             <div className="flex-1 p-8 bg-[#FAF9F6]">
                 <Header searchTerm={searchTerm} onSearchChange={handleSearchChange}/>
                 <div className="text-center text-2xl font-semibold my-4">ROLL THE DICE</div>

@@ -1,8 +1,10 @@
 import React, {useState} from "react";
-import Sidebar from '@c/navBar/Sidebar';
+
 import Header from '@c/ui/table/Header';
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import SideBarStudent from "@c/navBar/SideBarStudent.tsx";
+import {sidebarItemsStudents} from "@t/SampleData.ts";
 
 const GradePage: React.FC = () => {
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ const GradePage: React.FC = () => {
 
     return (
         <div className="flex">
-            <Sidebar />
+            <SideBarStudent items={sidebarItemsStudents} />
             <div className="flex-1 p-8 bg-[#FAF9F6]">
                 <Header searchTerm={searchTerm} onSearchChange={handleSearchChange}/>
                 <div className="text-center text-2xl font-semibold my-4">MY GRADE:</div>
