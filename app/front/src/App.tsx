@@ -25,6 +25,7 @@ import { useEffect } from 'react';
 import AssessmentView from '@v/assessment/AssessView';
 import { useAppSelector } from '@s/store';
 import AddedStudentsView from '@v/confirmation/AddedStudentsConfirmationView';
+import DetailedView from '@v/overview/DetailedView';
 
 interface AppRouterProps {
   children: ReactNode;
@@ -51,6 +52,9 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
+            <Route path="/detailed" element={<DetailedView />} />
+
+
             <Route path="/gamble-profile" element={<MyProfile />} />
             <Route path="/gamble-grade" element={<GradePage />} />
             <Route path="/gamble-page" element={<GamblePage />} />
