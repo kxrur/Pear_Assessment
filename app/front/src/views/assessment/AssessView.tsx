@@ -35,6 +35,7 @@ export default function AssessmentView() {
   const assessmentData = useAppSelector((state) => state.assess.assessmentData);
   const graderId = useAppSelector((state) => state.user.id);
   const dbAssesseeId = useAppSelector((state) => state.assess.dbAssesseeId);
+  const teamId = useAppSelector(state => state.team.id) || 0
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function AssessmentView() {
 
 
   function submitAssessment() {
-    const assessmentDetails = { formData: assessmentData, graderId, dbAssesseeId };
+    const assessmentDetails = { formData: assessmentData, graderId, dbAssesseeId, teamId };
 
     dispatch(assessStudent(assessmentDetails))
       .unwrap()

@@ -89,13 +89,16 @@ public class TeamController {
       @RequestParam int practical_contribution_rating,
       @RequestParam String practical_contribution_comment,
       @RequestParam int work_ethic_rating,
-      @RequestParam String work_ethic_comment) {
+      @RequestParam String work_ethic_comment,
+      @RequestParam long team_id) {
+    EvaluationDTO eval;
+
     try {
       return ResponseEntity
           .ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating,
               practical_contribution_rating, work_ethic_rating,
               cooperation_comment, conceptual_contribution_comment,
-              practical_contribution_comment, work_ethic_comment));
+              practical_contribution_comment, work_ethic_comment, team_id));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     } catch (RuntimeException e) {

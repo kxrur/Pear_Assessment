@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import TeamName from '@c/ui/assessment/TeamName';
 import Profile from '@c/ui/assessment/UserProfile';
 import StudentAssessmentList from '@c/ui/detailed/AllAssessmentsBox';
-import { ToggleAssessmentProps } from '@c/ui/detailed/ToggleAssessment';
 import { useAppDispatch, useAppSelector } from '@s/store';
 import { fetchTeacherDetailedStudentOverview } from '@s/teacherOverviewSlice';
 
@@ -14,67 +13,40 @@ export default function DetailedView({ teamId }: DetailedViewProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchTeacherDetailedStudentOverview(8));
-  }, [dispatch]);
+    dispatch(fetchTeacherDetailedStudentOverview(teamId));
+  }, [dispatch, teamId]);
 
   const detailed = useAppSelector(state => state.teacherOverview.detailed);
 
-  const teammates: { fname: string; lname: string; assessments: ToggleAssessmentProps[] }[] = [
-    {
-      fname: 'Alice',
-      lname: 'Smith',
-      assessments: [
-        {
-          assessmentGrades: {
-            conceptual: "Grade 1",
-            cooperation: "Grade 2",
-            work: "Grade 3",
-            practical: "Grade 4",
-            avg: "Grade Avg",
-          },
-          assessmentComments: {
-            conceptual: "Comment on Conceptual",
-            cooperation: "Comment on Cooperation",
-            work: "Comment on Work Ethic",
-            practical: "Comment on Practical",
-            avg: "Grade Avg",
-          },
-          evaluatorProfile: {
-            firstName: 'Alice',
-            lastName: 'Smith',
-          },
-        },
-      ],
-    },
-    {
-      fname: 'Bob',
-      lname: 'Jones',
-      assessments: [
-        {
-          assessmentGrades: {
-            conceptual: "Grade 1",
-            cooperation: "Grade 3",
-            work: "Grade 4",
-            practical: "Grade 2",
-            avg: "Grade Avg",
-          },
-          assessmentComments: {
-            conceptual: "Good understanding",
-            cooperation: "Works well in teams",
-            work: "Consistent and reliable",
-            practical: "Strong practical skills",
-            avg: "Grade Avg",
-          },
-          evaluatorProfile: {
-            firstName: 'Bob',
-            lastName: 'Jones',
-          },
-        },
-      ],
-    },
-  ];
-
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
+
+  // Transform the API response data
+  const teammates = detailed.map((student) => ({
+    fname: student.studentName.split(' ')[0] || '',
+    lname: student.studentName.split(' ')[1] || '',
+    assessments: student.studentRatings.map((rating) => ({
+      assessmentGrades: {
+        conceptual: `${rating.conceptualRating}`,
+        cooperation: `${rating.cooperationRating}`,
+        work: `${rating.workEthicRating}`,
+        practical: `${rating.practicalRating}`,
+        avg: `${rating.averageRating}`,
+      },
+      assessmentComments: {
+        conceptual: rating.conceptualComment || 'No comment',
+        cooperation: rating.cooperationComment || 'No comment',
+        work: rating.workEthicComment || 'No comment',
+        practical: rating.practicalComment || 'No comment',
+        avg: `${rating.averageRating}`,
+      },
+      evaluatorProfile: {
+        firstName: rating.teammateName.split(' ')[0] || '',
+        lastName: rating.teammateName.split(' ')[1] || '',
+      },
+    })),
+  }));
+
+  console.log("teammates", { ...teammates })
   const currentTeammate = teammates[currentTeammateIndex];
 
   const handleSelectTeammate = (index: number) => {
@@ -90,16 +62,22 @@ export default function DetailedView({ teamId }: DetailedViewProps) {
             <button
               key={index}
               onClick={() => handleSelectTeammate(index)}
-              className={`block w-full text-left px-2 py-2 rounded-lg focus:bg-secondary`}
+              className="block w-full text-left px-2 py-2 rounded-lg focus:bg-secondary"
             >
               <Profile firstName={teammate.fname} lastName={teammate.lname} />
             </button>
           ))}
         </div>
-        <TeamName teamName="team name" />
+        {teammates.length > 0 && <TeamName teamName={detailed[0].teamName} />}
       </div>
       <div className="w-2/4">
-        <StudentAssessmentList assessments={currentTeammate.assessments} />
+        {currentTeammate && currentTeammate.assessments.length > 0 ? (
+          <StudentAssessmentList assessments={currentTeammate.assessments} />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-6xl">No Feedback Yet ☹️</p>
+          </div>
+        )}
       </div>
     </div>
   );

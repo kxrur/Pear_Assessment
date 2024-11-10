@@ -1,4 +1,3 @@
-import React from 'react';
 import ToggleAssessment, { ToggleAssessmentProps } from '@c/ui/detailed/ToggleAssessment';
 
 export interface StudentAssessListProps {

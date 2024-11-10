@@ -38,7 +38,7 @@ const initialState: AssessSlice = {
 
 export const assessStudent = createAsyncThunk(
   'assessment/post',
-  async ({ formData: { cooperation, conceptual, practical, workEthic }, graderId, dbAssesseeId }: { formData: AssessmentData; graderId: number | null; dbAssesseeId: number | null }, { rejectWithValue }) => {
+  async ({ formData: { cooperation, conceptual, practical, workEthic }, graderId, dbAssesseeId, teamId }: { formData: AssessmentData; graderId: number | null; dbAssesseeId: number | null, teamId: number }, { rejectWithValue }) => {
     if (!graderId || !dbAssesseeId) {
       return rejectWithValue('Missing graderId or dbAssesseeId');
     }
@@ -52,6 +52,7 @@ export const assessStudent = createAsyncThunk(
       practical_contribution_comment: practical.comment,
       work_ethic_rating: workEthic.stars.toString(),
       work_ethic_comment: workEthic.comment,
+      team_id: teamId
     };
 
     const encodedBody = encodeFormData(bodyData);
