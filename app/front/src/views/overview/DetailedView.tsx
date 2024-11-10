@@ -1,8 +1,15 @@
 import TeamName from '@c/ui/assessment/TeamName';
 import Profile from '@c/ui/assessment/UserProfile';
 import StudentAssessmentList from '@c/ui/detailed/AllAssessmentsBox';
+import { useAppDispatch, useAppSelector } from '@s/store';
+import { fetchTeacherDetailedStudentOverview } from '@s/teacherOverviewSlice';
 
-export default function DetailedView() {
+export interface DetailedViewProps {
+  teamId: number
+}
+export default function DetailedView({ teamId }: DetailedViewProps) {
+  const dispatch = useAppDispatch()
+  dispatch(fetchTeacherDetailedStudentOverview(8))
   const fname = 'fname'
   const lname = 'lname'
   const teamName = 'team name'

@@ -52,7 +52,7 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
-            <Route path="/detailed" element={<DetailedView />} />
+            <Route path="/detailed" element={<DetailedView teamId={0} />} />
 
 
             <Route path="/gamble-profile" element={<MyProfile />} />
