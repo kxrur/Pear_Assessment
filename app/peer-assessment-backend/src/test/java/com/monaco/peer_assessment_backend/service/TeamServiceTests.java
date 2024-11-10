@@ -102,6 +102,7 @@ public class TeamServiceTests {
         // Setup mock data
         Long evaluatorId = 1L;
         Long evaluateeId = 2L;
+        Long team_id = 1L;
         int cooperationRating = 4;
         int conceptualContributionRating = 5;
         int practicalContributionRating = 3;
@@ -147,7 +148,7 @@ public class TeamServiceTests {
         EvaluationDTO evaluationDTO = teamService.submitEvaluation(
                 evaluatorId, evaluateeId, cooperationRating, conceptualContributionRating, 
                 practicalContributionRating, workEthicRating, cooperationComment, 
-                conceptualContributionComment, practicalContributionComment, workEthicComment);
+                conceptualContributionComment, practicalContributionComment, workEthicComment, team_id);
 
         // Verify the repository interaction
         verify(studentRepository, times(1)).findById(evaluatorId);

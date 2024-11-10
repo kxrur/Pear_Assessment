@@ -66,6 +66,13 @@ public class Evaluation{
         this.teammate = teammate;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public int getCooperationRating(){
         return cooperation_rating;
     }
