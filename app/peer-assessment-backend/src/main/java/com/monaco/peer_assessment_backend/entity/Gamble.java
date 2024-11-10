@@ -25,7 +25,9 @@ public class Gamble {
     private Student student;
 
     private Double gambledScore;
-
+    @Column(name = "approved_score")
+    private Double approvedScore;
+    private boolean wasGambled = false;
     private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
     public enum ApprovalStatus {

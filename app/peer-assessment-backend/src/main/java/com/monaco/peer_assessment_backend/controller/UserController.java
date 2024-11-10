@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller class to manage interactions with Users
@@ -69,5 +70,29 @@ public class UserController {
         return new ResponseEntity<>(savedGamble, HttpStatus.CREATED);
 
     }
+
+    @PostMapping("/user/gamble/approve")
+    public ResponseEntity<String> approveOrDenyGamble(@RequestBody Map<String, Object> requestBody) {
+        Long studentId = Long.valueOf(requestBody.get("studentId").toString());
+        Long teamId = Long.valueOf(requestBody.get("teamId").toString());
+        boolean approve = Boolean.parseBoolean(requestBody.get("approve").toString());
+    
+        try {
+            // Call the service method to approve or deny the gamble
+            String responseMessage = userService.approveOrDenyGamble(studentId, teamId, approve);
+            
+            // Return success response to the frontend
+            return ResponseEntity.ok(responseMessage);
+        } catch (GradeNotFoundException ex) {
+            // Handle the case where the gamble or grade is not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Error: " + ex.getMessage());
+        } catch (Exception ex) {
+            // Handle any other exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error: An unexpected error occurred.");
+        }
+    }
+    
 
 }

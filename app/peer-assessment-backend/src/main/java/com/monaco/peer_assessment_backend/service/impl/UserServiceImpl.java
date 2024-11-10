@@ -1,10 +1,12 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
+import com.monaco.peer_assessment_backend.dto.ApproveGambleDTO;
 import com.monaco.peer_assessment_backend.dto.GambleDTO;
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.entity.*;
+import com.monaco.peer_assessment_backend.entity.Gamble.ApprovalStatus;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 import com.monaco.peer_assessment_backend.exception.GradeNotFoundException;
 import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
@@ -14,7 +16,8 @@ import com.monaco.peer_assessment_backend.repository.*;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private StudentRepository studentRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -290,8 +290,41 @@ public class UserServiceImpl implements UserService {
 
         gambleDTO.setGambledGrade(startingGrade);
         gamble.setGambledScore(startingGrade);
+        gamble.setWasGambled(true);
 
         gambleRepository.save(gamble);
         return gambleDTO;
     }
+
+    public String approveOrDenyGamble(Long studentId, Long teamId, boolean approve) throws GradeNotFoundException {
+        // Retrieve the gamble record for the student and team, and throw an exception if not found
+        Gamble gamble = gambleRepository.findByStudentIdAndTeamId(studentId, teamId)
+                .orElseThrow(() -> new GradeNotFoundException("Gamble not found for student with id " + studentId + " and team " + teamId));
+        
+        // Check the current grade (original grade)
+        double originalGrade = getAverageStudentGrade(studentId, teamId);
+        if (originalGrade == -1) {
+            throw new GradeNotFoundException("Student has no grades to update");
+        }
+        
+        // If approved, set the approvedScore in the gamble entity
+        if (approve) {
+            // Mark the gamble as approved and update the approvedScore
+            gamble.setApprovedScore(gamble.getGambledScore()); // Set the approved score to the gambled score
+            gamble.setApprovalStatus(ApprovalStatus.APPROVED);
+        } 
+        
+        else {
+            // Denied: Remove the gambled score and replace with original grade
+            gamble.setApprovalStatus(ApprovalStatus.REJECTED);
+            gamble.setApprovedScore(originalGrade);
+        }
+        
+        // Save the gamble record
+        gambleRepository.save(gamble);
+        
+        // Return success message
+        return "Gambled grade " + (approve ? "approved" : "denied") + " successfully";
+    }
+    
 }

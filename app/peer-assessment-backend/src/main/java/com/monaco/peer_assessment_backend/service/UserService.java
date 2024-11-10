@@ -5,6 +5,7 @@ import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
+import com.monaco.peer_assessment_backend.exception.GradeNotFoundException;
 import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 
@@ -27,5 +28,7 @@ public interface UserService {
   double getAverageStudentGrade(Long studentId, Long teamId) throws UserNotFoundException, TeamNotFoundException;
 
   public GambleDTO gambleGrade(Long studentId, Long teamId) throws Exception;
+
+  String approveOrDenyGamble(Long studentId, Long teamId, boolean approve) throws GradeNotFoundException;
 
 }
