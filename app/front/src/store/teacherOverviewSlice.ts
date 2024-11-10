@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { UserState } from './userSlice';
 import { teams } from '@t/SampleData';
 
-interface Summary {
+export interface Summary {
   studentId: number,
   lastName: string,
   firstName: string,
