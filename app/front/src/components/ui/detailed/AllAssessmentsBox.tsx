@@ -1,14 +1,18 @@
 import React from 'react';
-import ToggleAssessment from '@c/ui/detailed/ToggleAssessment';
+import ToggleAssessment, { ToggleAssessmentProps } from '@c/ui/detailed/ToggleAssessment';
 
-const StudentAssessmentList: React.FC = () => {
+export interface StudentAssessListProps {
+  assessments: ToggleAssessmentProps[]
+}
+
+export default function StudentAssessmentList({ assessments }: StudentAssessListProps) {
+
   return (
     <div className="flex flex-col gap-4">
-      {[...Array(5)].map((_, index) => (
-        <ToggleAssessment key={index} />
+      {assessments.map((assessment, index) => (
+        <ToggleAssessment key={index} {...assessment} />
       ))}
     </div>
   );
-};
+}
 
-export default StudentAssessmentList;
