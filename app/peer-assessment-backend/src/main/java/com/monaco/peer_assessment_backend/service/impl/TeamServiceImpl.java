@@ -1,6 +1,7 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
 import com.monaco.peer_assessment_backend.dto.EvaluationDTO;
+import com.monaco.peer_assessment_backend.dto.DetailedViewDTO;
 import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.entity.Evaluation;
@@ -238,5 +239,59 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.delete(team);
 
         return teamDTO;
+    }
+
+    @Override
+    public List<DetailedViewDTO> getDetailedView(Long teamId) {
+        // Get the team object using teamId
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+
+        // Prepare the list of DTOs to return for each student in the team
+        List<DetailedViewDTO> detailedViewDTOList = new ArrayList<>();
+
+        // Iterate through each student in the team
+        for (Student student : team.getStudents()) {
+            DetailedViewDTO detailedViewDTO = new DetailedViewDTO();
+            detailedViewDTO.setTeamName(team.getTeamName()); // Set team name
+            detailedViewDTO.setStudentName(student.getFirstName()+ " "+student.getLastName()); // Set evaluatee name
+
+            // Fetch all evaluations where this student is the teammate being evaluated in the specific team
+            List<Evaluation> evaluations = evaluationRepository.findAllByEvaluatorInAndTeammateAndTeam(
+                    team.getStudents(), student, team);
+
+            List<DetailedViewDTO.StudentRatingDTO> teammateRatings = new ArrayList<>();
+
+            // Iterate over all evaluations to fetch teammate ratings
+            for (Evaluation evaluation : evaluations) {
+                DetailedViewDTO.StudentRatingDTO teammateRatingDTO = new DetailedViewDTO.StudentRatingDTO();
+                teammateRatingDTO.setTeammateName(evaluation.getEvaluator().getFirstName());
+                teammateRatingDTO.setCooperationRating(evaluation.getCooperationRating());
+                teammateRatingDTO.setConceptualRating(evaluation.getConceptualContributionRating());
+                teammateRatingDTO.setPracticalRating(evaluation.getPracticalContributionRating());
+                teammateRatingDTO.setWorkEthicRating(evaluation.getWorkEthicRating());
+
+                // Set comments
+                teammateRatingDTO.setCooperationComment(evaluation.getCooperationComment());
+                teammateRatingDTO.setConceptualComment(evaluation.getConceptualContributionComment());
+                teammateRatingDTO.setPracticalComment(evaluation.getPracticalContributionComment());
+                teammateRatingDTO.setWorkEthicComment(evaluation.getWorkEthicComment());
+
+                // Calculate average rating
+                double averageRating = (evaluation.getCooperationRating() + evaluation.getConceptualContributionRating() +
+                        evaluation.getPracticalContributionRating() + evaluation.getWorkEthicRating()) / 4.0;
+                teammateRatingDTO.setAverageRating(averageRating);
+
+                // Add to the list of ratings
+                teammateRatings.add(teammateRatingDTO);
+            }
+
+            // Set the ratings list to DTO
+            detailedViewDTO.setStudentRatings(teammateRatings);
+
+            // Add the detailed view of this student to the list
+            detailedViewDTOList.add(detailedViewDTO);
+        }
+
+        return detailedViewDTOList;
     }
 }

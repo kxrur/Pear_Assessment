@@ -1,7 +1,9 @@
 package com.monaco.peer_assessment_backend.controller;
 
+import com.monaco.peer_assessment_backend.dto.GambleDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
+import com.monaco.peer_assessment_backend.exception.GradeNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -47,6 +49,24 @@ public class UserController {
             logger.info("Unexpected error");
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+
+    }
+
+    @GetMapping("/user/gamble/{teamId}/{userId}")
+    public ResponseEntity<GambleDTO> studentGamble(@PathVariable long teamId, @PathVariable long userId) {
+        GambleDTO savedGamble = null;
+        try {
+            savedGamble = userService.gambleGrade(userId, teamId);
+        } catch (GradeNotFoundException e){
+            logger.error("Student has no grade");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        catch (Exception e) {
+            logger.error("Error while gambling");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+        return new ResponseEntity<>(savedGamble, HttpStatus.CREATED);
 
     }
 
