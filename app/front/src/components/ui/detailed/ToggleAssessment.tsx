@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import AssessmentBox from './AssessmentBox';
-import UserProfile from '@c/ui/assessment/UserProfile';
+import AssessmentBox, { AssessmentBoxProps } from '@c/ui/detailed/AssessmentBox';
+import UserProfile, { UserProfileProps } from '@c/ui/assessment/UserProfile';
 
 export default function ToggleAssessment() {
   const [view, setView] = useState<'grade' | 'comment' | 'profile'>('grade');
@@ -13,6 +13,27 @@ export default function ToggleAssessment() {
     });
   };
 
+  const assessmentGrades: AssessmentBoxProps =
+  {
+    conceptual: "Grade 1",
+    cooperation: "Grade 2",
+    work: "Grade 3",
+    practical: "Grade 4",
+    avg: "Grade Avg"
+  }
+  const assessmentComments: AssessmentBoxProps =
+  {
+    conceptual: "Comment on Conceptual",
+    cooperation: "Comment on Cooperation",
+    work: "Comment on Work Ethic",
+    practical: "Comment on Practical",
+    avg: "Grade Avg",
+  }
+  const evaluatorProfile: UserProfileProps = {
+    firstName: "fname",
+    lastName: "lname"
+  }
+
   return (
     <div className="flex flex-col gap-2 bg-white p-4 rounded-lg">
       <button
@@ -22,24 +43,14 @@ export default function ToggleAssessment() {
       </button>
 
       {view === 'grade' && (
-        <AssessmentBox
-          conceptual="Grade 1"
-          cooperation="Grade 2"
-          work="Grade 3"
-          practical="Grade 4"
-          avg="Grade Avg" />
+        <AssessmentBox {...assessmentGrades} />
       )}
       {view === 'comment' && (
-        <AssessmentBox
-          conceptual="Comment on Conceptual"
-          cooperation="Comment on Cooperation"
-          work="Comment on Work Ethic"
-          practical="Comment on Practical"
-          avg="Grade Avg" />
+        <AssessmentBox {...assessmentComments} />
       )}
       {view === 'profile' && (
         <div className="w-1/3">
-          <UserProfile firstName={'fname'} lastName={'lname'} />
+          <UserProfile {...evaluatorProfile} />
         </div>
       )}
     </div>

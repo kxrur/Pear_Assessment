@@ -1,4 +1,4 @@
-type AssessmentBoxProps = {
+export type AssessmentBoxProps = {
   conceptual: string;
   cooperation: string;
   work: string;
