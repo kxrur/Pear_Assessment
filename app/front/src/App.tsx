@@ -15,7 +15,6 @@ import MyProfile from '@v/Gambling feature/MyProfile';
 import GradePage from '@v/Gambling feature/GradePage.tsx';
 import GamblePage from '@v/Gambling feature/GamblePage.tsx';
 
-
 import StudentManagement from '@v/StudentManagement';
 import TeamViewDelete from '@v/team/AllTeamsDeleteView';
 import PublicLayout from '@l/PublicLayout';

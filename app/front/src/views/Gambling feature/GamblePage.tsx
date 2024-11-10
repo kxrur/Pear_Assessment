@@ -1,36 +1,34 @@
 import React, { useState } from "react";
-import Sidebar from '@c/navBar/Sidebar';
+
 import Header from '@c/ui/table/Header';
+import SideBarStudent from "@c/navBar/SideBarStudent.tsx";
+import { sidebarItemsStudents } from "@t/SampleData.ts";
+import DiceRoller from "./DiceRoller";
 
 const GamblePage: React.FC = () => {
-    const [dice, setDice] = useState<number | null>(null);
-
-    const rollDice = () => {
-        const roll = Math.floor(Math.random() * 12) + 1;
-        setDice(roll);
-    };
     const [searchTerm, setSearchTerm] = useState('');
+    const [diceResult, setDiceResult] = useState<number | null>(null);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
+    const handleRoll = (result: number) => {
+        setDiceResult(result);
+    };
+
     return (
         <div className="flex">
-            <Sidebar />
+            <SideBarStudent items={sidebarItemsStudents} />
             <div className="flex-1 p-8 bg-[#FAF9F6]">
-                <Header searchTerm={searchTerm} onSearchChange={handleSearchChange}/>
+                <Header searchTerm={searchTerm} onSearchChange={handleSearchChange} />
                 <div className="text-center text-2xl font-semibold my-4">ROLL THE DICE</div>
                 <div className="flex flex-col items-center space-y-4">
-                    <button
-                        onClick={rollDice}
-                        className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none"
-                    >
-                        Roll Dice
-                    </button>
-                    {dice !== null && (
+                    {/* Pass the handleRoll function as the onRoll prop */}
+                    <DiceRoller onRoll={handleRoll} />
+                    {diceResult !== null && (
                         <div className="text-xl mt-4">
-                            You rolled: <span className="font-bold">{dice}</span>
+                            You rolled: <span className="font-bold">{diceResult}</span>
                         </div>
                     )}
                 </div>

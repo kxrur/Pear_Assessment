@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.service;
 
+import com.monaco.peer_assessment_backend.dto.DetailedViewDTO;
 import com.monaco.peer_assessment_backend.dto.EvaluationDTO;
 import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.entity.Student;
@@ -25,6 +26,8 @@ public interface TeamService {
     int practical_contribution_rating, int work_ethic_rating, 
     String cooperation_comment, String conceptual_contribution_comment,
     String practical_contribution_comment, String work_ethic_comment);
+
+    List<DetailedViewDTO> getDetailedView(Long teamId);
 
     TeamDTO deleteTeamById(Long id);
 

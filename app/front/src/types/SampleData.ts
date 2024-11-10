@@ -137,3 +137,34 @@ export const sidebarItems = [
   },
 ];
 
+// SidebarProps.ts
+export interface SidebarProps {
+  items: SidebarItemsStudents[];
+}
+
+// SidebarItemsStudents.ts
+export interface SidebarItemsStudents {
+  label: string;
+  to: string;
+  onClick?: () => void;
+}
+
+// sidebarItems.ts
+export const sidebarItemsStudents: SidebarItemsStudents[] = [
+  { label: 'My Profile', to: '/gamble-profile' },
+  { label: 'TeamView', to: '/team-preview' },
+  { label: 'Student Management', to: '/student-management' },
+  { label: 'Summary', to: '/summary' },
+  { label: 'General Settings', to: '/settings' },
+  {
+    label: 'Switch Account',
+    to: '/welcome',
+    onClick: () => console.log('Switch Account clicked'),
+  },
+  {
+    label: 'Logout',
+    to: '/welcome',
+    onClick: () => console.log('Logout clicked'),
+  },
+];
+
