@@ -4,6 +4,7 @@ import assessReducer from './assessSlice';
 import teamReducer from './teamSlice';
 import allTeamsReducer from './allTeamsSlice';
 import allStudentsReducer from './allStudentsSlice';
+import teacherOverviewReducer from './teacherOverviewSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
@@ -12,7 +13,8 @@ const store = configureStore({
     assess: assessReducer,
     team: teamReducer,
     allTeams: allTeamsReducer,
-    allStudents: allStudentsReducer
+    allStudents: allStudentsReducer,
+    teacherOverview: teacherOverviewReducer
   },
 });
 

@@ -52,13 +52,11 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
-            <Route path="/detailed" element={<DetailedView />} />
 
 
             <Route path="/gamble-profile" element={<MyProfile />} />
             <Route path="/gamble-grade" element={<GradePage />} />
             <Route path="/gamble-page" element={<GamblePage />} />
-            <Route path="/summary" element={<Summary />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/teacher" element={
               <>
@@ -87,6 +85,8 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/student-management" element={<StudentManagement />} />
             <Route path="/team-delete-preview" element={<TeamViewDelete />} />
             <Route path="/confirmation" element={<ConfirmationPage />} />
+            <Route path="/summary" element={<Summary />} />
+            <Route path="/detailed" element={<DetailedView />} />
           </Route>
         </Routes >
       </div >

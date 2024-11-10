@@ -1,5 +1,4 @@
 import { encodeFormData } from '@f/apiHelper';
-import { UTurnRightSharp } from '@mui/icons-material';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AssessmentData } from '@t/types';
 import { toast } from 'react-toastify';
