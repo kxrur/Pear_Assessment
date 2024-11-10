@@ -15,6 +15,7 @@ export default function Sidebar() {
     { label: 'TeamView', to: '/team-preview' },
     { label: 'Student Management', to: '/student-management' },
     { label: 'Summary View', to: '/summary' },
+    { label: 'Detailed View', to: '/detailed' },
     { label: 'General Settings', to: '/settings' },
     {
       label: 'Switch Account',
