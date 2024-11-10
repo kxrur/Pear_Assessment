@@ -90,7 +90,6 @@ public class TeamController {
       @RequestParam String practical_contribution_comment,
       @RequestParam int work_ethic_rating,
       @RequestParam String work_ethic_comment) {
-    EvaluationDTO eval;
     try {
       return ResponseEntity.ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating,
       practical_contribution_rating, work_ethic_rating,
@@ -178,6 +177,18 @@ id = professorDTO.getId();
       System.err.println("The user is not in the database");
     }
     return ResponseEntity.ok(allStudentsSummary);
+  }
+
+  @PostMapping("/teams/detailed-view")
+    public ResponseEntity<List<DetailedViewDTO>> getDetailedView(@RequestBody Map<String, Long> requestBody) {
+        Long teamId = requestBody.get("teamId");
+
+        try {
+            List<DetailedViewDTO> detailedViewDTOList = teamService.getDetailedView(teamId);
+            return ResponseEntity.ok(detailedViewDTOList);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
   }
 
   @GetMapping("/teams/delete/{teamId}")
