@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
+
 //Parameter 2 of constructor in
 // com.monaco.peer_assessment_backend.controller.TeamController
 // required a bean of type 'com.monaco.peer_assessment_backend.repository.EvaluationRepository'
@@ -48,18 +49,17 @@ public class TeamController {
 
   @PostMapping("/teams/available-teammates")
   public ResponseEntity<List<StudentDTO>> getAvailableTeammates(
-          @RequestBody Map<String, Long> requestBody) {
-      Long teamId = requestBody.get("teamId");
-      Long evaluatorId = requestBody.get("evaluatorId");
-      
-      try {
-          List<StudentDTO> availableTeammates = teamService.getAvailableTeammatesForEvaluation(evaluatorId, teamId);
-          return ResponseEntity.ok(availableTeammates);
-      } catch (RuntimeException e) {
-          return ResponseEntity.badRequest().body(null);
-      }
+      @RequestBody Map<String, Long> requestBody) {
+    Long teamId = requestBody.get("teamId");
+    Long evaluatorId = requestBody.get("evaluatorId");
+
+    try {
+      List<StudentDTO> availableTeammates = teamService.getAvailableTeammatesForEvaluation(evaluatorId, teamId);
+      return ResponseEntity.ok(availableTeammates);
+    } catch (RuntimeException e) {
+      return ResponseEntity.badRequest().body(null);
+    }
   }
-  
 
   @PostMapping("/teams/evaluate")
   public ResponseEntity<String> evaluateTeammates(
@@ -91,10 +91,11 @@ public class TeamController {
       @RequestParam int work_ethic_rating,
       @RequestParam String work_ethic_comment) {
     try {
-      return ResponseEntity.ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating,
-      practical_contribution_rating, work_ethic_rating,
-      cooperation_comment, conceptual_contribution_comment,
-      practical_contribution_comment, work_ethic_comment));
+      return ResponseEntity
+          .ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating,
+              practical_contribution_rating, work_ethic_rating,
+              cooperation_comment, conceptual_contribution_comment,
+              practical_contribution_comment, work_ethic_comment));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     } catch (RuntimeException e) {
@@ -119,22 +120,26 @@ public class TeamController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
-/*
-depending on what you prefer use either
-the request body or path variable as we only need prof id;
-if you see a duplicate the first line is the one associated with
-path variable and the second version with the request body for example:
-@GetMapping("/teams/summary-view/{profId}") is for the path variable version
-@GetMapping("/teams/summary-view/") is for the request body version
- */
-//  @GetMapping("/teams/summary-view/{profId}")
-@GetMapping("/teams/summary-view/")
-//  public ResponseEntity<List<StudentSumDTO>> getSummaryView(@PathVariable long profId){
-public ResponseEntity<List<StudentSumDTO>> getSummaryView(@RequestBody ProfessorDTO professorDTO){
-  long id;
-  List<StudentSumDTO> allStudentsSummary= new ArrayList<>();
-  //id = profId;
-id = professorDTO.getId();
+
+  /*
+   * depending on what you prefer use either
+   * the request body or path variable as we only need prof id;
+   * if you see a duplicate the first line is the one associated with
+   * path variable and the second version with the request body for example:
+   * 
+   * @GetMapping("/teams/summary-view/{profId}") is for the path variable version
+   * 
+   * @GetMapping("/teams/summary-view/") is for the request body version
+   */
+  @GetMapping("/teams/summary-view/{profId}")
+  // @GetMapping("/teams/summary-view/")
+  public ResponseEntity<List<StudentSumDTO>> getSummaryView(@PathVariable long profId) {
+    // public ResponseEntity<List<StudentSumDTO>> getSummaryView(@RequestBody
+    // ProfessorDTO professorDTO) {
+    long id;
+    List<StudentSumDTO> allStudentsSummary = new ArrayList<>();
+    id = profId;
+    // id = professorDTO.getId();
 
     try {
       List<Team> allTeams = teamService.getCurrentTeamsForUser(id);
@@ -149,46 +154,46 @@ id = professorDTO.getId();
           studentToAdd.setFirstName(student.getFirstName());
           studentToAdd.setLastName(student.getLastName());
           studentToAdd.setTeamName(teamName);
-          //Not just by teammate but by evaluators
-          List<Evaluation> evaluations = evaluationRepository.findAllByEvaluatorInAndTeammateAndTeam(students,student,team);
-          double conceptualRSum=0,practicalRSum=0,cooperationRSum=0,workEthicSum=0;
+          // Not just by teammate but by evaluators
+          List<Evaluation> evaluations = evaluationRepository.findAllByEvaluatorInAndTeammateAndTeam(students, student,
+              team);
+          double conceptualRSum = 0, practicalRSum = 0, cooperationRSum = 0, workEthicSum = 0;
           int k;
           for (k = 0; k < evaluations.size(); k++) {
             Evaluation evaluation = evaluations.get(k);
-            conceptualRSum+=evaluation.getConceptualContributionRating();
-            practicalRSum+=evaluation.getPracticalContributionRating();
-            cooperationRSum+=evaluation.getCooperationRating();
-            workEthicSum+=evaluation.getWorkEthicRating();
+            conceptualRSum += evaluation.getConceptualContributionRating();
+            practicalRSum += evaluation.getPracticalContributionRating();
+            cooperationRSum += evaluation.getCooperationRating();
+            workEthicSum += evaluation.getWorkEthicRating();
           }
 
           studentToAdd.setNbResponses(k);
-          studentToAdd.setConceptualR(conceptualRSum/k);
-          studentToAdd.setCooperationR(cooperationRSum/k);
-          studentToAdd.setPracticalR(practicalRSum/k);
-          studentToAdd.setWorkEthic(workEthicSum/k);
-          studentToAdd.setAverage((studentToAdd.getConceptualR()+ studentToAdd.getCooperationR()
-                  +studentToAdd.getPracticalR()+studentToAdd.getWorkEthic())/4);
+          studentToAdd.setConceptualR(conceptualRSum / k);
+          studentToAdd.setCooperationR(cooperationRSum / k);
+          studentToAdd.setPracticalR(practicalRSum / k);
+          studentToAdd.setWorkEthic(workEthicSum / k);
+          studentToAdd.setAverage((studentToAdd.getConceptualR() + studentToAdd.getCooperationR()
+              + studentToAdd.getPracticalR() + studentToAdd.getWorkEthic()) / 4);
           allStudentsSummary.add(studentToAdd);
         }
       }
 
-
-    }catch(UserNotFoundException e){
+    } catch (UserNotFoundException e) {
       System.err.println("The user is not in the database");
     }
     return ResponseEntity.ok(allStudentsSummary);
   }
 
   @PostMapping("/teams/detailed-view")
-    public ResponseEntity<List<DetailedViewDTO>> getDetailedView(@RequestBody Map<String, Long> requestBody) {
-        Long teamId = requestBody.get("teamId");
+  public ResponseEntity<List<DetailedViewDTO>> getDetailedView(@RequestBody Map<String, Long> requestBody) {
+    Long teamId = requestBody.get("teamId");
 
-        try {
-            List<DetailedViewDTO> detailedViewDTOList = teamService.getDetailedView(teamId);
-            return ResponseEntity.ok(detailedViewDTOList);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    try {
+      List<DetailedViewDTO> detailedViewDTOList = teamService.getDetailedView(teamId);
+      return ResponseEntity.ok(detailedViewDTOList);
+    } catch (RuntimeException e) {
+      return ResponseEntity.badRequest().body(null);
+    }
   }
 
   @GetMapping("/teams/delete/{teamId}")

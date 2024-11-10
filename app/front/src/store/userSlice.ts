@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { StudentRegFormData, TeacherRegFormData } from '@t/types';
 import toast from 'react-hot-toast';
 
-interface UserState {
+export interface UserState {
   id: number | null, // a null id indicated that no user is signed in
   username?: string,
   firstName: string,

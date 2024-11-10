@@ -14,7 +14,7 @@ export default function Sidebar() {
     { label: 'Dashboard', to: '/dashboard' },
     { label: 'TeamView', to: '/team-preview' },
     { label: 'Student Management', to: '/student-management' },
-    { label: 'Summary View', to: '/sms-management' },
+    { label: 'Summary View', to: '/summary' },
     { label: 'General Settings', to: '/settings' },
     {
       label: 'Switch Account',
