@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Tooltip } from "@mui/material";
 
 // Import all six dice images
 import die1 from '@a/dice/1.png';
@@ -33,17 +34,27 @@ const DiceRoller: React.FC<DiceRollerProps> = ({ onRoll }) => {
     <div className="flex flex-col items-center">
       {/* Show default gif while rolling, otherwise show the dice result */}
       <img
-        src={isRolling ? def : diceResult ? diceImages[diceResult - 1] : def} 
+        src={isRolling ? def : diceResult ? diceImages[diceResult - 1] : def}
         alt={`Die result: ${diceResult ?? 'rolling'}`}
         className="w-16 h-16"
       />
-      <button
-        className="px-4 py-2 mt-4 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none"
-        onClick={rollDice}
-        disabled={isRolling} // Disable the button while rolling
-      >
-        {isRolling ? 'Rolling...' : 'Roll Dice'}
-      </button>
+      <div className="flex items-center space-x-2">
+        <Tooltip
+          title="As a student, you’re allowed to gamble to increase your grade. If the dice hit a 12, you gain 0.5 on your total grade. Otherwise, you lose 0.2 for each roll. Only students who have a minimum of 3/5 in all categories can gamble, otherwise, the teacher won’t approve the request. Good Luck!"
+          placement="top"
+          arrow
+          classes={{ tooltip: "bg-red-500 text-xs" }}
+        >
+          <span className="text-blue-500 cursor-pointer text-xl">ℹ️</span>
+        </Tooltip>
+        <button
+          className="px-4 py-2 mt-4 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none"
+          onClick={rollDice}
+          disabled={isRolling} // Disable the button while rolling
+        >
+          {isRolling ? 'Rolling...' : 'Roll Dice'}
+        </button>
+      </div>
     </div>
   );
 };

@@ -150,5 +150,16 @@ const teacherOverviewSlice = createSlice({
   },
 });
 
+export function getSummaryByStudentIdAndTeam(
+  summary: Summary[],
+  studentId: number,
+  teamName: string
+): Summary | undefined {
+  console.log(studentId, teamName)
+  return summary.find(
+    (student) => student.studentId === studentId && student.teamName === teamName
+  );
+};
+
 export default teacherOverviewSlice.reducer;
 export const { resetTeacherOverview } = teacherOverviewSlice.actions;
