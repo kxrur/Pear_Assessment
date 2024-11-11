@@ -25,13 +25,6 @@ function DiceRoller({ onRoll, teamId }: DiceRollerProps) {
   const [diceResult, setDiceResult] = useState<number | null>(null); // Start with null to indicate no roll yet
   const [isRolling, setIsRolling] = useState<boolean>(false); // State to track if dice is rolling
 
-  // Dispatch gamble action when component mounts
-  useEffect(() => {
-    if (userId && teamId) {
-      dispatch(gamble({ teamId, studentId: userId }));
-    }
-  }, [dispatch, teamId, userId]);
-
   // Set dice result from gamble if available
   useEffect(() => {
     if (gambleResult.diceRoll) {
@@ -42,6 +35,11 @@ function DiceRoller({ onRoll, teamId }: DiceRollerProps) {
   // Function to roll the dice
   const rollDice = () => {
     setIsRolling(true); // Set rolling state to true
+    // Dispatch gamble action only when the button is clicked
+    if (userId && teamId) {
+      dispatch(gamble({ teamId, studentId: userId }));
+    }
+
     setTimeout(() => {
       const result = Math.floor(Math.random() * 6) + 1;
       setDiceResult(result);

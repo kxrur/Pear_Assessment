@@ -14,7 +14,6 @@ const MyProfile: React.FC = () => {
   const teams = useAppSelector((state) => state.allTeams.allTeams);
   const studentSummaries = useAppSelector((state) => state.teacherOverview.summary); // Assuming you have this selector
 
-  // Change selectedTeam state to store both teamId and teamName
   const [selectedTeam, setSelectedTeam] = useState<{ teamId: number | null; teamName: string } | null>(null);
   const [summary, setSummary] = useState<Summary | undefined>(undefined);
 
@@ -39,6 +38,9 @@ const MyProfile: React.FC = () => {
       setSelectedTeam({ teamId: selected.id, teamName: selected.teamName });
     }
   };
+
+  // Check if the student's average grade is above 3
+  const isAllowedToGamble = summary?.average && +summary.average > 3 && +summary.average !== 5;
 
   return (
     <div className="flex">
@@ -78,7 +80,12 @@ const MyProfile: React.FC = () => {
             <div>Loading grade summary...</div>
           )}
 
-          <GamblePage teamId={selectedTeam?.teamId || 0} />
+          {/* Only show GamblePage if student has an average grade > 3 */}
+          {isAllowedToGamble ? (
+            <GamblePage teamId={selectedTeam?.teamId || 0} />
+          ) : (
+            <div>You are not allowed to gamble as your average grade is below 3 or exactly 5.</div>
+          )}
         </div>
       </div>
     </div>
