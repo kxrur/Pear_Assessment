@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tooltip } from "@mui/material";
-
-// Import all six dice images
 import die1 from '@a/dice/1.png';
 import die2 from '@a/dice/2.png';
 import die3 from '@a/dice/3.png';
@@ -9,17 +7,39 @@ import die4 from '@a/dice/4.png';
 import die5 from '@a/dice/5.png';
 import die6 from '@a/dice/6.png';
 import def from '@a/dice/default.gif'; // Default GIF for initial state
+import { useAppDispatch, useAppSelector } from '@s/store';
+import { gamble } from '@s/gambleSlice';
 
 const diceImages = [die1, die2, die3, die4, die5, die6];
 
 interface DiceRollerProps {
   onRoll: (result: number) => void; // Function that takes the result and passes it back
+  teamId: number;
 }
 
-const DiceRoller: React.FC<DiceRollerProps> = ({ onRoll }) => {
+function DiceRoller({ onRoll, teamId }: DiceRollerProps) {
+  const userId = useAppSelector(state => state.user.id);
+  const dispatch = useAppDispatch();
+  const gambleResult = useAppSelector(state => state.gamble); // Access gamble state
+
   const [diceResult, setDiceResult] = useState<number | null>(null); // Start with null to indicate no roll yet
   const [isRolling, setIsRolling] = useState<boolean>(false); // State to track if dice is rolling
 
+  // Dispatch gamble action when component mounts
+  useEffect(() => {
+    if (userId && teamId) {
+      dispatch(gamble({ teamId, studentId: userId }));
+    }
+  }, [dispatch, teamId, userId]);
+
+  // Set dice result from gamble if available
+  useEffect(() => {
+    if (gambleResult.diceRoll) {
+      setDiceResult(gambleResult.diceRoll); // Set dice result from gamble result
+    }
+  }, [gambleResult.diceRoll]);
+
+  // Function to roll the dice
   const rollDice = () => {
     setIsRolling(true); // Set rolling state to true
     setTimeout(() => {
@@ -36,8 +56,7 @@ const DiceRoller: React.FC<DiceRollerProps> = ({ onRoll }) => {
       <img
         src={isRolling ? def : diceResult ? diceImages[diceResult - 1] : def}
         alt={`Die result: ${diceResult ?? 'rolling'}`}
-        className="w-16 h-16"
-      />
+        className="w-16 h-16" />
       <div className="flex items-center space-x-2">
         <Tooltip
           title="As a student, you’re allowed to gamble to increase your grade. If the dice hit a 12, you gain 0.5 on your total grade. Otherwise, you lose 0.2 for each roll. Only students who have a minimum of 3/5 in all categories can gamble, otherwise, the teacher won’t approve the request. Good Luck!"
@@ -57,6 +76,6 @@ const DiceRoller: React.FC<DiceRollerProps> = ({ onRoll }) => {
       </div>
     </div>
   );
-};
+}
 
 export default DiceRoller;

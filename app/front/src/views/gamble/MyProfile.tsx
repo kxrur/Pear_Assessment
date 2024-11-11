@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@s/store";
 import { fetchTeams } from "@s/allTeamsSlice";
 import GradePage from "./GradePage";
@@ -15,8 +14,8 @@ const MyProfile: React.FC = () => {
   const teams = useAppSelector((state) => state.allTeams.allTeams);
   const studentSummaries = useAppSelector((state) => state.teacherOverview.summary); // Assuming you have this selector
 
-
-  const [selectedTeam, setSelectedTeam] = useState('');
+  // Change selectedTeam state to store both teamId and teamName
+  const [selectedTeam, setSelectedTeam] = useState<{ teamId: number | null; teamName: string } | null>(null);
   const [summary, setSummary] = useState<Summary | undefined>(undefined);
 
   // Dispatch fetch teams action
@@ -28,18 +27,18 @@ const MyProfile: React.FC = () => {
   }, [dispatch, user.id]);
 
   useEffect(() => {
-    if (user.id && selectedTeam) {
-      const newSummary = getSummaryByStudentIdAndTeam(studentSummaries, +(user.studentId || ""), selectedTeam);
-      console.log('new summary: ', newSummary)
+    if (user.id && selectedTeam && selectedTeam.teamId) {
+      const newSummary = getSummaryByStudentIdAndTeam(studentSummaries, +(user.studentId || ""), selectedTeam.teamName);
       setSummary(newSummary);
     }
   }, [selectedTeam, user.id, studentSummaries]); // Re-run when selectedTeam or user.id changes
 
   const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTeam(event.target.value);
+    const selected = teams.find((team) => team.teamName === event.target.value);
+    if (selected) {
+      setSelectedTeam({ teamId: selected.id, teamName: selected.teamName });
+    }
   };
-  //const summary = getSummaryByStudentIdAndTeam(studentSummaries, user.id || 0, selectedTeam)
-
 
   return (
     <div className="flex">
@@ -58,13 +57,13 @@ const MyProfile: React.FC = () => {
             <div className="bg-red-50 rounded-md p-3 text-left flex items-center space-x-4">
               <span>My team:</span>
               <select
-                value={selectedTeam}
+                value={selectedTeam?.teamName || ""}
                 onChange={handleTeamChange}
                 className="bg-white border border-gray-300 rounded-md px-2 py-1"
               >
                 <option value="" disabled>Select your team</option>
                 {teams.map((team) => (
-                  <option key={team.id} value={team.teamName || 0}>
+                  <option key={team.id} value={team.teamName}>
                     {team.teamName}
                   </option>
                 ))}
@@ -73,13 +72,13 @@ const MyProfile: React.FC = () => {
           </div>
 
           {/* Pass the student summary to GradePage */}
-          {studentSummaries ? (
-            <GradePage summary={summary || studentSummaries[0]} />
+          {summary ? (
+            <GradePage summary={summary} />
           ) : (
             <div>Loading grade summary...</div>
           )}
 
-          <GamblePage />
+          <GamblePage teamId={selectedTeam?.teamId || 0} />
         </div>
       </div>
     </div>

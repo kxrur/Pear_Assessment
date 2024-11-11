@@ -9,7 +9,7 @@ const initialState: GableSlice = {
   gambleGrade: 0
 }
 
-export const assessStudent = createAsyncThunk(
+export const gamble = createAsyncThunk(
   'gamble/get',
   async ({ teamId, studentId }: { teamId: number, studentId: number }, { rejectWithValue }) => {
 

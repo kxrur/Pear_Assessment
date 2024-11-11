@@ -5,7 +5,7 @@ import SideBarStudent from "@c/navBar/SideBarStudent.tsx";
 import { sidebarItemsStudents } from "@t/SampleData.ts";
 import DiceRoller from "./DiceRoller";
 
-const GamblePage: React.FC = () => {
+function GamblePage({ teamId }: { teamId: number }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [diceResult, setDiceResult] = useState<number | null>(null);
 
@@ -23,7 +23,7 @@ const GamblePage: React.FC = () => {
         <div className="text-center text-2xl font-semibold my-4">ROLL THE DICE</div>
         <div className="flex flex-col items-center space-y-4">
           {/* Pass the handleRoll function as the onRoll prop */}
-          <DiceRoller onRoll={handleRoll} />
+          <DiceRoller onRoll={handleRoll} teamId={teamId} />
           {diceResult !== null && (
             <div className="text-xl mt-4">
               You rolled: <span className="font-bold">{diceResult}</span>
@@ -33,6 +33,6 @@ const GamblePage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default GamblePage;
