@@ -4,24 +4,24 @@ import java.util.List;
 
 public class DetailedViewDTO {
 
-    private String teamName;
-    private String studentName;
+    private TeamDTO team;
+    private StudentDTO student;
     private List<StudentRatingDTO> studentRatings;
 
-    public String getTeamName() {
-        return teamName;
+    public TeamDTO getTeam() {
+        return team;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setTeam(TeamDTO team) {
+        this.team = team;
     }
 
-    public String getStudentName() {
-        return studentName;
+    public StudentDTO getStudent() {
+        return student;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setStudent(StudentDTO student) {
+        this.student = student;
     }
 
     public List<StudentRatingDTO> getStudentRatings() {
@@ -32,7 +32,6 @@ public class DetailedViewDTO {
         this.studentRatings = studentRatings;
     }
 
-    // Inner class to represent the individual student details
     public static class StudentRatingDTO {
         private String teammateName;
         private int cooperationRating;
@@ -45,6 +44,7 @@ public class DetailedViewDTO {
         private String workEthicComment;
         private double averageRating;
 
+        // Getters and setters
         public String getTeammateName() {
             return teammateName;
         }
@@ -85,35 +85,35 @@ public class DetailedViewDTO {
             this.workEthicRating = workEthicRating;
         }
 
-        public String getConceptualComment(){
+        public String getConceptualComment() {
             return conceptualComment;
         }
 
-        public void setConceptualComment(String conceptualComment){
+        public void setConceptualComment(String conceptualComment) {
             this.conceptualComment = conceptualComment;
         }
 
-        public String getPracticalComment(){
+        public String getPracticalComment() {
             return practicalComment;
         }
 
-        public void setPracticalComment(String practicalComment){
+        public void setPracticalComment(String practicalComment) {
             this.practicalComment = practicalComment;
         }
 
-        public String getWorkEthicComment(){
+        public String getWorkEthicComment() {
             return workEthicComment;
         }
 
-        public void setWorkEthicComment(String workEthicComment){
+        public void setWorkEthicComment(String workEthicComment) {
             this.workEthicComment = workEthicComment;
         }
 
-        public String getCooperationComment(){
+        public String getCooperationComment() {
             return cooperationComment;
         }
 
-        public void setCooperationComment(String cooperationComment){
+        public void setCooperationComment(String cooperationComment) {
             this.cooperationComment = cooperationComment;
         }
 
