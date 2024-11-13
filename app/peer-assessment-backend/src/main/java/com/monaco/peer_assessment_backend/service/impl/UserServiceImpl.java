@@ -1,16 +1,13 @@
 package com.monaco.peer_assessment_backend.service.impl;
 
-import com.monaco.peer_assessment_backend.dto.ApproveGambleDTO;
-import com.monaco.peer_assessment_backend.dto.GambleDTO;
-import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
-import com.monaco.peer_assessment_backend.dto.StudentDTO;
-import com.monaco.peer_assessment_backend.dto.UserDTO;
+import com.monaco.peer_assessment_backend.dto.*;
 import com.monaco.peer_assessment_backend.entity.*;
 import com.monaco.peer_assessment_backend.entity.Gamble.ApprovalStatus;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 import com.monaco.peer_assessment_backend.exception.GradeNotFoundException;
 import com.monaco.peer_assessment_backend.exception.TeamNotFoundException;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
+import com.monaco.peer_assessment_backend.mapper.TeamMapper;
 import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.*;
 import com.monaco.peer_assessment_backend.service.UserService;
@@ -51,6 +48,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private TeamMapper teamMapper;
 
     /**
      * Registers a new student, ensuring the username is unique and password is
@@ -295,6 +294,45 @@ public class UserServiceImpl implements UserService {
         gambleRepository.save(gamble);
         return gambleDTO;
     }
+
+    /**
+     * Return the gambled grade, average grade, team, and student
+     * @param studentId
+     * @param teamId
+     * @return
+     * @throws Exception
+     */
+    public GradeDTO getGrades(Long studentId, Long teamId) throws Exception {
+
+        Optional<Gamble> gamble = gambleRepository.findByStudentIdAndTeamId(studentId, teamId);
+        GambleDTO gambleDTO = new GambleDTO();
+        GradeDTO gradeDTO = new GradeDTO();
+        Optional<Team> team = teamRepository.findById(teamId);
+        Optional<Student> student = studentRepository.findById(studentId);
+        TeamDTO teamDTO = null;
+        StudentDTO studentDTO = null;
+        if (team.isPresent()) {
+            teamDTO = teamMapper.mapToTeamDTO(team.get());
+        } else throw new TeamNotFoundException("Team with id " + teamId + " not found");
+
+        if (student.isPresent()) {
+            studentDTO = userMapper.mapToStudentDTO(student.get());
+        } else throw new Exception("Student not found");
+
+        if (gamble.isPresent()) {
+            gambleDTO.setGambledGrade(gamble.get().getGambledScore());
+        } else {
+            gambleDTO.setGambledGrade(-1);
+        }
+
+        gradeDTO.setTeam(teamDTO);
+        gradeDTO.setStudent(studentDTO);
+        gradeDTO.setGambledScore(gambleDTO.getGambledGrade());
+        gradeDTO.setAverageScore(getAverageStudentGrade(studentId, teamId));
+
+        return gradeDTO;
+    }
+
 
     public String approveOrDenyGamble(Long studentId, Long teamId, boolean approve) throws GradeNotFoundException {
         // Retrieve the gamble record for the student and team, and throw an exception if not found
