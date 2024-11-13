@@ -51,7 +51,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
 
-            <Route path="/detailed" element={<DetailedView />} />
 
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/teacher" element={
@@ -83,6 +82,7 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
             <Route path="/confirmation" element={<ConfirmationPage />} />
             <Route path="/summary" element={<Summary />} />
             <Route path="/gamble" element={<MyProfile />} />
+            <Route path="/detailed" element={<DetailedView />} />
           </Route>
         </Routes >
       </div >
