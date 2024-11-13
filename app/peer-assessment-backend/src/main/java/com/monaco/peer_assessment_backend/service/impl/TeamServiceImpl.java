@@ -6,7 +6,6 @@ import com.monaco.peer_assessment_backend.dto.TeamDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.entity.Evaluation;
 import com.monaco.peer_assessment_backend.entity.Professor;
-import com.monaco.peer_assessment_backend.entity.Role;
 import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.Team;
 import com.monaco.peer_assessment_backend.entity.User;
@@ -25,10 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -245,51 +242,35 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<DetailedViewDTO> getDetailedView(Long teamId) {
-        // Retrieve the team object by teamId
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
-    
-        // Convert Team to TeamDTO without using Collectors
-        TeamDTO teamDTO = new TeamDTO();
-        teamDTO.setId(team.getId());
-        teamDTO.setProfessorID(team.getProfessor().getId());
-        teamDTO.setTeamName(team.getTeamName());
-    
+    public List<DetailedViewDTO> getDetailedView(Long teamId) throws TeamNotFoundException {
+        // Retrieve the team and map it to TeamDTO
+        Optional<Team> team = teamRepository.findById(teamId);
+        if (!team.isPresent()) {
+            throw new TeamNotFoundException("Team with id " + teamId + " not found");
+        }
+        TeamDTO teamDTO = teamMapper.mapToTeamDTO(team.get());
+
         // List to store each student's detailed view
         List<DetailedViewDTO> detailedViewDTOList = new ArrayList<>();
 
         // Iterate through each student in the team
-        for (Student student : team.getStudents()) {
-            // Create a DetailedViewDTO instance for each student
+        for (Student student : team.get().getStudents()) {
+            // Create a DetailedViewDTO instance for each student and set the team
             DetailedViewDTO detailedViewDTO = new DetailedViewDTO();
-            detailedViewDTO.setTeam(teamDTO); // Set team DTO
+            detailedViewDTO.setTeam(teamDTO);
 
-            // Convert each student's roles to a Set<String> for role names
-            Set<String> roleNames = new HashSet<>();
-            for (Role role : student.getRoles()) {
-                roleNames.add(role.getName()); // Assuming Role has a getName() method that returns String
-            }
+            // Map the Student entity to StudentDTO
+            StudentDTO studentDTO = userMapper.mapToStudentDTO(student);
+            detailedViewDTO.setStudent(studentDTO);
 
-            // Create a StudentDTO object with the converted role names
-            StudentDTO studentDTO = new StudentDTO(
-                    student.getId(),
-                    student.getFirstName(),
-                    student.getLastName(),
-                    roleNames,
-                    student.isTemp(),
-                    student.getStudentID()
-            );
-            detailedViewDTO.setStudent(studentDTO); // Set student DTO
-    
-            // Retrieve evaluations where this student is the teammate being evaluated in the specified team
+            // Fetch evaluations for this student within the team
             List<Evaluation> evaluations = evaluationRepository.findAllByEvaluatorInAndTeammateAndTeam(
-                    team.getStudents(), student, team);
-    
-            // List to store individual teammate ratings for the student
+                    team.get().getStudents(), student, team.get());
+
+            // Prepare list to hold individual StudentRatingDTO entries
             List<DetailedViewDTO.StudentRatingDTO> teammateRatings = new ArrayList<>();
-    
-            // Iterate over each evaluation to create StudentRatingDTO for each teammate's rating
+
+            // Iterate over evaluations to create StudentRatingDTOs
             for (Evaluation evaluation : evaluations) {
                 DetailedViewDTO.StudentRatingDTO teammateRatingDTO = new DetailedViewDTO.StudentRatingDTO();
                 teammateRatingDTO.setTeammateName(evaluation.getEvaluator().getFirstName() + " " + evaluation.getEvaluator().getLastName());
@@ -297,29 +278,30 @@ public class TeamServiceImpl implements TeamService {
                 teammateRatingDTO.setConceptualRating(evaluation.getConceptualContributionRating());
                 teammateRatingDTO.setPracticalRating(evaluation.getPracticalContributionRating());
                 teammateRatingDTO.setWorkEthicRating(evaluation.getWorkEthicRating());
-    
-                // Set comments
+
+                // Set comments for each rating
                 teammateRatingDTO.setCooperationComment(evaluation.getCooperationComment());
                 teammateRatingDTO.setConceptualComment(evaluation.getConceptualContributionComment());
                 teammateRatingDTO.setPracticalComment(evaluation.getPracticalContributionComment());
                 teammateRatingDTO.setWorkEthicComment(evaluation.getWorkEthicComment());
-    
-                // Calculate the average rating
+
+                // Calculate average rating and set it
                 double averageRating = (evaluation.getCooperationRating() + evaluation.getConceptualContributionRating()
                         + evaluation.getPracticalContributionRating() + evaluation.getWorkEthicRating()) / 4.0;
                 teammateRatingDTO.setAverageRating(averageRating);
-    
-                // Add the rating to the list
+
+                // Add this teammate rating to the list
                 teammateRatings.add(teammateRatingDTO);
             }
-    
-            // Set the list of teammate ratings in the detailed view
+
+            // Set the ratings list in the detailed view DTO
             detailedViewDTO.setStudentRatings(teammateRatings);
-    
-            // Add the detailed view of this student to the overall list
+
+            // Add this student's detailed view to the list
             detailedViewDTOList.add(detailedViewDTO);
         }
-    
+
         return detailedViewDTOList;
-    }    
+    }
+            
 }
