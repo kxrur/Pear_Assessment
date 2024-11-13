@@ -5,6 +5,7 @@ import StudentAssessmentList from '@c/ui/detailed/AllAssessmentsBox';
 import { useAppDispatch, useAppSelector } from '@s/store';
 import { fetchTeacherDetailedStudentOverview } from '@s/teacherOverviewSlice';
 import { fetchTeams } from '@s/allTeamsSlice';
+import GambleGradeApproval from '@c/ui/detailed/GambleGradeApproval';
 
 export default function DetailedView() {
   const dispatch = useAppDispatch();
@@ -64,8 +65,8 @@ export default function DetailedView() {
 
   return (
     <div className="flex gap-8 p-8 bg-accent">
-      <div className="w-1/4">
-        <div className="mb-4">
+      <div className="w-1/4 space-y-4">
+        <div className="">
           <h2 className="text-lg font-semibold mb-2">Select Team</h2>
           <select
             onChange={handleTeamChange}
@@ -79,18 +80,19 @@ export default function DetailedView() {
             ))}
           </select>
         </div>
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-2">Team Members</h2>
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold ">Team Members</h2>
           {teammates.map((teammate, index) => (
             <button
               key={index}
               onClick={() => handleSelectTeammate(index)}
-              className="block w-full text-left px-2 py-2 mb-2 rounded-lg bg-gray-100 hover:bg-gray-200 focus:bg-secondary transition duration-150 shadow-sm"
+              className="block w-full text-left px-2 py-2  rounded-lg bg-gray-100 hover:bg-gray-200 focus:bg-secondary transition duration-150 shadow-sm"
             >
               <Profile firstName={teammate.fname} lastName={teammate.lname} />
             </button>
           ))}
         </div>
+        <GambleGradeApproval studentDbId={0} teamDbId={0} gotVerdict={true} grade={0} verdict={false}></GambleGradeApproval>
         {teammates.length > 0 && <TeamName teamName={detailed[0]?.teamName} />}
       </div>
       <div className="w-2/4">
