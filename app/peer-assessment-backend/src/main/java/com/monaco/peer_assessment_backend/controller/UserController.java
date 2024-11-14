@@ -1,6 +1,7 @@
 package com.monaco.peer_assessment_backend.controller;
 
 import com.monaco.peer_assessment_backend.dto.GambleDTO;
+import com.monaco.peer_assessment_backend.dto.GradeDTO;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.exception.GradeNotFoundException;
@@ -91,6 +92,16 @@ public class UserController {
             // Handle any other exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error: An unexpected error occurred.");
+        }
+    }
+
+    @GetMapping("/user/gamble/overview/{teamId}/{userId}")
+    public ResponseEntity<GradeDTO> getGambleScore(@PathVariable long teamId, @PathVariable long userId) {
+        try {
+            GradeDTO gradeDTO = userService.getGrades(userId, teamId);
+            return ResponseEntity.ok(gradeDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
     
