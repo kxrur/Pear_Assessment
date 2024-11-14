@@ -1,5 +1,6 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { Student, Team } from './allTeamsSlice';
 
 export interface Summary {
   studentId: number,
@@ -28,8 +29,8 @@ interface StudentRating {
 }
 
 export interface Detailed {
-  teamName: string,
-  studentName: string,
+  team: Team,
+  student: Student,
   studentRatings: StudentRating[]
 }
 
@@ -53,8 +54,29 @@ const initialState: TeacherStudentsView = {
     },
   ],
   detailed: [{
-    teamName: "",
-    studentName: "",
+    team: {
+      teamName: "",
+      teacherId: null,
+      id: null,
+      students: [
+        {
+          id: 0,
+          firstName: "",
+          lastName: "",
+          studentId: "",
+          teamName: "",
+          averageGrade: 0,
+        }
+      ]
+    },
+    student: {
+      id: 0,
+      firstName: "",
+      lastName: "",
+      studentId: "",
+      teamName: "",
+      averageGrade: 0,
+    },
     studentRatings: [
       {
         teammateName: "",
@@ -73,7 +95,7 @@ const initialState: TeacherStudentsView = {
 }
 
 
-export const fetchTeacherDetailedStudentOverview = createAsyncThunk<Detailed[], number>(
+export const fetchTeacherDetailedStudentOverview = createAsyncThunk(
   'teacher_detailed_overview/fetch',
   async (teamId: number, { rejectWithValue }) => {
     try {
@@ -141,8 +163,110 @@ const teacherOverviewSlice = createSlice({
     builder.addCase(fetchTeacherStudentsOverview.rejected, (_, action) => {
       console.error('fetchTeacherStudentsOverview failed:', action.payload);
     });
-    builder.addCase(fetchTeacherDetailedStudentOverview.fulfilled, (state, action: PayloadAction<Detailed[]>) => {
-      state.detailed = action.payload;
+    builder.addCase(fetchTeacherDetailedStudentOverview.fulfilled, (state, action: PayloadAction<{
+      team: {
+        id: number;
+        professorID: number;
+        teamName: string;
+        students: {
+          id: number;
+          firstName: string;
+          lastName: string;
+          studentId: number;
+          averageGrade?: number;
+        }[];
+      },
+      student: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        studentId: number;
+        averageGrade?: number;
+      },
+      studentRatings: {
+        teammateName: string;
+        cooperationRating: number;
+        conceptualRating: number;
+        practicalRating: number;
+        workEthicRating: number;
+        cooperationComment: string;
+        conceptualComment: string;
+        practicalComment: string;
+        workEthicComment: string;
+        averageRating: number;
+      }[]
+    }[]>) => {
+      // Define temporary types to avoid using `any`
+      type ApiStudent = {
+        id: number;
+        firstName: string;
+        lastName: string;
+        studentId: number;
+        averageGrade?: number;
+      };
+
+      type ApiTeam = {
+        id: number;
+        professorID: number;
+        teamName: string;
+        students: ApiStudent[];
+      };
+
+      type ApiStudentRating = {
+        teammateName: string;
+        cooperationRating: number;
+        conceptualRating: number;
+        practicalRating: number;
+        workEthicRating: number;
+        cooperationComment: string;
+        conceptualComment: string;
+        practicalComment: string;
+        workEthicComment: string;
+        averageRating: number;
+      };
+
+      type ApiDetailed = {
+        team: ApiTeam;
+        student: ApiStudent;
+        studentRatings: ApiStudentRating[];
+      };
+
+      // Map API response to state structure
+      state.detailed = action.payload.map((item: ApiDetailed) => ({
+        team: {
+          id: item.team.id,
+          teamName: item.team.teamName,
+          teacherId: item.team.professorID,
+          students: item.team.students.map((s) => ({
+            id: s.id,
+            firstName: s.firstName,
+            lastName: s.lastName,
+            studentId: s.studentId.toString(),
+            teamName: item.team.teamName,
+            averageGrade: s.averageGrade || 0
+          }))
+        },
+        student: {
+          id: item.student.id,
+          firstName: item.student.firstName,
+          lastName: item.student.lastName,
+          studentId: item.student.studentId.toString(),
+          teamName: item.team.teamName,
+          averageGrade: item.student.averageGrade || 0
+        },
+        studentRatings: item.studentRatings.map((rating) => ({
+          teammateName: rating.teammateName,
+          cooperationRating: rating.cooperationRating,
+          conceptualRating: rating.conceptualRating,
+          practicalRating: rating.practicalRating,
+          workEthicRating: rating.workEthicRating,
+          cooperationComment: rating.cooperationComment,
+          conceptualComment: rating.conceptualComment,
+          practicalComment: rating.practicalComment,
+          workEthicComment: rating.workEthicComment,
+          averageRating: rating.averageRating
+        }))
+      }));
     });
     builder.addCase(fetchTeacherDetailedStudentOverview.rejected, (_, action) => {
       console.error('fetchTeacherDetailedStudentOverview failed:', action.payload);

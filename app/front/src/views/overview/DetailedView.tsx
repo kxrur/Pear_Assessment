@@ -28,8 +28,8 @@ export default function DetailedView() {
   const detailed = useAppSelector(state => state.teacherOverview.detailed);
 
   const teammates = detailed.map((student) => ({
-    fname: student.studentName.split(' ')[0] || '',
-    lname: student.studentName.split(' ')[1] || '',
+    fname: student.student.firstName,
+    lname: student.student.lastName,
     assessments: student.studentRatings.map((rating) => ({
       assessmentGrades: {
         conceptual: `${rating.conceptualRating}`,
@@ -94,7 +94,7 @@ export default function DetailedView() {
         </div>
         {/*FIXME: give the good studentDbId to the compoennt (teammates array do not have studentId at all)*/}
         <GambleGradeApproval studentDbId={+teammates[currentTeammateIndex].fname || 0} teamDbId={selectedTeamId || 0} gotVerdict={false} grade={0} verdict={false}></GambleGradeApproval>
-        {teammates.length > 0 && <TeamName teamName={detailed[0]?.teamName} />}
+        {teammates.length > 0 && <TeamName teamName={detailed[0]?.team.teamName} />}
       </div>
       <div className="w-2/4">
         {currentTeammate && currentTeammate.assessments.length > 0 ? (
