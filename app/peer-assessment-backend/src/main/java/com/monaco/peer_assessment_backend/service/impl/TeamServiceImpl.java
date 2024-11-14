@@ -242,56 +242,66 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<DetailedViewDTO> getDetailedView(Long teamId) {
-        // Get the team object using teamId
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+    public List<DetailedViewDTO> getDetailedView(Long teamId) throws TeamNotFoundException {
+        // Retrieve the team and map it to TeamDTO
+        Optional<Team> team = teamRepository.findById(teamId);
+        if (!team.isPresent()) {
+            throw new TeamNotFoundException("Team with id " + teamId + " not found");
+        }
+        TeamDTO teamDTO = teamMapper.mapToTeamDTO(team.get());
 
-        // Prepare the list of DTOs to return for each student in the team
+        // List to store each student's detailed view
         List<DetailedViewDTO> detailedViewDTOList = new ArrayList<>();
 
         // Iterate through each student in the team
-        for (Student student : team.getStudents()) {
+        for (Student student : team.get().getStudents()) {
+            // Create a DetailedViewDTO instance for each student and set the team
             DetailedViewDTO detailedViewDTO = new DetailedViewDTO();
-            detailedViewDTO.setTeamName(team.getTeamName()); // Set team name
-            detailedViewDTO.setStudentName(student.getFirstName()+ " "+student.getLastName()); // Set evaluatee name
+            detailedViewDTO.setTeam(teamDTO);
 
-            // Fetch all evaluations where this student is the teammate being evaluated in the specific team
+            // Map the Student entity to StudentDTO
+            StudentDTO studentDTO = userMapper.mapToStudentDTO(student);
+            detailedViewDTO.setStudent(studentDTO);
+
+            // Fetch evaluations for this student within the team
             List<Evaluation> evaluations = evaluationRepository.findAllByEvaluatorInAndTeammateAndTeam(
-                    team.getStudents(), student, team);
+                    team.get().getStudents(), student, team.get());
 
+            // Prepare list to hold individual StudentRatingDTO entries
             List<DetailedViewDTO.StudentRatingDTO> teammateRatings = new ArrayList<>();
 
-            // Iterate over all evaluations to fetch teammate ratings
+            // Iterate over evaluations to create StudentRatingDTOs
             for (Evaluation evaluation : evaluations) {
                 DetailedViewDTO.StudentRatingDTO teammateRatingDTO = new DetailedViewDTO.StudentRatingDTO();
-                teammateRatingDTO.setTeammateName(evaluation.getEvaluator().getFirstName());
+                teammateRatingDTO.setTeammateName(evaluation.getEvaluator().getFirstName() + " " + evaluation.getEvaluator().getLastName());
                 teammateRatingDTO.setCooperationRating(evaluation.getCooperationRating());
                 teammateRatingDTO.setConceptualRating(evaluation.getConceptualContributionRating());
                 teammateRatingDTO.setPracticalRating(evaluation.getPracticalContributionRating());
                 teammateRatingDTO.setWorkEthicRating(evaluation.getWorkEthicRating());
 
-                // Set comments
+                // Set comments for each rating
                 teammateRatingDTO.setCooperationComment(evaluation.getCooperationComment());
                 teammateRatingDTO.setConceptualComment(evaluation.getConceptualContributionComment());
                 teammateRatingDTO.setPracticalComment(evaluation.getPracticalContributionComment());
                 teammateRatingDTO.setWorkEthicComment(evaluation.getWorkEthicComment());
 
-                // Calculate average rating
-                double averageRating = (evaluation.getCooperationRating() + evaluation.getConceptualContributionRating() +
-                        evaluation.getPracticalContributionRating() + evaluation.getWorkEthicRating()) / 4.0;
+                // Calculate average rating and set it
+                double averageRating = (evaluation.getCooperationRating() + evaluation.getConceptualContributionRating()
+                        + evaluation.getPracticalContributionRating() + evaluation.getWorkEthicRating()) / 4.0;
                 teammateRatingDTO.setAverageRating(averageRating);
 
-                // Add to the list of ratings
+                // Add this teammate rating to the list
                 teammateRatings.add(teammateRatingDTO);
             }
 
-            // Set the ratings list to DTO
+            // Set the ratings list in the detailed view DTO
             detailedViewDTO.setStudentRatings(teammateRatings);
 
-            // Add the detailed view of this student to the list
+            // Add this student's detailed view to the list
             detailedViewDTOList.add(detailedViewDTO);
         }
 
         return detailedViewDTOList;
     }
+            
 }
