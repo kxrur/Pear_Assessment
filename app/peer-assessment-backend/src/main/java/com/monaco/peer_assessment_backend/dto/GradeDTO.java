@@ -15,5 +15,5 @@ public class GradeDTO {
     private TeamDTO team;
     private Double gambledScore;
     private Double averageScore;
-    private Gamble.ApprovalStatus approvalStatus;
+    private Gamble.ApprovalStatus approvalStatus = Gamble.ApprovalStatus.PENDING;
 }
