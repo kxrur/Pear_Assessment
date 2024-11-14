@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@s/store';
 import { fetchTeacherDetailedStudentOverview } from '@s/teacherOverviewSlice';
 import { fetchTeams } from '@s/allTeamsSlice';
 import GambleGradeApproval from '@c/ui/detailed/GambleGradeApproval';
+import { GambleOverviewSlice, getGambleOverview } from '@s/gambleOverviewSlice';
 
 export default function DetailedView() {
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ export default function DetailedView() {
   const teammates = detailed.map((student) => ({
     fname: student.student.firstName,
     lname: student.student.lastName,
+    student: student.student,
     assessments: student.studentRatings.map((rating) => ({
       assessmentGrades: {
         conceptual: `${rating.conceptualRating}`,
@@ -63,6 +65,11 @@ export default function DetailedView() {
     setCurrentTeammateIndex(0);
   };
 
+  useEffect(() => {
+    dispatch(getGambleOverview({ teamId: selectedTeamId || 0, studentId: teammates[currentTeammateIndex].student.id }))
+  }, [dispatch, currentTeammateIndex]);
+  const gambleOverview: GambleOverviewSlice = useAppSelector(state => state.gambleOverview)
+
   return (
     <div className="flex gap-8 p-8 bg-accent">
       <div className="w-1/4 space-y-4">
@@ -93,7 +100,7 @@ export default function DetailedView() {
           ))}
         </div>
         {/*FIXME: give the good studentDbId to the compoennt (teammates array do not have studentId at all)*/}
-        <GambleGradeApproval studentDbId={+teammates[currentTeammateIndex].fname || 0} teamDbId={selectedTeamId || 0} gotVerdict={false} grade={0} verdict={false}></GambleGradeApproval>
+        <GambleGradeApproval studentDbId={teammates[currentTeammateIndex].student.id} teamDbId={selectedTeamId || 0} avgGrade={gambleOverview.averageScore} verdict={gambleOverview.approvalStatus} gambleGrade={gambleOverview.gambledScore}></GambleGradeApproval>
         {teammates.length > 0 && <TeamName teamName={detailed[0]?.team.teamName} />}
       </div>
       <div className="w-2/4">
