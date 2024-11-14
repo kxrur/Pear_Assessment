@@ -1,5 +1,6 @@
 package com.monaco.peer_assessment_backend.dto;
 
+import com.monaco.peer_assessment_backend.entity.Gamble;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class GradeDTO {
     private TeamDTO team;
     private Double gambledScore;
     private Double averageScore;
+    private Gamble.ApprovalStatus approvalStatus;
 }

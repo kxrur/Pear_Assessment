@@ -321,6 +321,7 @@ public class UserServiceImpl implements UserService {
 
         if (gamble.isPresent()) {
             gambleDTO.setGambledGrade(gamble.get().getGambledScore());
+            gradeDTO.setApprovalStatus(gamble.get().getApprovalStatus());
         } else {
             gambleDTO.setGambledGrade(-1);
         }
