@@ -99,7 +99,6 @@ export default function DetailedView() {
             </button>
           ))}
         </div>
-        {/*FIXME: give the good studentDbId to the compoennt (teammates array do not have studentId at all)*/}
         <GambleGradeApproval studentDbId={teammates[currentTeammateIndex].student.id} teamDbId={selectedTeamId || 0} avgGrade={gambleOverview.averageScore} verdict={gambleOverview.approvalStatus} gambleGrade={gambleOverview.gambledScore}></GambleGradeApproval>
         {teammates.length > 0 && <TeamName teamName={detailed[0]?.team.teamName} />}
       </div>

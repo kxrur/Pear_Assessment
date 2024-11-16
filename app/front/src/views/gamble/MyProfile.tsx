@@ -49,7 +49,7 @@ const MyProfile: React.FC = () => {
     }
   }, [dispatch, selectedTeam?.teamId, user.id]);
 
-  const isAllowedToGamble = (summary?.average && +summary.average > 3 && +summary.average !== 5) && (gambleGrade > 3 && gambleGrade < 5);
+  const isAllowedToGamble = (summary?.average && +summary.average > 3 && +summary.average !== 5) && (gambleGrade === -1 || (gambleGrade > 3 && gambleGrade < 5));
 
   return (
     <div className="flex">

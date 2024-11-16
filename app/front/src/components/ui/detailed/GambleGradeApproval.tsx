@@ -1,5 +1,6 @@
+import { getGambleOverview } from "@s/gambleOverviewSlice"
 import { approveGamble } from "@s/gambleSlice"
-import { useAppDispatch } from "@s/store"
+import { useAppDispatch, useAppSelector } from "@s/store"
 
 export interface GambleGradeApprovalProps {
   studentDbId: number
@@ -9,25 +10,28 @@ export interface GambleGradeApprovalProps {
   gambleGrade: number
 }
 
-export default function GambleGradeApproval({ studentDbId, teamDbId, avgGrade, gambleGrade, verdict }: GambleGradeApprovalProps) {
+export default function GambleGradeApproval({ studentDbId, teamDbId, avgGrade, gambleGrade }: GambleGradeApprovalProps) {
   const dispatch = useAppDispatch()
 
-  function approveOrDeny(approve: boolean) {
-    dispatch(approveGamble({ studentId: studentDbId, teamId: teamDbId, approve: approve }))
+  async function approveOrDeny(approve: boolean) {
+    await dispatch(approveGamble({ studentId: studentDbId, teamId: teamDbId, approve: approve }))
+    dispatch(getGambleOverview({ studentId: studentDbId, teamId: teamDbId }))
   }
+  const status = useAppSelector(state => state.gambleOverview.approvalStatus)
+
 
   return (
     <div className="p-2 bg-white rounded-lg shadow-md">
       <div className="flex flex-col space-y-4 m-2">
         <label>
-          {verdict === 'APPROVED'
+          {status === 'APPROVED'
             ? `Student's gambled grade was approved: ${avgGrade}.`
-            : verdict === 'REJECTED'
+            : status === 'REJECTED'
               ? `Student's gambled grade was denied.`
               : `Student's gambled grade is pending.`}
         </label>
 
-        {verdict === 'PENDING' && (
+        {status === 'PENDING' && (
           <>
             <div className="flex flex-row space-x-10 mx-28">
               <label className="bg-highlight rounded-xl w-min text-white px-2 py-1">{`avg: ${avgGrade}`}</label>
