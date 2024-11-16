@@ -16,6 +16,7 @@ export default function Sidebar() {
     { label: 'Student Management', to: '/student-management' },
     { label: 'Summary View', to: '/summary' },
     { label: 'Detailed View', to: '/detailed' },
+    { label: 'Gamble', to: '/gamble' },
     { label: 'General Settings', to: '/settings' },
     {
       label: 'Switch Account',

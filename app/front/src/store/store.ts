@@ -5,6 +5,8 @@ import teamReducer from './teamSlice';
 import allTeamsReducer from './allTeamsSlice';
 import allStudentsReducer from './allStudentsSlice';
 import teacherOverviewReducer from './teacherOverviewSlice';
+import gambleReducer from './gambleSlice';
+import gambleOverviewReducer from './gambleOverviewSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
@@ -14,7 +16,9 @@ const store = configureStore({
     team: teamReducer,
     allTeams: allTeamsReducer,
     allStudents: allStudentsReducer,
-    teacherOverview: teacherOverviewReducer
+    teacherOverview: teacherOverviewReducer,
+    gamble: gambleReducer,
+    gambleOverview: gambleOverviewReducer
   },
 });
 

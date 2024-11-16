@@ -6,7 +6,7 @@ import { Team as otherTeam } from "@t/types"
 export interface AllTeamsSlice {
   allTeams: TeamSlice[]
 }
-interface Student {
+export interface Student {
   id: number;
   firstName: string;
   lastName: string;
@@ -15,7 +15,7 @@ interface Student {
   averageGrade: number;
 }
 
-interface Team {
+export interface Team {
   id: number | null;
   teacherId: number | null
   students: Student[];

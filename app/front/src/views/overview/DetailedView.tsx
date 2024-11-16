@@ -5,6 +5,8 @@ import StudentAssessmentList from '@c/ui/detailed/AllAssessmentsBox';
 import { useAppDispatch, useAppSelector } from '@s/store';
 import { fetchTeacherDetailedStudentOverview } from '@s/teacherOverviewSlice';
 import { fetchTeams } from '@s/allTeamsSlice';
+import GambleGradeApproval from '@c/ui/detailed/GambleGradeApproval';
+import { GambleOverviewSlice, getGambleOverview } from '@s/gambleOverviewSlice';
 
 export default function DetailedView() {
   const dispatch = useAppDispatch();
@@ -27,8 +29,9 @@ export default function DetailedView() {
   const detailed = useAppSelector(state => state.teacherOverview.detailed);
 
   const teammates = detailed.map((student) => ({
-    fname: student.studentName.split(' ')[0] || '',
-    lname: student.studentName.split(' ')[1] || '',
+    fname: student.student.firstName,
+    lname: student.student.lastName,
+    student: student.student,
     assessments: student.studentRatings.map((rating) => ({
       assessmentGrades: {
         conceptual: `${rating.conceptualRating}`,
@@ -62,10 +65,15 @@ export default function DetailedView() {
     setCurrentTeammateIndex(0);
   };
 
+  useEffect(() => {
+    dispatch(getGambleOverview({ teamId: selectedTeamId || 0, studentId: teammates[currentTeammateIndex].student.id }))
+  }, [dispatch, currentTeammateIndex]);
+  const gambleOverview: GambleOverviewSlice = useAppSelector(state => state.gambleOverview)
+
   return (
     <div className="flex gap-8 p-8 bg-accent">
-      <div className="w-1/4">
-        <div className="mb-4">
+      <div className="w-1/4 space-y-4">
+        <div className="">
           <h2 className="text-lg font-semibold mb-2">Select Team</h2>
           <select
             onChange={handleTeamChange}
@@ -79,19 +87,20 @@ export default function DetailedView() {
             ))}
           </select>
         </div>
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-2">Team Members</h2>
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold ">Team Members</h2>
           {teammates.map((teammate, index) => (
             <button
               key={index}
               onClick={() => handleSelectTeammate(index)}
-              className="block w-full text-left px-2 py-2 mb-2 rounded-lg bg-gray-100 hover:bg-gray-200 focus:bg-secondary transition duration-150 shadow-sm"
+              className="block w-full text-left px-2 py-2  rounded-lg bg-gray-100 hover:bg-gray-200 focus:bg-secondary transition duration-150 shadow-sm"
             >
               <Profile firstName={teammate.fname} lastName={teammate.lname} />
             </button>
           ))}
         </div>
-        {teammates.length > 0 && <TeamName teamName={detailed[0]?.teamName} />}
+        <GambleGradeApproval studentDbId={teammates[currentTeammateIndex].student.id} teamDbId={selectedTeamId || 0} avgGrade={gambleOverview.averageScore} verdict={gambleOverview.approvalStatus} gambleGrade={gambleOverview.gambledScore}></GambleGradeApproval>
+        {teammates.length > 0 && <TeamName teamName={detailed[0]?.team.teamName} />}
       </div>
       <div className="w-2/4">
         {currentTeammate && currentTeammate.assessments.length > 0 ? (
