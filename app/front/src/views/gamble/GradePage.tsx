@@ -1,12 +1,30 @@
+import { getGambleOverview, GambleOverviewSlice } from '@s/gambleOverviewSlice';
+import { useAppDispatch, useAppSelector } from '@s/store';
 import { Summary } from '@s/teacherOverviewSlice'; // Import the Summary type
+import { useEffect } from 'react';
 
 interface GradePageProps {
   summary: Summary;
+  teamId: number;
 }
 
-function GradePage({ summary }: GradePageProps) {
+function GradePage({ summary, teamId }: GradePageProps) {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.user)
+
   const { cooperationR, conceptualR, practicalR, workEthic, average } = summary;
-  console.log(summary)
+
+  const gamble = useAppSelector(state => state.gamble)
+  const gambleGrade = useAppSelector(state => state.gambleOverview.gambledScore)
+  useEffect(() => {
+    if (user.id) {
+      dispatch(getGambleOverview({ teamId: teamId, studentId: user.id }))
+      console.log("update gamb over")
+    }
+  }, [dispatch, teamId, user.id, gamble]);
+
+
+  console.log(summary, gambleGrade)
 
   return (
     <div className="flex">
@@ -28,6 +46,9 @@ function GradePage({ summary }: GradePageProps) {
           </div>
           <div className="bg-red-50 rounded-md p-3 w-full max-w-xs text-left">
             Total avg: {average}
+          </div>
+          <div className="bg-red-50 rounded-md p-3 w-full max-w-xs text-left">
+            Gambled grade: {gambleGrade}
           </div>
         </div>
       </div>

@@ -100,6 +100,7 @@ const gambleOverviewSlice = createSlice({
         state.approvalStatus = action.payload.approvalStatus;
         state.loading = false;
         state.error = '';
+        console.log(state)
       })
       .addCase(getGambleOverview.rejected, (state, action) => {
         state.loading = false;

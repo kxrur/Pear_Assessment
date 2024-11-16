@@ -74,7 +74,23 @@ const gambleSlice = createSlice({
     resetGamble: (state) => {
       Object.assign(state, initialState)
     },
-  }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(gamble.fulfilled, (state, action: PayloadAction<string>) => {
+        const parsedData = JSON.parse(action.payload);
+        state.diceRoll = parsedData.diceRoll;
+        state.gambleGrade = parsedData.gambleGrade;
+      })
+      .addCase(gamble.pending, (state) => {
+        state.diceRoll = 0;
+        state.gambleGrade = 0;
+      })
+      .addCase(gamble.rejected, (state, action) => {
+        console.error('Gamble failed:', action.payload);
+      });
+  },
+
 });
 
 export default gambleSlice.reducer;

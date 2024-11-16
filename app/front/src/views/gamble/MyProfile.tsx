@@ -6,6 +6,7 @@ import GamblePage from "./GamblePage";
 import SideBarStudent from '@c/navBar/SideBarStudent.tsx';
 import { sidebarItemsStudents } from '@t/SampleData.ts';
 import { fetchTeacherStudentsOverview, getSummaryByStudentIdAndTeam, Summary } from "@s/teacherOverviewSlice";
+import { GambleOverviewSlice, getGambleOverview } from "@s/gambleOverviewSlice";
 
 const MyProfile: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +41,15 @@ const MyProfile: React.FC = () => {
   };
 
   // Check if the student's average grade is above 3
-  const isAllowedToGamble = summary?.average && +summary.average > 3 && +summary.average !== 5;
+  const gambleGrade = useAppSelector(state => state.gambleOverview.gambledScore)
+  useEffect(() => {
+    if (selectedTeam?.teamId && user.id) {
+      dispatch(getGambleOverview({ teamId: selectedTeam.teamId, studentId: user.id }))
+      console.log("update gamb over")
+    }
+  }, [dispatch, selectedTeam?.teamId, user.id]);
+
+  const isAllowedToGamble = (summary?.average && +summary.average > 3 && +summary.average !== 5) && (gambleGrade > 3 && gambleGrade < 5);
 
   return (
     <div className="flex">
@@ -75,7 +84,7 @@ const MyProfile: React.FC = () => {
 
           {/* Pass the student summary to GradePage */}
           {summary ? (
-            <GradePage summary={summary} />
+            <GradePage summary={summary} teamId={selectedTeam?.teamId || 0} />
           ) : (
             <div>Loading grade summary...</div>
           )}
@@ -84,7 +93,7 @@ const MyProfile: React.FC = () => {
           {isAllowedToGamble ? (
             <GamblePage teamId={selectedTeam?.teamId || 0} />
           ) : (
-            <div>You are not allowed to gamble as your average grade is below 3 or exactly 5.</div>
+            <div>You are not allowed to gamble as your average grade (or gambled grade) is below 3 or exactly 5.</div>
           )}
         </div>
       </div>
