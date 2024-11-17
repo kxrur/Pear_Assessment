@@ -51,6 +51,13 @@ jobs:
           cd app
           cd front
           npx cypress run --component --headless
+      - name: Official SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4.0.0
+        with: 
+          projectBaseDir: ./app/front
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
 
 
 
