@@ -365,5 +365,17 @@ public class UserServiceImpl implements UserService {
         // Return success message
         return "Gambled grade " + (approve ? "approved" : "denied") + " successfully";
     }
+
+    public void resetPassword(String username, String newPassword) throws UserNotFoundException {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (!userOptional.isPresent()) {
+            throw new UserNotFoundException("User with username " + username + " not found.");
+        }
+
+        User user = userOptional.get();
+        String hashedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+    }
     
 }
