@@ -25,8 +25,6 @@ import { useAppSelector } from '@s/store';
 import AddedStudentsView from '@v/confirmation/AddedStudentsConfirmationView';
 import DetailedView from '@v/overview/DetailedView';
 
-import StudentResetView from '@v/login/ResetPasswordView';
-
 interface AppRouterProps {
   children: ReactNode;
 }
@@ -55,7 +53,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
 
 
             <Route path="/welcome" element={<Welcome />} />
-            
             <Route path="/teacher" element={
               <>
                 <RegisterTeacher />
@@ -69,7 +66,6 @@ export default function App({ RouterComponent = AppRouter }: AppProps) {
               </>
             } />
             <Route path="/success-login" element={<SuccessLogin />} />
-            <Route path="/reset-password" element={<StudentResetView />}/>
           </Route>
 
           {/* Protected Routes */}
