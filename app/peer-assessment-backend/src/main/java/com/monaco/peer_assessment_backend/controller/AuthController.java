@@ -1,6 +1,7 @@
 package com.monaco.peer_assessment_backend.controller;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
+import com.monaco.peer_assessment_backend.dto.ResetPasswordDTO;
 import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -79,6 +81,24 @@ public class AuthController {
         }
     }
 
-
-
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, Object> requestBody) {
+        String username = requestBody.get("username").toString();
+        String newPassword = requestBody.get("newPassword").toString();
+    
+        try {
+            userService.resetPassword(username, newPassword);
+            return ResponseEntity.ok("Password reset successfully.");
+        } 
+        
+        catch (UserNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Error: " + ex.getMessage());
+        } 
+        
+        catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error: An unexpected error occurred.");
+        }
+    }
 }
