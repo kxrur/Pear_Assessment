@@ -3,9 +3,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from "@s/store";
+import { resetPassword } from "@s/userSlice";
+
 
 
 export const StudentResetView: React.FC = () => {
+  
   const dispatch = useAppDispatch()
   const [username, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -15,31 +18,34 @@ export const StudentResetView: React.FC = () => {
   const navigate = useNavigate(); // Used for navigation
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const validationErrors: { username?: string; newPassword?: string; confirmPassword?: string } = {};
-
-    // Validate fields
-    if (!username.trim()) {
-      validationErrors.username = "Username is required";
-    }
-
-    if (!newPassword.trim()) {
-      validationErrors.newPassword = "New password is required";
-    }
-
-    if (newPassword !== confirmPassword) {
-      validationErrors.confirmPassword = "Passwords do not match";
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      toast.error("Please fill all fields correctly!");
-    } else {
-      // Simulate password reset logic (e.g., call API)
-      toast.success("Password reset successful!");
-      // After successful reset, you can navigate back to login page or wherever you'd like
-      navigate('/login'); // Redirect back to login page
-    }
+      e.preventDefault();
+  
+      // Validation
+      const validationErrors: { username?: string; newPassword?: string; confirmPassword?: string } = {};
+  
+      if (!username.trim()) validationErrors.username = "Username is required.";
+      if (!newPassword.trim()) validationErrors.newPassword = "New password is required.";
+      if (newPassword !== confirmPassword) validationErrors.confirmPassword = "Passwords do not match.";
+  
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+      }
+  
+      setErrors({}); // Clear any previous errors
+  
+      try {
+        // Dispatch the async thunk to reset the password
+        const result = await dispatch(
+          resetPassword({ username, newPassword })
+        ).unwrap(); // Unwrap to handle success or failure directly
+  
+        toast.success(result); // Display the API response message
+        navigate("/welcome"); // Navigate to the login page after success
+      } catch (error) {
+        console.error("Reset password failed:", error);
+        toast.error("boustan"); // Display error message
+      }
   };
 
   return (
