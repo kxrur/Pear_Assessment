@@ -147,27 +147,23 @@ export const resetPassword = createAsyncThunk(
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, newPassword }),
+        body: JSON.stringify({ 
+          username: username, 
+          newPassword: newPassword}),
       });
 
       const data = await response.text(); // Assuming the API returns plain text.
 
-      if (response.ok) {
-        toast.success('Password reset successfully.');
-        return data; // Returns success message.
-      } else if (response.status === 404) {
-        message = 'User not found.';
-      } else {
-        message = 'An error occurred. Please try again.';
-      }
-    } catch (error) {
+      if (!response.ok) {
+        throw new Error(data || 'Reset password failed')
+    }
+    console.log(data);
+    return data;
+   } catch (error) {
       message = 'Failed to connect to the server. Error: ' + error;
     }
 
-    if (message !== '') {
-      toast.error(message);
-      return rejectWithValue(message);
-    }
+    
   }
 );
 
