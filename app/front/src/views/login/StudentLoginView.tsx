@@ -84,6 +84,20 @@ export const LoginStudent: React.FC = () => {
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
+          {/* Hyperlink to student reset page */}
+          <div className="mb-4 text-center">
+            <a
+              href="#"
+              onClick={() => {
+                // Use navigate to redirect to the /student-reset route
+                navigate('/reset-password');
+              }}
+              className="text-highlight text-sm underline"
+            >
+              Forgot your password?
+            </a>
+          </div>
+
           {/* Buttons for Teacher and Student */}
           <div className="flex justify-between mb-4 w-full">
             <button
