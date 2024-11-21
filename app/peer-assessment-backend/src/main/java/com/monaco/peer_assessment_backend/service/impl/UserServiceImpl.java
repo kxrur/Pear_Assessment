@@ -209,6 +209,15 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+    public boolean isStudentUpdated(long id){
+       Student studentToCheck =studentRepository.findByStudentID(id).orElseThrow(() -> new RuntimeException("Student not found"));
+       if (studentToCheck.is_updated()){
+           studentToCheck.set_updated(false);
+           studentRepository.save(studentToCheck);
+           return true;
+       }
+       return false;
+    }
 
     /**
      * Get the average score for a student for a specific team

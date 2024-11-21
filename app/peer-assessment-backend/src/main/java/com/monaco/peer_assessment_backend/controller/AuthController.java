@@ -1,6 +1,9 @@
 package com.monaco.peer_assessment_backend.controller;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
+import com.monaco.peer_assessment_backend.dto.ResetPasswordDTO;
+import com.monaco.peer_assessment_backend.dto.UserDTO;
+import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
@@ -74,6 +77,12 @@ public class AuthController {
         else{
             return new ResponseEntity<>(loggedProf,HttpStatus.ACCEPTED);
         }
+    }
+    @GetMapping("/check/updated")
+    public ResponseEntity<?> isUserUpdated(@RequestParam long id){
+        if (userService.isStudentUpdated(id))
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/reset-password")
