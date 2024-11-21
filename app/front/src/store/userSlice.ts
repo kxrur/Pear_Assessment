@@ -135,6 +135,38 @@ export const registerTeacher = createAsyncThunk(
   }
 );
 
+export const resetPassword = createAsyncThunk(
+  'reset-password/fetch',
+  async ({ username, newPassword }: { username: string; newPassword: string }, { rejectWithValue }) => {
+    let message = '';
+    console.log('reset password request body: ', { username, newPassword });
+
+    try {
+      const response = await fetch('http://localhost:8080/api/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          username: username, 
+          newPassword: newPassword}),
+      });
+
+      const data = await response.text(); // Assuming the API returns plain text.
+
+      if (!response.ok) {
+        throw new Error(data || 'Reset password failed')
+    }
+    console.log(data);
+    return data;
+   } catch (error) {
+      message = 'Failed to connect to the server. Error: ' + error;
+    }
+
+    
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -176,6 +208,8 @@ const userSlice = createSlice({
     })
   },
 });
+
+
 
 // Export the reset action and reducer
 export default userSlice.reducer;
