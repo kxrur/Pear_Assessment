@@ -1,18 +1,14 @@
 package com.monaco.peer_assessment_backend.controller;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
-import com.monaco.peer_assessment_backend.dto.ResetPasswordDTO;
-import com.monaco.peer_assessment_backend.dto.UserDTO;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
-import com.monaco.peer_assessment_backend.service.UserService;
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
 import com.monaco.peer_assessment_backend.exception.DuplicateUserException;
 import com.monaco.peer_assessment_backend.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +23,8 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @Autowired
     private UserServiceImpl userService;
 
     @PostMapping("/register/student")

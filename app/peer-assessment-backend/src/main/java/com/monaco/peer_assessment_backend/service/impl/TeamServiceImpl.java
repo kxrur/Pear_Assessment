@@ -32,23 +32,18 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TeamServiceImpl implements TeamService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
     private TeamRepository teamRepository;
 
-    @Autowired
     private EvaluationRepository evaluationRepository;
-    @Autowired
+
     private TeamMapper teamMapper;
-    @Autowired
+
     private EvaluationMapper evaluationMapper;
 
-    @Autowired
     private UserMapper userMapper;
 
     @Override
@@ -208,7 +203,7 @@ public class TeamServiceImpl implements TeamService {
         evaluation.setPracticalContributionComment(practical_contribution_comment);
         evaluation.setWorkEthicComment(work_ethic_comment);
 
-        double totalRating = cooperation_rating + conceptual_contribution_rating +
+        double totalRating = (double) cooperation_rating + conceptual_contribution_rating +
                             practical_contribution_rating + work_ethic_rating;
 
         double averageRating = totalRating / 4.0;

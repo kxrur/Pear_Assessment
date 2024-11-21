@@ -29,12 +29,10 @@ import java.util.List;
 @RequestMapping("/api")
 public class TeamController {
 
-  @Autowired
   private TeamService teamService;
 
-  @Autowired
   private TeamMapper teamMapper;
-  @Autowired
+
   private EvaluationRepository evaluationRepository;
 
   @PostMapping("/teams/create")

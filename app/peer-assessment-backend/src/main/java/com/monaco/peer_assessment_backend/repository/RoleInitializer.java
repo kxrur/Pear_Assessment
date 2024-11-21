@@ -15,8 +15,12 @@ public class RoleInitializer implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleInitializer.class);
 
+    private final RoleRepository roleRepository;
+
     @Autowired
-    private RoleRepository roleRepository;
+    public RoleInitializer(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
