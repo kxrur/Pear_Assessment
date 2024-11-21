@@ -195,6 +195,10 @@ public class TeamServiceImpl implements TeamService {
 
         Student evaluatee = studentRepository.findById(evaluateeId)
                 .orElseThrow(() -> new RuntimeException("Evaluatee not found"));
+
+        evaluatee.set_updated(true);
+        studentRepository.save(evaluatee);
+
         Evaluation evaluation = new Evaluation();
         evaluation.setEvaluator(evaluator);
         evaluation.setTeammate(evaluatee);
