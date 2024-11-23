@@ -31,7 +31,7 @@ export const TeamPreview: React.FC<TeamProps> = ({
   }
   return (
 
-    <div className="flex flex-col items-center p-6 bg-secondary max-w-xl rounded-lg shadow-lg" onClick={handleTeamSelect}>
+    <div className="flex flex-col items-center p-6 bg-secondary max-w-xl rounded-lg shadow-lg" onClick={handleTeamSelect} role='button' tabIndex={0} onKeyDown={() => { }}>
       <h1 className="text-4xl font-bold text-background mb-6">{teamName}</h1>
       <div className="flex flex-row space-x-4 h-full max-w-xl ">
         {/* Team Members List */}
