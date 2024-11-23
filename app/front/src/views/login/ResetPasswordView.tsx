@@ -14,7 +14,7 @@ export const StudentResetView: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ username?: string; newPassword?: string; confirmPassword?: string }>({});
-  
+
   const navigate = useNavigate(); // Used for navigation
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,40 +62,43 @@ export const StudentResetView: React.FC = () => {
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your username"
-            />
+            <label className="block text-sm text-highlight mb-2">Username{' '}
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Enter your username"
+              />
+            </label>
             {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
           {/* New Password */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">New Password</label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={`w-full p-2 border-2 ${errors.newPassword ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your new password"
-            />
+            <label className="block text-sm text-highlight mb-2">New Password{' '}
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={`w-full p-2 border-2 ${errors.newPassword ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Enter your new password"
+              />
+            </label>
             {errors.newPassword && <p className="text-red-500 text-xs">{errors.newPassword}</p>}
           </div>
 
           {/* Confirm Password */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Confirm New Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Confirm your new password"
-            />
+            <label className="block text-sm text-highlight mb-2">Confirm New Password{' '}
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Confirm your new password"
+              />
+            </label>
             {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
           </div>
 

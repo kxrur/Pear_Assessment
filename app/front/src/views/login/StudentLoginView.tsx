@@ -56,38 +56,39 @@ export const LoginStudent: React.FC = () => {
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
           {/* ID */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">ID</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => {
-                const value = e.target.value;
-                const numericValue = value.replace(/[^0-9]/g, ""); // Allow only numeric input
-                setUsername(numericValue);
-              }}
-              className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your ID"
-            />
+            <label className="block text-sm text-highlight mb-2">ID{' '}
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const numericValue = value.replace(/[^0-9]/g, ""); // Allow only numeric input
+                  setUsername(numericValue);
+                }}
+                className={`w-full p-2 border-2 ${errors.id ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Enter your ID"
+              />
+            </label>
             {errors.id && <p className="text-red-500 text-xs">{errors.id}</p>}
           </div>
 
           {/* Password */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your password"
-            />
+            <label className="block text-sm text-highlight mb-2">Password{' '}
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Enter your password"
+              />
+            </label>
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
           {/* Hyperlink to student reset page */}
           <div className="mb-4 text-center">
-            <a
-              href="#"
+            <button
               onClick={() => {
                 // Use navigate to redirect to the /student-reset route
                 navigate('/reset-password');
@@ -95,7 +96,7 @@ export const LoginStudent: React.FC = () => {
               className="text-highlight text-sm underline"
             >
               Forgot your password?
-            </a>
+            </button>
           </div>
 
           {/* Buttons for Teacher and Student */}

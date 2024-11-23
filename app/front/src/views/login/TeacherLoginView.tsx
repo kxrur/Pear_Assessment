@@ -57,37 +57,38 @@ export const LoginTeacher: React.FC = () => {
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => {
-                const value = e.target.value;
-                setUsername(value);
-              }}
-              className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your Username"
-            />
+            <label className="block text-sm text-highlight mb-2">Username{' '}
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setUsername(value);
+                }}
+                className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Enter your Username"
+              />
+            </label>
             {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
           {/* Password */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Enter your password"
-            />
+            <label className="block text-sm text-highlight mb-2">Password{' '}
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Enter your password"
+              />
+            </label>
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
-          {/* Hyperlink to student reset page */}
+          {/* button to teacher password reset page */}
           <div className="mb-4 text-center">
-            <a
-              href="#"
+            <button
               onClick={() => {
                 // Use navigate to redirect to the /teacher-reset route
                 navigate('/reset-password');
@@ -95,7 +96,7 @@ export const LoginTeacher: React.FC = () => {
               className="text-highlight text-sm underline"
             >
               Forgot your password?
-            </a>
+            </button>
           </div>
 
           {/* Buttons for Teacher and Student */}
