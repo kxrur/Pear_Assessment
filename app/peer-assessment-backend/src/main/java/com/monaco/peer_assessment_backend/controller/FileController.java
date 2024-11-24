@@ -3,18 +3,14 @@ package com.monaco.peer_assessment_backend.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
-import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +21,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,7 +81,7 @@ public class FileController {
             default -> new ResponseEntity<>(uploadEntity.getAddedStudents(), HttpStatus.BAD_REQUEST);
         };
     }
-    @Autowired
+
     private UserServiceImpl userService;
 
     public validStudentsEntity parseStudents(String fileName) {

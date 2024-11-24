@@ -12,9 +12,6 @@ import com.monaco.peer_assessment_backend.mapper.UserMapper;
 import com.monaco.peer_assessment_backend.repository.*;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,27 +25,20 @@ import java.util.Random;
 public class UserServiceImpl implements UserService {
 
     // Injecting required repositories and dependencies for user operations
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
     private EvaluationRepository evaluationRepository;
 
-    @Autowired
     private UserMapper userMapper;
 
-    @Autowired
     private GambleRepository gambleRepository;
 
-    @Autowired
     private TeamRepository teamRepository;
-    @Autowired
+
     private TeamMapper teamMapper;
 
     /**
