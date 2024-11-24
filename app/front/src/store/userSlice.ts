@@ -135,6 +135,7 @@ export const registerTeacher = createAsyncThunk(
   }
 );
 
+
 export const resetPassword = createAsyncThunk(
   'reset-password/fetch',
   async ({ username, newPassword }: { username: string; newPassword: string }, { rejectWithValue }) => {
@@ -166,6 +167,28 @@ export const resetPassword = createAsyncThunk(
     
   }
 );
+
+export const fetchNotifications = createAsyncThunk(
+  'notifications/fetch',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/check/updated/{id}`);
+      if (!response.ok) {
+        if (response.status === 400) {
+          return rejectWithValue('No notifications available for this student.');
+        }
+        throw new Error('Failed to fetch notifications.');
+      }
+      const data = await response.json();
+      return data; // Return the notifications data
+    } catch (error: any) {
+      toast.error(`Error: ${error.message}`);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 
 const userSlice = createSlice({
   name: 'user',

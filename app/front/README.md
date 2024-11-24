@@ -4,6 +4,21 @@
 2. run `npm i` to install packages
 3. run `npm run dev` to launch the development server
 
+# SonarQube
+
+- run the service
+- run
+
+```bash
+sonar-scanner \
+  -Dsonar.projectKey=peer-asses-front \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=<http://localhost:9000> \
+  -Dsonar.token=sqp_51a64477e5374836eb60c78fdfbf891a5f112826
+```
+
+From front directory
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

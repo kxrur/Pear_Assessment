@@ -78,8 +78,8 @@ public class AuthController {
             return new ResponseEntity<>(loggedProf,HttpStatus.ACCEPTED);
         }
     }
-    @GetMapping("/check/updated")
-    public ResponseEntity<?> isUserUpdated(@RequestParam long id){
+    @GetMapping("/check/updated/{id}")
+    public ResponseEntity<?> isUserUpdated(@PathVariable long id){
         if (userService.isStudentUpdated(id))
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

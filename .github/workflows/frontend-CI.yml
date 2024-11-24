@@ -51,6 +51,3 @@ jobs:
           cd app
           cd front
           npx cypress run --component --headless
-
-
-
