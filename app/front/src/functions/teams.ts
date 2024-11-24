@@ -34,6 +34,3 @@ export async function addTeam(team: Team) {
   }
 }
 
-//TODO:-BE delete team logic
-export async function deleteTeam(team: Team) {
-}

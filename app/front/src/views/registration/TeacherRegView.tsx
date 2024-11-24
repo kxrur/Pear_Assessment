@@ -98,71 +98,76 @@ const RegistrationForm: React.FC = () => {
         <form className="w-2/3 max-w-md" onSubmit={handleSubmit}>
           {/* First Name */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              className={`w-full p-2 border-2 ${errors.firstName ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="First Name"
-            />
+            <label className="block text-sm text-highlight mb-2">First Name{' '}
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                className={`w-full p-2 border-2 ${errors.firstName ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="First Name"
+              />
+            </label>
             {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
           </div>
 
           {/* Last Name */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              className={`w-full p-2 border-2 ${errors.lastName ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Last Name"
-            />
+            <label className="block text-sm text-highlight mb-2">Last Name{' '}
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                className={`w-full p-2 border-2 ${errors.lastName ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Last Name"
+              />
+            </label>
             {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
           </div>
 
           {/* Username */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Username</label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleInputChange}
-              className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Username"
-            />
+            <label className="block text-sm text-highlight mb-2">Username{' '}
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+                className={`w-full p-2 border-2 ${errors.username ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Username"
+              />
+            </label>
             {errors.username && <p className="text-red-500 text-xs">{errors.username}</p>}
           </div>
 
           {/* Password */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Password"
-            />
+            <label className="block text-sm text-highlight mb-2">Password{' '}
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className={`w-full p-2 border-2 ${errors.password ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Password"
+              />
+            </label>
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
 
           {/* Confirm Password */}
           <div className="mb-4">
-            <label className="block text-sm text-highlight mb-2">Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
-              placeholder="Confirm Password"
-            />
+            <label className="block text-sm text-highlight mb-2">Confirm Password{' '}
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className={`w-full p-2 border-2 ${errors.confirmPassword ? "border-red-500" : "border-highlight"} rounded`}
+                placeholder="Confirm Password"
+              />
+            </label>
             {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
           </div>
 

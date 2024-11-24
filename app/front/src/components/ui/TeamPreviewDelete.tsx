@@ -33,6 +33,8 @@ export const TeamPreviewDelete: React.FC<TeamProps> = ({
         }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      role='button'
+      tabIndex={0}
     >
       {/* Delete button */}
       <button
