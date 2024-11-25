@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 public class TeamMapper {
-
+    @Autowired
     private UserMapper userMapper;
 
     public TeamDTO mapToTeamDTO(Team team) {

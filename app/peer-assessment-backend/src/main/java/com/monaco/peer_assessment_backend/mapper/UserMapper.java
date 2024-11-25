@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
+    @Autowired
     private RoleRepository roleRepository;
 
 
