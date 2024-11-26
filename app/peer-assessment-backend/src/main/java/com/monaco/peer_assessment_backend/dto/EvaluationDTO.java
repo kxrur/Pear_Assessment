@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * This DTO is typically used in the peer assessment system to capture detailed ratings from peers 
+ * for each of the specified dimensions of performance.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

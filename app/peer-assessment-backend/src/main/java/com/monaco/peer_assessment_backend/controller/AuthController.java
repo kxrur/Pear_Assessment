@@ -1,9 +1,6 @@
 package com.monaco.peer_assessment_backend.controller;
 
 import com.monaco.peer_assessment_backend.dto.ProfessorDTO;
-import com.monaco.peer_assessment_backend.dto.ResetPasswordDTO;
-import com.monaco.peer_assessment_backend.dto.UserDTO;
-import com.monaco.peer_assessment_backend.entity.Student;
 import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.exception.UserNotFoundException;
 import com.monaco.peer_assessment_backend.service.UserService;
@@ -33,6 +30,12 @@ public class AuthController {
     @Autowired
     private UserServiceImpl userService;
 
+    /**
+     * Registers a new student.
+     * 
+     * @param newStudent the StudentDTO object containing student details.
+     * @return a ResponseEntity containing the saved student details or an error status.
+     */
     @PostMapping("/register/student")
     public ResponseEntity<StudentDTO> registerStudent(@RequestBody StudentDTO newStudent) {
 
@@ -48,6 +51,12 @@ public class AuthController {
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
+    /**
+     * Registers a new professor.
+     * 
+     * @param newProfessor the ProfessorDTO object containing professor details.
+     * @return a ResponseEntity containing the saved professor details or an error status.
+     */
     @PostMapping("/register/professor")
     public ResponseEntity<ProfessorDTO> registerProfessor(@RequestBody ProfessorDTO newProfessor) {
         ProfessorDTO savedProfessor = null;
@@ -61,6 +70,14 @@ public class AuthController {
         return new ResponseEntity<>(savedProfessor, HttpStatus.CREATED);
     }
 
+    /**
+     * Logs in a student.
+     * 
+     * @param username the student's username.
+     * @param password the student's password.
+     * @return a ResponseEntity containing the logged-in user details or an error status.
+     * @throws UserNotFoundException if the user is not found.
+     */
     @PostMapping("/login/student")
     public ResponseEntity<Optional<User>> loginStudent(@RequestParam String username, @RequestParam String password) throws UserNotFoundException {
         Optional<User> loggedStudent = userService.login(username,password);
@@ -71,6 +88,14 @@ public class AuthController {
             return new ResponseEntity<>(loggedStudent, HttpStatus.ACCEPTED);
         }
     }
+
+    /**
+     * Logs in a professor.
+     * 
+     * @param username the professor's username.
+     * @param password the professor's password.
+     * @return a ResponseEntity containing the logged-in user details or an error status.
+     */
     @PostMapping("/login/professor")
     public ResponseEntity<Optional<User>> loginProfessor(@RequestParam String username, @RequestParam String password) {
         Optional<User> loggedProf =  userService.login(username,password);
@@ -81,6 +106,13 @@ public class AuthController {
             return new ResponseEntity<>(loggedProf,HttpStatus.ACCEPTED);
         }
     }
+
+    /**
+     * Checks if the user with the given ID has been updated.
+     * 
+     * @param id the user ID.
+     * @return a ResponseEntity with an HTTP status indicating the result.
+     */
     @GetMapping("/check/updated/{id}")
     public ResponseEntity<?> isUserUpdated(@PathVariable long id){
         if (userService.isStudentUpdated(id))
@@ -88,6 +120,12 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Resets a user's password.
+     * 
+     * @param requestBody a map containing the username and new password.
+     * @return a ResponseEntity indicating the result of the operation.
+     */
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, Object> requestBody) {
         String username = requestBody.get("username").toString();

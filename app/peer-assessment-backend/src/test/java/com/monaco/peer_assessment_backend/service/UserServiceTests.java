@@ -25,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -204,7 +206,6 @@ public class UserServiceTests {
     @DisplayName("Testing Update Student")
     @Test
     public void testUpdateStudent() {
-        // Arrange
         Student existingStudent = new Student();
         existingStudent.setTemp(true);
         existingStudent.setPassword("oldPassword");
@@ -225,5 +226,47 @@ public class UserServiceTests {
         assertEquals("newUsername", updatedStudent.getUsername());
     }
 
+    @DisplayName("Testing Reset Password - Successful Case")
+    @Test
+    public void testResetPassword_Success() throws UserNotFoundException {
+        String username = "user";
+        String newPassword = "newSecurePassword123";
+        String hashedPassword = "hashedNewPassword";
+    
+        User mockUser = new User();
+        mockUser.setUsername(username);
+        mockUser.setPassword("oldPassword");
+    
+        // Mock repository and password encoder behaviour
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(mockUser));
+        when(passwordEncoder.encode(newPassword)).thenReturn(hashedPassword);
+    
+        userService.resetPassword(username, newPassword);
+    
+        // Ensure password was updated
+        assertEquals(hashedPassword, mockUser.getPassword());
+        // Ensure the user was retrieved
+        verify(userRepository).findByUsername(username);
+        // Ensure the user was saved
+        verify(userRepository).save(mockUser);
+    }    
+
+    @DisplayName("Testing Reset Password - User Not Found")
+    @Test
+    public void testResetPassword_UserNotFound() {
+        String username = "nonExistentUser";
+        String newPassword = "newPassword";
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
+            userService.resetPassword(username, newPassword);
+        });
+
+        assertEquals("User with username nonExistentUser not found.", exception.getMessage());
+        verify(userRepository).findByUsername(username);
+        // Ensure save is never called
+        verify(userRepository, never()).save(any(User.class));
+    }
 }
 

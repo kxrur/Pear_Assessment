@@ -13,8 +13,6 @@ import com.monaco.peer_assessment_backend.repository.*;
 import com.monaco.peer_assessment_backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -376,12 +374,15 @@ public class UserServiceImpl implements UserService {
     }
 
     public void resetPassword(String username, String newPassword) throws UserNotFoundException {
+        // Attempt to find the user by their username in the userRepository
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (!userOptional.isPresent()) {
             throw new UserNotFoundException("User with username " + username + " not found.");
         }
 
+        // Retrieve the user from the Optional object
         User user = userOptional.get();
+        // Hash the new password using the password encoder before saving
         String hashedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(hashedPassword);
         userRepository.save(user);

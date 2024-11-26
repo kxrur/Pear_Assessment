@@ -42,9 +42,12 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable long userId) {
         UserDTO savedUser = null;
         try {
+            // Attempt to fetch the user by their ID using the service
             savedUser = userService.getUserById(userId);
+            // If user is found, return a CREATED status along with the UserDTO
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         } catch (UserNotFoundException e) {
+            // If no user is found, log the message and return a NOT_FOUND status
             logger.info("User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {

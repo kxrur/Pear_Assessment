@@ -17,7 +17,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -25,6 +24,12 @@ public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
 
+    /**
+     * Constructor to initialize the `FileSystemStorageService` with a provided location.
+     * It validates the file storage location provided in `StorageProperties` and sets the root directory.
+     * 
+     * @param properties The storage properties that include the location for file storage.
+     */
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
 
@@ -35,6 +40,13 @@ public class FileSystemStorageService implements StorageService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
+    /**
+     * Stores the given file to the specified location. It checks for an empty file and ensures 
+     * that the file is not stored outside the defined directory to prevent security vulnerabilities.
+     * 
+     * @param file The file to be stored.
+     * @throws StorageException if the file is empty or an error occurs while storing the file.
+     */
     @Override
     public void store(MultipartFile file) {
         System.out.println("In store");
@@ -59,6 +71,12 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    /**
+     * Loads all the files stored in the storage location.
+     * 
+     * @return A stream of Path objects representing all files in the storage location.
+     * @throws StorageException if an error occurs while reading the files.
+     */
     @Override
     public Stream<Path> loadAll() {
         try {
@@ -71,11 +89,24 @@ public class FileSystemStorageService implements StorageService {
 
     }
 
+    /**
+     * Loads a specific file by its name.
+     * 
+     * @param filename The name of the file to be loaded.
+     * @return The Path to the requested file.
+     */
     @Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
     }
 
+    /**
+     * Loads a file as a resource. This can be used for streaming the file contents to the client.
+     * 
+     * @param filename The name of the file to be loaded as a resource.
+     * @return The Resource representing the requested file.
+     * @throws StorageFileNotFoundException if the file is not found or cannot be read.
+     */
     @Override
     public Resource loadAsResource(String filename) {
         try {
@@ -93,11 +124,21 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    /**
+     * Deletes all files in the storage location.
+     * 
+     * This method will recursively delete all files and directories within the root storage location.
+     */
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
+    /**
+     * Initializes the storage by creating the necessary directories for file storage.
+     * 
+     * @throws StorageException if an error occurs while creating the storage directories.
+     */
     @Override
     public void init() {
         try {
