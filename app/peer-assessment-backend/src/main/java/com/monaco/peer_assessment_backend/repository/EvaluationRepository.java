@@ -10,6 +10,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository interface for performing CRUD operations on the `Evaluation` entity.
+ * This interface extends `JpaRepository` to leverage Spring Data JPA functionalities for database interaction.
+ * It includes various query methods for retrieving evaluations based on different criteria such as evaluator, teammate, and team.
+ */
 @Repository
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long>{
     List<Evaluation> findByEvaluator(Student evaluator);

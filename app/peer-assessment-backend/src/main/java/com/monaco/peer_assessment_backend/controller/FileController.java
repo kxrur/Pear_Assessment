@@ -3,18 +3,14 @@ package com.monaco.peer_assessment_backend.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.monaco.peer_assessment_backend.dto.StudentDTO;
-import com.monaco.peer_assessment_backend.entity.User;
 import com.monaco.peer_assessment_backend.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +21,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +38,12 @@ import com.monaco.peer_assessment_backend.service.StorageService;
 public class FileController {
     private final StorageService storageService;
 
+    /**
+     * Endpoint to list uploaded files and display their URIs.
+     * @param model Model to hold file URIs.
+     * @return A string representing the upload form.
+     * @throws IOException If an error occurs during file processing.
+     */
     @GetMapping("/upload/a")
     public String listUploadedFiles(Model model) throws IOException {
 
@@ -54,6 +55,11 @@ public class FileController {
         return "uploadForm";
     }
 
+    /**
+     * Endpoint to retrieve a specific file.
+     * @param filename Name of the file to retrieve.
+     * @return The file as a resource or 404 if not found.
+     */
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
@@ -66,6 +72,13 @@ public class FileController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
+
+     /**
+     * Endpoint to handle uploading and processing a file containing student data.
+     * @param file The uploaded file.
+     * @param redirectAttributes Redirect attributes to display a message.
+     * @return ResponseEntity with the results of the operation.
+     */
     /*
     case 0 -> new ResponseEntity<>("No users have been added", HttpStatus.resolve(401));
     case 1 -> new ResponseEntity<>("All users have been added", HttpStatus.resolve(201));
@@ -89,6 +102,11 @@ public class FileController {
     @Autowired
     private UserServiceImpl userService;
 
+    /**
+     * Parses the uploaded file, validates student data, and adds valid students to the system.
+     * @param fileName The name of the file to process.
+     * @return A validStudentsEntity containing the results of the operation.
+     */
     public validStudentsEntity parseStudents(String fileName) {
         Path fileToCheck = storageService.load(fileName);
         int nbCorrect = 0, nbErrors = 0;

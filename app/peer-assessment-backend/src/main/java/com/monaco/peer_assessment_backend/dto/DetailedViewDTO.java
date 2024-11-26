@@ -2,6 +2,10 @@ package com.monaco.peer_assessment_backend.dto;
 
 import java.util.List;
 
+/**
+ * This DTO is primarily used to provide a comprehensive view of a student's performance in the peer assessment system.
+ * It contains the student's associated team, personal details, and a list of ratings and comments from their teammates.
+ */
 public class DetailedViewDTO {
 
     private TeamDTO team;

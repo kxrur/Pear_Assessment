@@ -190,15 +190,18 @@ public class TeamServiceImpl implements TeamService {
                                       String cooperation_comment, String conceptual_contribution_comment,
                                       String practical_contribution_comment, String work_ethic_comment,long team_id) {
 
+        // Retrieve the evaluator (Student) from the database using the provided evaluatorId
         Student evaluator = studentRepository.findById(evaluatorId)
                 .orElseThrow(() -> new RuntimeException("Evaluator not found"));
 
         Student evaluatee = studentRepository.findById(evaluateeId)
                 .orElseThrow(() -> new RuntimeException("Evaluatee not found"));
 
+        // Mark the evaluatee as updated in the database (assuming 'set_updated' is a flag for tracking evaluation status)        
         evaluatee.set_updated(true);
         studentRepository.save(evaluatee);
 
+        // Create a new Evaluation object and populate it with the evaluation details
         Evaluation evaluation = new Evaluation();
         evaluation.setEvaluator(evaluator);
         evaluation.setTeammate(evaluatee);
@@ -215,7 +218,10 @@ public class TeamServiceImpl implements TeamService {
         double totalRating = cooperation_rating + conceptual_contribution_rating +
                             practical_contribution_rating + work_ethic_rating;
 
+        // Average of all four ratings
         double averageRating = totalRating / 4.0;
+
+        // Check if the provided team_id exists in the database and if it does, set the team for this evaluation
         if (teamRepository.findById(team_id).isPresent())
             evaluation.setTeam(teamRepository.getReferenceById(team_id));
         evaluation.setAverageRating(averageRating);

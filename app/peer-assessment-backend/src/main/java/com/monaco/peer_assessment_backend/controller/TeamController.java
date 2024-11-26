@@ -37,6 +37,7 @@ public class TeamController {
   @Autowired
   private EvaluationRepository evaluationRepository;
 
+  // Endpoint to create a new team
   @PostMapping("/teams/create")
   public ResponseEntity<?> createTeam(@RequestBody TeamCreationDTO teamDTO) {
     try {
@@ -44,9 +45,11 @@ public class TeamController {
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    // If team creation is successful, return a CREATED status
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
+  // Endpoint to get available teammates for evaluation
   @PostMapping("/teams/available-teammates")
   public ResponseEntity<List<StudentDTO>> getAvailableTeammates(
       @RequestBody Map<String, Long> requestBody) {
@@ -54,23 +57,28 @@ public class TeamController {
     Long evaluatorId = requestBody.get("evaluatorId");
 
     try {
+      // Call service to fetch available teammates
       List<StudentDTO> availableTeammates = teamService.getAvailableTeammatesForEvaluation(evaluatorId, teamId);
+      // Return the list of available teammates
       return ResponseEntity.ok(availableTeammates);
     } catch (RuntimeException e) {
       return ResponseEntity.badRequest().body(null);
     }
   }
 
+   // Endpoint to allow the evaluator to select teammates for evaluation
   @PostMapping("/teams/evaluate")
   public ResponseEntity<String> evaluateTeammates(
       @RequestParam Long evaluatorId,
       @RequestBody List<Long> selectedTeammateIds) {
 
     if (selectedTeammateIds == null || selectedTeammateIds.isEmpty()) {
+      // If no teammates are selected, return a BAD_REQUEST response
       return ResponseEntity.badRequest().body("No teammates selected for evaluation.");
     }
 
     try {
+      // Call service to save the selected teammates for evaluation
       teamService.saveSelectedTeammatesForEvaluation(evaluatorId, selectedTeammateIds);
       return ResponseEntity.ok("Selected teammates for evaluation successfully.");
     } catch (RuntimeException e) {
@@ -78,6 +86,7 @@ public class TeamController {
     }
   }
 
+  // Endpoint for submitting ratings and comments for a teammate
   @PostMapping("/teams/evaluate/{evaluatorId}/rate/{evaluateeId}")
   public ResponseEntity<?> submitCooperationRating(
       @PathVariable Long evaluatorId,
@@ -94,6 +103,7 @@ public class TeamController {
     EvaluationDTO eval;
 
     try {
+      // Call service to submit the evaluation and return the response
       return ResponseEntity
           .ok(teamService.submitEvaluation(evaluatorId, evaluateeId, cooperation_rating, conceptual_contribution_rating,
               practical_contribution_rating, work_ethic_rating,
@@ -106,11 +116,13 @@ public class TeamController {
     }
   }
 
+   // Endpoint to fetch all teams associated with a user (either professor or student)
   @GetMapping("/teams/{userId}")
   public ResponseEntity<List<TeamDTO>> getTeams(@PathVariable Long userId) {
     try {
       List<Team> teamList = teamService.getCurrentTeamsForUser(userId);
       List<TeamDTO> teamDTOList = new ArrayList<>();
+      // Convert each Team entity to TeamDTO using the mapper
       for (Team team : teamList) {
         teamDTOList.add(teamMapper.mapToTeamDTO(team));
       }
@@ -187,11 +199,13 @@ public class TeamController {
     return ResponseEntity.ok(allStudentsSummary);
   }
 
+  // Endpoint to get a detailed view of a team's members and evaluations
   @PostMapping("/teams/detailed-view")
   public ResponseEntity<List<DetailedViewDTO>> getDetailedView(@RequestBody Map<String, Long> requestBody) {
     Long teamId = requestBody.get("teamId");
 
     try {
+      // Fetch detailed view for the team and return the response
       List<DetailedViewDTO> detailedViewDTOList = teamService.getDetailedView(teamId);
       return ResponseEntity.ok(detailedViewDTOList);
     } catch (RuntimeException e) {
@@ -199,10 +213,12 @@ public class TeamController {
     }
   }
 
+  // Endpoint to delete a team by its ID
   @GetMapping("/teams/delete/{teamId}")
   public ResponseEntity<TeamDTO> deleteTeam(@PathVariable Long teamId) {
     TeamDTO savedTeam;
     try {
+      // Call service to delete the team and fetch the deleted team details
       savedTeam = teamService.deleteTeamById(teamId);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
